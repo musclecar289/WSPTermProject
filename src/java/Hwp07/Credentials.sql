@@ -1,6 +1,8 @@
 /* create the following table
    in WSP database
 */
+drop table USERTABLE;
+drop table GROUPTABLE;
 
 create table USERTABLE (
     ID INT NOT NULL AUTO_INCREMENT,
