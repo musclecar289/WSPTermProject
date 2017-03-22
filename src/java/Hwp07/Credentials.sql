@@ -3,7 +3,7 @@
 */
 drop table USERTABLE;
 drop table GROUPTABLE;
-
+/*testestest*/
 create table USERTABLE (
     ID INT NOT NULL AUTO_INCREMENT,
     USERNAME varchar(255),
