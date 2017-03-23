@@ -1,7 +1,6 @@
 
 package JavaObjects;
 
-import JavaObjects.Collection;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -24,4 +23,18 @@ private int numberOfCollections;
     public void init() {
 
     }
+
+    public List<Collection> getCollections() {
+        return collections;
+    }
+
+    public int getNumberOfCollections() {
+        return numberOfCollections;
+    }
+
+    public void setNumberOfCollections(int numberOfCollections) {
+        this.numberOfCollections = numberOfCollections;
+    }
+    
+    
 }

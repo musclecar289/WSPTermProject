@@ -9,7 +9,7 @@ package JavaObjects;
  *
  * @author Nicholas Clemmons
  */
-public class VinylRecord {
+public class Album {
     
     private String albumTitle;
     private String artistName;
@@ -17,6 +17,9 @@ public class VinylRecord {
     private int releaseYear;
     private int numberOfTracks;
     private int numberOfDiscs;
+    private int albumID;
+    private int albumCount;
+    
     
     public String getAlbumTitle() {
         return albumTitle;
