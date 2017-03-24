@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package JavaObjects;
 
 /**
@@ -11,30 +6,29 @@ package JavaObjects;
  */
 public class Album {
     
-    private String albumTitle;
-    private String artistName;
+    private String title;
+    private String artist;
     private String genre;
     private int releaseYear;
     private int numberOfTracks;
     private int numberOfDiscs;
-    private int albumID;
+    private long albumID;
     private int albumCount;
-    
-    
-    public String getAlbumTitle() {
-        return albumTitle;
+
+    public String getTitle() {
+        return title;
     }
 
-    public void setAlbumTitle(String albumTitle) {
-        this.albumTitle = albumTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getArtistName() {
-        return artistName;
+    public String getArtist() {
+        return artist;
     }
 
-    public void setArtistName(String artistName) {
-        this.artistName = artistName;
+    public void setArtist(String artist) {
+        this.artist = artist;
     }
 
     public String getGenre() {
@@ -67,6 +61,22 @@ public class Album {
 
     public void setNumberOfDiscs(int numberOfDiscs) {
         this.numberOfDiscs = numberOfDiscs;
+    }
+
+    public long getAlbumID() {
+        return albumID;
+    }
+
+    public void setAlbumID(long albumID) {
+        this.albumID = albumID;
+    }
+
+    public int getAlbumCount() {
+        return albumCount;
+    }
+
+    public void setAlbumCount(int albumCount) {
+        this.albumCount = albumCount;
     }
     
 }
