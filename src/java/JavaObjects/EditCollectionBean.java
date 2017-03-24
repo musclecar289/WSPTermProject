@@ -44,7 +44,11 @@ public class EditCollectionBean implements Serializable {
 
     @PostConstruct
     public void init() {
-
+        try {
+            albums = loadAlbums();
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewCollectionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public List<Album> getAlbums() {
@@ -83,6 +87,7 @@ public class EditCollectionBean implements Serializable {
                 a.setNumberOfDiscs(result.getInt("NUMBER_OF_DISCS"));
                 a.setGenre(result.getString("GENRE"));
                 a.setAlbumCount(result.getInt("ALBUMCOUNT"));
+                a.setEditable(true);
                 list.add(a);
             }
 
@@ -131,7 +136,7 @@ public class EditCollectionBean implements Serializable {
             if (result == 1) {
                 FacesMessage insertionErrorMessage01 = new FacesMessage(FacesMessage.SEVERITY_INFO,
                         getTitle() + " added successfully!", null);
-                FacesContext.getCurrentInstance().addMessage("bookForm:addBook", insertionErrorMessage01);
+                FacesContext.getCurrentInstance().addMessage("editAlbumForm:addBook", insertionErrorMessage01);
 
             } else {
                 // if not 1, it must be an error.
@@ -167,6 +172,7 @@ public class EditCollectionBean implements Serializable {
             updateQuery.setInt(5, getNumberOfDiscs());
             updateQuery.setString(6, getGenre());
             updateQuery.setInt(7, getAlbumCount());
+            updateQuery.setInt(8, id);
 
             int result = updateQuery.executeUpdate();
             if (result == 1) {

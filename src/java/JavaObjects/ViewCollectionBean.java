@@ -34,7 +34,11 @@ public class ViewCollectionBean implements Serializable {
 
     @PostConstruct
     public void init() {
-
+        try {
+            albums = loadAlbums();
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewCollectionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public List<Album> getAlbums() {
@@ -84,7 +88,6 @@ public class ViewCollectionBean implements Serializable {
     }
 
     public String refresh() {
-
         try {
             albums = loadAlbums();
         } catch (SQLException ex) {
