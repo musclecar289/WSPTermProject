@@ -57,7 +57,7 @@ public class ViewCollectionBean implements Serializable {
 
         try {
             PreparedStatement ps = conn.prepareStatement(
-                    "select ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE from ALBUMTABLE"
+                    "select ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT from ALBUMTABLE"
             );
 
             // retrieve book data from database
@@ -72,6 +72,7 @@ public class ViewCollectionBean implements Serializable {
                 a.setNumberOfTracks(result.getInt("NUMBER_OF_TRACKS"));
                 a.setNumberOfDiscs(result.getInt("NUMBER_OF_DISCS"));
                 a.setGenre(result.getString("GENRE"));
+                a.setAlbumCount(result.getInt("ALBUMCOUNT"));
                 list.add(a);
             }
 
