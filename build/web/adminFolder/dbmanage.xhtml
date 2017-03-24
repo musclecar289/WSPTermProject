@@ -20,17 +20,30 @@
             p{
                   background-color:black;
                   color:white;
-                  text-align:center;
+                  text-align:right;
+                  padding:5px;
+                  
+              }
+              h2{
+                  background-color:black;
+                  color:white;
+                  text-align:right;
                   padding:5px;
                   
               }
             </style>
     </h:head>
     <h:body>
-        <h1>All Users</h1>
-         
+        
+        
+         <p> <h:button value="Home" outcome="/index" style="background: limegreen" />
+            <h:button value="Back" outcome="adminhome.xhtml" style="background: limegreen" />
+            <h:button value="Logout" outcome="/logout" style="background:limegreen" />
+            
+        <h1>All Users</h1></p>
         
          <h:form id="form"><center>
+                 
             <h:message for="form" errorStyle="color:red"/>
             <h:dataTable value="#{regBean.customers}" var="customer" border="3" cellpadding="5" headerClass="data">
                 
@@ -50,8 +63,7 @@
                 </h:column>
                 
             </h:dataTable>
-            <p>  <h:button value="Back" outcome="adminhome.xhtml" />
-                <h:button value="Main Page" outcome="/index" /><br /></p>
+            
             
         </center></h:form>
          
