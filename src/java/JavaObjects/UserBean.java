@@ -1,4 +1,4 @@
-package Hwp07;
+package JavaObjects;
 
 import java.io.IOException;
 import javax.inject.Named;
