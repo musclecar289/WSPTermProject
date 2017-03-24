@@ -10,40 +10,67 @@
         <h:form >
             <h3>Album List</h3>
             <h:message for="form" errorStyle="color:red"/>
-            <h:dataTable id="albumList" value="#{viewCollectionBean.albums}" var="album">
+            <h:dataTable id="editAlbumList" value="#{editCollectionBean.albums}" var="album">
 
                 <h:column>
-                    <f:facet name="header">Album ID</f:facet>                                        
-                    <h:outputText value="#{album.albumID}" />
+                    <f:facet name="header">Album ID</f:facet> 
+                    <h:inputText id="albumID" value="#{editCollectionBean.albumID}" 
+                                 rendered="#{not album.editable}" size="10"/>
+                    <h:message for="albumID" errorStyle="color: red" />
+                    <h:outputText value="#{album.albumID}" rendered="#{not album.editable}" />
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Title</f:facet>                                        
-                    <h:outputText value="#{album.title}" />
+                    <f:facet name="header">Title</f:facet> 
+                    <h:inputText id="title" value="#{editCollectionBean.title}" 
+                                 rendered="#{not album.editable}" size="10"/>
+                    <h:message for="title" errorStyle="color: red" />
+                    <h:outputText value="#{album.title}" rendered="#{not album.editable}" />
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Artist</f:facet>                                        
-                    <h:outputText value="#{album.artist}" />
+                    <f:facet name="header">Artist</f:facet> 
+                    <h:inputText id="artist" value="#{editCollectionBean.artist}" 
+                                 rendered="#{not album.editable}" size="10"/>
+                    <h:message for="artist" errorStyle="color: red" />
+                    <h:outputText value="#{album.artist}" rendered="#{not album.editable}" />
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Year</f:facet>                                        
-                    <h:outputText value="#{album.releaseYear}" />
+                    <f:facet name="header">Year</f:facet> 
+                    <h:inputText id="releaseYear" value="#{editCollectionBean.releaseYear}" 
+                                 rendered="#{not album.editable}" size="10"/>
+                    <h:message for="releaseYear" errorStyle="color: red" />
+                    <h:outputText value="#{album.releaseYear}" rendered="#{not album.editable}" />
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Tracks</f:facet>                                        
-                    <h:outputText value="#{album.numberOfTracks}" />
+                    <f:facet name="header">Tracks</f:facet> 
+                    <h:inputText id="numberOfTracks" value="#{editCollectionBean.numberOfTracks}" 
+                                 rendered="#{not album.editable}" size="10"/>
+                    <h:message for="numberOfTracks" errorStyle="color: red" />
+                    <h:outputText value="#{album.numberOfTracks}" rendered="#{not album.editable}" />
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Discs</f:facet>                                        
-                    <h:outputText value="#{album.numberOfDiscs}" />
+                    <f:facet name="header">Discs</f:facet> 
+                    <h:inputText id="numberOfDiscs" value="#{editCollectionBean.numberOfDiscs}" 
+                                 rendered="#{not album.editable}" size="10"/>
+                    <h:message for="numberOfDiscs" errorStyle="color: red" />
+                    <h:outputText value="#{album.numberOfDiscs}" rendered="#{not album.editable}" />
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Genre</f:facet>                                        
-                    <h:outputText value="#{album.genre}" />
+                    <f:facet name="header">Genre</f:facet> 
+                    <h:inputText id="genre" value="#{editCollectionBean.genre}" 
+                                 rendered="#{not album.editable}" size="10"/>
+                    <h:message for="genre" errorStyle="color: red" />
+                    <h:outputText value="#{album.genre}" rendered="#{not album.editable}" />
                 </h:column>
-
+                <h:column>
+                    <f:facet name="header">In Collection</f:facet> 
+                    <h:inputText id="albumCount" value="#{editCollectionBean.albumCount}" 
+                                 rendered="#{not album.editable}" size="10"/>
+                    <h:message for="albumCount" errorStyle="color: red" />
+                    <h:outputText value="#{album.albumCount}" rendered="#{not album.editable}" />
+                </h:column>
 
             </h:dataTable>
-            <h:commandButton value="Refresh" action="#{viewCollectionBean.refresh}" />
+            <h:commandButton value="Refresh" action="#{editCollectionBean.refresh}" />
         </h:form>
         <h:link value="Go Home" outcome="/index" /><br />
         <h:link value="Logout" outcome="/logout" />

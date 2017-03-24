@@ -40,6 +40,10 @@
                     <f:facet name="header">Genre</f:facet>                                        
                     <h:outputText value="#{album.genre}" />
                 </h:column>
+                <h:column>
+                    <f:facet name="header">In Collection </f:facet>                                        
+                    <h:outputText value="#{album.albumCount}" />
+                </h:column>
 
 
             </h:dataTable>
