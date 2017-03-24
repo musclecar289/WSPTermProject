@@ -52,9 +52,9 @@
                 
                 <h:outputText value="Group:" />
                 <h:selectOneRadio id="group" value="#{regBean.groupname}">
-                    <f:selectItem itemValue="cust" itemLabel="Customer"></f:selectItem>
-                    <f:selectItem itemValue="Admin" itemLabel="Admin"/>
-                    <f:selectItem itemValue="both" itemLabel="Both"/>
+                    <f:selectItem itemValue="customergroup" itemLabel="Customer"></f:selectItem>
+                    <f:selectItem itemValue="admingroup" itemLabel="Admin"/>
+                    <f:selectItem itemValue="customergroup, admingroup" itemLabel="Both"/>
                 </h:selectOneRadio>
                 <h:message for="gender"  errorStyle="color: red" />
             

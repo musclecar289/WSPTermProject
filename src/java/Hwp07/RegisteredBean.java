@@ -95,15 +95,14 @@ public class RegisteredBean implements Serializable{
 
     public void setCustomers(List<Customer> customers) {
         this.customers = customers;
-    }
-    
-    
+    }    
         
     public void newMessage() throws IOException, SQLException {
         //String hitMessage = null;
         Customer c2 = new Customer();
-        String group= "customergroup";
+        String group= getGroupname();
         
+               
         if (ds == null) {
             throw new SQLException("ds is null; Can't get data source");
         }
@@ -121,6 +120,7 @@ public class RegisteredBean implements Serializable{
 
         try 
         {
+           
             //adding customer to array
             c2.setUsername(username);
             c2.setGroup(group);
@@ -302,6 +302,7 @@ public class RegisteredBean implements Serializable{
         username = null;
         password = null;
         email = null;
+        groupname = "customergroup";
         try {
             customers = loadCustomers();
         } catch (SQLException ex) {
