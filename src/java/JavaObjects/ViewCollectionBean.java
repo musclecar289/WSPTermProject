@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package JavaObjects;
 
 import javax.inject.Named;
@@ -18,17 +13,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.sql.DataSource;
 
 /**
  *
- * @author user
+ * @author Nicholas Clemmons
  */
-@Named(value = "collectionBean")
+@Named(value = "viewCollectionBean")
 @SessionScoped
-public class CollectionBean implements Serializable {
+public class ViewCollectionBean implements Serializable {
 
-//resource injection
+    //resource injection
     @Resource(name = "jdbc/ds_wsp")
     private DataSource ds;
 
@@ -84,13 +81,13 @@ public class CollectionBean implements Serializable {
 
         return list;
     }
-    
+
     public String refresh() {
 
         try {
             albums = loadAlbums();
         } catch (SQLException ex) {
-            Logger.getLogger(CollectionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ViewCollectionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return null;
