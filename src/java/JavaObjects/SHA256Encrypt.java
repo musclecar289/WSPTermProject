@@ -1,5 +1,5 @@
 
-package Hwp07;
+package JavaObjects;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;

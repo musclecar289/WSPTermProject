@@ -14,6 +14,7 @@ public class Album {
     private int numberOfDiscs;
     private long albumID;
     private int albumCount;
+    private boolean editable;
 
     public String getTitle() {
         return title;
@@ -78,5 +79,16 @@ public class Album {
     public void setAlbumCount(int albumCount) {
         this.albumCount = albumCount;
     }
+        
+    public void toggleEditable() {
+        this.editable = !this.editable;
+    }
     
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
 }

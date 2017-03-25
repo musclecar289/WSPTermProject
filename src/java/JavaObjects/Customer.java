@@ -1,5 +1,5 @@
 
-package Hwp07;
+package JavaObjects;
 
 
 public class Customer {  

@@ -1,6 +1,7 @@
 
-package Hwp07;
+package JavaObjects;
 
+import JavaObjects.Customer;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;

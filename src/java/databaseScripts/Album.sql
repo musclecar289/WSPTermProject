@@ -14,12 +14,13 @@ create table ALBUMTABLE (
     NUMBER_OF_TRACKS INT,
     NUMBER_OF_DISCS INT,
     GENRE varchar(255),
+    ALBUMCOUNT INT,
     primary key (ALBUM_ID)
 );
 
-insert into ALBUMTABLE (TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE)
-    values ('Paranoid', 'Black Sabbath', 1970, 8, 1, 'Heavy metal');
-insert into ALBUMTABLE (TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE)
-    values ('Rising', 'Rainbow', 1976, 6, 1, 'Heavy metal');
-insert into ALBUMTABLE (TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE)
-    values ('Led Zeppelin', 'Led Zeppelin', 1969, 9, 1, 'Hard rock');
+insert into ALBUMTABLE (TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+    values ('Paranoid', 'Black Sabbath', 1970, 8, 1, 'Heavy metal', 2);
+insert into ALBUMTABLE (TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+    values ('Rising', 'Rainbow', 1976, 6, 1, 'Heavy metal', 1);
+insert into ALBUMTABLE (TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+    values ('Led Zeppelin', 'Led Zeppelin', 1969, 9, 1, 'Hard rock', 3);

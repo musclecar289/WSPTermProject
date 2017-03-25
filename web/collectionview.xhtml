@@ -4,13 +4,13 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Collection View</title>
     </h:head>
     <h:body>
         <h:form >
             <h3>Album List</h3>
             <h:message for="form" errorStyle="color:red"/>
-            <h:dataTable id="albumList" value="#{collectionBean.albums}" var="album">
+            <h:dataTable id="albumList" value="#{viewCollectionBean.albums}" var="album">
 
                 <h:column>
                     <f:facet name="header">Album ID</f:facet>                                        
@@ -40,11 +40,17 @@
                     <f:facet name="header">Genre</f:facet>                                        
                     <h:outputText value="#{album.genre}" />
                 </h:column>
+                <h:column>
+                    <f:facet name="header">In Collection </f:facet>                                        
+                    <h:outputText value="#{album.albumCount}" />
+                </h:column>
 
 
             </h:dataTable>
-            <h:commandButton value="Refresh" action="#{collectionBean.refresh}" />
+            <h:commandButton value="Refresh" action="#{viewCollectionBean.refresh}" />
         </h:form>
+        
+        <h:link value = "Edit Collection" outcome="/customerFolder/editcollection" /><br />
         <h:link value="Go Home" outcome="/index" /><br />
         <h:link value="Logout" outcome="/logout" />
     </h:body>

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package JavaObjects;
 
 import javax.inject.Named;
@@ -18,17 +13,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.sql.DataSource;
 
 /**
  *
- * @author user
+ * @author Nicholas Clemmons
  */
-@Named(value = "collectionBean")
+@Named(value = "viewCollectionBean")
 @SessionScoped
-public class CollectionBean implements Serializable {
+public class ViewCollectionBean implements Serializable {
 
-//resource injection
+    //resource injection
     @Resource(name = "jdbc/ds_wsp")
     private DataSource ds;
 
@@ -37,7 +34,11 @@ public class CollectionBean implements Serializable {
 
     @PostConstruct
     public void init() {
-
+        try {
+            albums = loadAlbums();
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewCollectionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public List<Album> getAlbums() {
@@ -60,7 +61,7 @@ public class CollectionBean implements Serializable {
 
         try {
             PreparedStatement ps = conn.prepareStatement(
-                    "select ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE from ALBUMTABLE"
+                    "select ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT from ALBUMTABLE"
             );
 
             // retrieve book data from database
@@ -75,6 +76,7 @@ public class CollectionBean implements Serializable {
                 a.setNumberOfTracks(result.getInt("NUMBER_OF_TRACKS"));
                 a.setNumberOfDiscs(result.getInt("NUMBER_OF_DISCS"));
                 a.setGenre(result.getString("GENRE"));
+                a.setAlbumCount(result.getInt("ALBUMCOUNT"));
                 list.add(a);
             }
 
@@ -84,13 +86,12 @@ public class CollectionBean implements Serializable {
 
         return list;
     }
-    
-    public String refresh() {
 
+    public String refresh() {
         try {
             albums = loadAlbums();
         } catch (SQLException ex) {
-            Logger.getLogger(CollectionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ViewCollectionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return null;
