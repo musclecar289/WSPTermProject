@@ -9,7 +9,6 @@ create table USERTABLE (
     USERNAME varchar(255),
     PASSWORD char(64), /* SHA-256 encryption */
     EMAIL varchar(255),
-    SECQUES varchar(30),
     primary key (id)
 );
 
@@ -39,8 +38,8 @@ insert into USERTABLE (username, password, email)
         'admin@uco.edu');
 insert into GROUPTABLE (groupname, username) values ('admingroup', 'admin');
 
-insert into USERTABLE (username, password, email ,secques)
+insert into USERTABLE (username, password, email)
     values ('john',
         'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc7',
-        'john@uco.edu', 'norman');
+        'john@uco.edu');
 insert into GROUPTABLE (groupname, username) values ('customergroup', 'john');

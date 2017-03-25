@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Collection View</title>
+    </h:head>
+    <h:body>
+        <h:form >
+            <h3>Album List</h3>
+            <h:message for="form" errorStyle="color:red"/>
+            <h:dataTable id="albumList" value="#{viewCollectionBean.albums}" var="album">
+
+                <h:column>
+                    <f:facet name="header">Album ID</f:facet>                                        
+                    <h:outputText value="#{album.albumID}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Title</f:facet>                                        
+                    <h:outputText value="#{album.title}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Artist</f:facet>                                        
+                    <h:outputText value="#{album.artist}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Year</f:facet>                                        
+                    <h:outputText value="#{album.releaseYear}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Tracks</f:facet>                                        
+                    <h:outputText value="#{album.numberOfTracks}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Discs</f:facet>                                        
+                    <h:outputText value="#{album.numberOfDiscs}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Genre</f:facet>                                        
+                    <h:outputText value="#{album.genre}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">In Collection </f:facet>                                        
+                    <h:outputText value="#{album.albumCount}" />
+                </h:column>
+
+
+            </h:dataTable>
+            <h:commandButton value="Refresh" action="#{viewCollectionBean.refresh}" />
+        </h:form>
+        
+        <h:link value = "Edit Collection" outcome="/customerFolder/editcollection" /><br />
+        <h:link value="Go Home" outcome="/index" /><br />
+        <h:link value="Logout" outcome="/logout" />
+    </h:body>
+</html>
+

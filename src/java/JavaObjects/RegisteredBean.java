@@ -1,13 +1,18 @@
 
-package Hwp07;
+package JavaObjects;
 
+import JavaObjects.Customer;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.context.SessionScoped;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.Length;
+import java.lang.annotation.Target;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,8 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import javax.validation.GroupSequence;
+import org.hibernate.validator.*;
 
 
 
@@ -39,8 +47,6 @@ public class RegisteredBean implements Serializable{
     private String email;
     
     private String groupname;
-    
-    private String question;
     
     Customer c1;
     private List<Customer> customers;
@@ -64,14 +70,6 @@ public class RegisteredBean implements Serializable{
 
     public void setPassword(String password) {
         this.password = password;
-    }
-    
-    public String getQuest() {
-        return question;
-    }
-
-    public void setQuest(String question) {
-        this.question = question;
     }
 
     @Pattern(regexp = "[a-zA-Z0-9]+@[uco]+\\.[edu]+", message = "Please enter an UCO email" )
