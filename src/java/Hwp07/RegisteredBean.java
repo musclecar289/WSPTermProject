@@ -140,7 +140,8 @@ public class RegisteredBean implements Serializable{
                        
             //ps.executeQuery();            
             ps.executeUpdate();
-            
+            System.out.println("group" + group);
+            if(!group.equals("customergroup, admingroup")){
             //into grouptable
             PreparedStatement ps2 = conn.prepareStatement(
                     "Insert into GROUPTABLE (groupname, username)values(?,?)"
@@ -153,6 +154,35 @@ public class RegisteredBean implements Serializable{
             ps2.executeUpdate();
             
             conn.commit();
+            }else{
+                
+                //into grouptable customer
+            PreparedStatement ps2 = conn.prepareStatement(
+                    "Insert into GROUPTABLE (groupname, username)values(?,?)"
+            );
+            
+            ps2.setString(1,"customergroup");
+            ps2.setString(2,username);
+                                   
+            //ps.executeQuery();            
+            ps2.executeUpdate();
+            
+            conn.commit();
+            
+            //into grouptable admin
+            PreparedStatement ps3 = conn.prepareStatement(
+                    "Insert into GROUPTABLE (groupname, username)values(?,?)"
+            );
+            
+            ps3.setString(1,"admingroup");
+            ps3.setString(2,username);
+                                   
+            //ps.executeQuery();            
+            ps3.executeUpdate();
+            
+            conn.commit();
+            
+            }
             conn.close();
             
         } finally {
@@ -295,6 +325,125 @@ public class RegisteredBean implements Serializable{
         
         //System.out.println("id = " + id );
         return finalList;
+    }
+    public void editRow(Customer player){
+        player.setEdited(true);
+    }
+    
+    public void updateRow(Customer player) throws SQLException {          
+        
+       // setTitle(player.title);
+        String tempusername = player.username;
+        String tempemail = player.email;
+        String tempgroup = player.group;
+                
+        
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
+
+        Connection conn = ds.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
+        
+        List<Customer> list = new ArrayList<>();
+        
+        conn.setAutoCommit(false);
+        boolean committed = false;
+        
+        try 
+        { 
+            setUsername(player.username);
+            setEmail(player.email);
+           setGroupname(player.group);
+           
+           //updates email in usertable
+            PreparedStatement ps = conn.prepareStatement(
+                    "UPDATE usertable set Email=? where USERNAME = ?"
+            );
+            
+            ps.setString(1, player.email);
+            ps.setString(2, player.username);
+            
+            ps.executeUpdate();
+            
+            // updates group in group table
+            PreparedStatement ps2 = conn.prepareStatement(
+                    "UPDATE grouptable set GROUPNAME=? where USERNAME = ?"
+            );
+            
+            ps2.setString(1, player.group);
+            ps2.setString(2, player.username);
+            
+            ps2.executeUpdate();
+            
+            
+            
+            player.setEdited(false);
+
+            conn.close();
+            
+            
+            
+          } finally {
+            conn.close();
+           }
+         
+    }
+    public void deleteRow(Customer player) throws SQLException {
+        
+        
+         if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
+
+        Connection conn = ds.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
+        
+        List<Customer> list = new ArrayList<>();
+        
+        conn.setAutoCommit(false);
+        boolean committed = false;
+
+        try 
+        {  
+             PreparedStatement ps = conn.prepareStatement(
+                    "delete from usertable where USERNAME = ? and EMAIL= ?"
+             );
+            
+            ps.setString(1,player.username);
+            ps.setString(2,player.email);
+            
+             ps.executeUpdate();
+            
+            conn.commit();
+            
+            PreparedStatement ps2 = conn.prepareStatement(
+                    "delete from grouptable where USERNAME = ? and GROUPNAME= ?"
+             );
+            
+            ps2.setString(1,player.username);
+            ps2.setString(2,player.group);
+            
+             ps2.executeUpdate();
+            
+            conn.commit();
+            
+             conn.close();
+            
+           
+            
+            customers.remove(player); 
+            
+
+        } finally {
+            conn.close();
+           }
     }
         
     @PostConstruct
