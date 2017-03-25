@@ -39,8 +39,9 @@ public class EditCollectionBean implements Serializable {
     private int releaseYear;
     private int numberOfTracks;
     private int numberOfDiscs;
-    private int albumCount;
     private String genre;
+    private int albumCount;
+    
 
     @PostConstruct
     public void init() {
@@ -195,6 +196,7 @@ public class EditCollectionBean implements Serializable {
     }
 
     public String deleteAlbum(Integer id, String title) throws SQLException {
+
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (ds == null) {
