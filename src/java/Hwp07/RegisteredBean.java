@@ -40,6 +40,8 @@ public class RegisteredBean implements Serializable{
     
     private String groupname;
     
+    private String question;
+    
     Customer c1;
     private List<Customer> customers;
     
@@ -62,6 +64,14 @@ public class RegisteredBean implements Serializable{
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public String getQuest() {
+        return question;
+    }
+
+    public void setQuest(String question) {
+        this.question = question;
     }
 
     @Pattern(regexp = "[a-zA-Z0-9]+@[uco]+\\.[edu]+", message = "Please enter an UCO email" )
