@@ -9,6 +9,7 @@ public class Customer {
     String password;
     String email;
     String group;
+    String question;
 
     public String getUsername() {
         return username;
@@ -40,6 +41,13 @@ public class Customer {
 
     public void setGroup(String group) {
         this.group = group;
+    }
+     public String getQuest() {
+        return question;
+    }
+
+    public void setQuest(String question) {
+        this.question = question;
     }
     
     
