@@ -9,6 +9,7 @@ public class Customer {
     String password;
     String email;
     String group;
+    private boolean edited;
 
     public String getUsername() {
         return username;
@@ -40,6 +41,14 @@ public class Customer {
 
     public void setGroup(String group) {
         this.group = group;
+    }
+    
+    public boolean isEdited() {
+        return edited;
+    }
+
+    public void setEdited(boolean edited) {
+        this.edited = edited;
     }
     
     

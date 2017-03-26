@@ -451,16 +451,14 @@ public class RegisteredBean implements Serializable{
         username = null;
         password = null;
         email = null;
-        groupname = "customergroup";
         try {
             customers = loadCustomers();
         } catch (SQLException ex) {
-            Logger.getLogger(UserBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
         }
         c1 = new Customer();
         
-    }
-    
+    }    
     
     
 }
