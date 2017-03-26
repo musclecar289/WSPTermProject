@@ -1,7 +1,5 @@
 package JavaObjects;
 
-import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import javax.sql.DataSource;
 
 /**

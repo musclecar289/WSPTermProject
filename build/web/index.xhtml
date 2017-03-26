@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
-        <title>Form-based authentication using fileRealm</title>
+        <title>Vinyl Collections</title>
         <style type="text/css">
             .fix{
                 position:fixed;
@@ -15,25 +15,30 @@
     </h:head>
     <h:body>
 
-        <h3 style="color: darkblue">
-            <!--Form-based File Realm Authentication (JAAS Context: fileRealm)-->
-        </h3>
-        <h2 style=" background-color: grey; color: white; text-align: center; padding: 10px"  >
-            MyAmazon.com Home Page
+        <h3 style="color: darkblue"></h3>
+        <h2 style="background-color: grey; color: white; text-align: center; padding: 10px"  >
+            Welcome Vinyl Record Collectors to Vircoms!
         </h2>
+        <h3 style=" background-color: white; color: black; text-align: center; padding: 10px"  >
+            Vircoms offers collectors the flexibility and reliability of database management software with the convenience of a browser.
+            Since our services are offered in the browser, you can access your musical collection anywhere anytime. <br />
+            Right now, only our registered users can create and manage a collection, but you can sign up for free in seconds!
+        </h3>
         <center>
-            <h:link value="products browse" outcome="/products" /> <br />
-            <h:link value="login" outcome="/customerFolder/profile" /> <br />
-            <h:link value="shopping cart" outcome="/shoppingcart" /> <br />
-            <h:link value = "Register" outcome="/regForm" /><br />
-            <h:link value = "View Collection" outcome="/collectionview" />
-            <h:link value = "Reset Password" outcome="/restPassword" />
+            <h:link value="Register User" outcome="/regForm" /><br />
+            <h:link value="User Login" outcome="/customerFolder/profile" /> <br />
+            <h:link value="Reset Password" outcome="/resetPassword" /><br />
+            <h:link value="View Collection" outcome="/collectionview" />
+            <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+            <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+            
+            
 
-        </center>    
-
-        <a href="faces/adminFolder/adminhome.xhtml">
-            <img class="fix"   src="UCOlogo.png" width="125" height="200"   />  </a> <br />
-
+            <a href="faces/adminFolder/adminhome.xhtml">
+                <img src="adminLoginLogo.png" width="200" height="200"/>  
+            </a> 
+            <br />
+        </center>
     </h:body>
 </html>
 
