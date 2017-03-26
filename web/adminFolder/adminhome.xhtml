@@ -1,21 +1,74 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>admin home</title>
+        <style type="text/css">
+            p{
+                  background-color:black;
+                  color:white;
+                  text-align:right;
+                  padding: 5px;             
+                  
+              }
+            </style>
     </h:head>
     <h:body>
-        <h2 style=" background-color: grey; color: white; text-align: center; padding: 10px" >
+        <p> <h:button value="Home" outcome="/index" style="background: limegreen" />
+            <h:button value="Manage Database" outcome="dbmanage" style="background: limegreen" />
+            <h:button value="Logout" outcome="/logout" style="background:limegreen" />       
+        
+        <h1 style=" background-color: grey; color: white; text-align: center; padding: 10px" >
             Welcome #{facesContext.externalContext.userPrincipal.name}
-        </h2>
-<!--        <br />
-        <h2>Hello! #{facesContext.externalContext.userPrincipal.name}</h2>
-        <h2>Hi! #{userBean.username}</h2>-->
-        <br /><center>
-        <h:link value="Go MyAmazon Home" outcome="/index" /><br />
-        <h:link value="manage database" outcome="/adminFolder/dbmanage" /><br />
-        <h:link value="Logout" outcome="/logout" /></center>
+        </h1></p> 
+            
+            
+            <h:form id="componentForm">
+            
+                <h1 align="center"><i>Add User</i></h1>
+            
+            <center>
+                <h:panelGrid columns="3"  > 
+                
+                <h:outputText value="Username"   />
+                <h:inputText id="username" value="#{regBean.username}" 
+                             required="true" requiredMessage="Enter adleast 3 Alphabetical Characters"/>
+                <h:message for="username"  errorStyle="color: red"/> 
+                 
+                
+            
+                <h:outputText value="Password:" />
+                <h:inputSecret id="password" value="#{regBean.password}" required="true"
+                               requiredMessage="Enter adleast 3 Characters" />                 
+                <h:message for="password"  errorStyle="color: red"/> 
+                
+            
+                <h:outputText value="Email:" />
+                <h:inputText  id="email" value="#{regBean.email}" required="true"
+                              requiredMessage="Format XX@uco.edu" /> 
+                <h:message for="email"  errorStyle="color: red" /> 
+                
+                <h:outputText value="Group:" />
+                <h:selectOneRadio id="group" value="#{regBean.groupname}">
+                    <f:selectItem itemValue="customergroup" itemLabel="Customer"></f:selectItem>
+                    <f:selectItem itemValue="admingroup" itemLabel="Admin"/>
+                    <f:selectItem itemValue="customergroup, admingroup" itemLabel="Both"/>
+                </h:selectOneRadio>
+                <h:message for="gender"  errorStyle="color: red" />
+            
+                
+             
+            </h:panelGrid>
+            
+                  <h:commandButton id="addMessage" action="#{regBean.newMessage()}"
+                                   value="Sign Up" style="align-content: center"/>
+           
+            </center>
+        </h:form>  
+        
+
     </h:body>
 </html>
 
