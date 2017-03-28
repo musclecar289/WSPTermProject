@@ -11,37 +11,43 @@
         <h:form >
             <h3>Album List</h3>
             <h:message for="form" errorStyle="color:red"/>
-            <p:dataTable id="albumList" value="#{viewCollectionBean.albums}" var="album" resizableColumns="true" rows="10" paginator="true" style="margin-bottom:20px" draggableColumns="true">
+            <p:dataTable id="albumList" value="#{viewCollectionBean.albums}" 
+                         var="album" resizableColumns="true" rows="10" 
+                         paginator="true" style="margin-bottom:20px" 
+                         draggableColumns="true" 
+                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
+                         {PageLinks} {NextPageLink} {LastPageLink} 
+                         {RowsPerPageDropdown}" rowsPerPageTemplate="10,25,50,100">
 
-                <p:column>
+                <p:column headerText="Id" sortBy="#{album.albumID}">
                     <f:facet name="header">Album ID</f:facet>                                        
                     <h:outputText value="#{album.albumID}" />
                 </p:column>
-                <p:column>
+                <p:column headerText="Title" sortBy="#{album.title}">
                     <f:facet name="header">Title</f:facet>                                        
                     <h:outputText value="#{album.title}" />
                 </p:column>
-                <p:column>
+                <p:column headerText="Artist" sortBy="#{album.artist}">
                     <f:facet name="header">Artist</f:facet>                                        
                     <h:outputText value="#{album.artist}" />
                 </p:column>
-                <p:column>
+                <p:column headerText="Year" sortBy="#{album.releaseYear}">
                     <f:facet name="header">Year</f:facet>                                        
                     <h:outputText value="#{album.releaseYear}" />
                 </p:column>
-                <p:column>
+                <p:column headerText="Tracks" sortBy="#{album.numberOfTracks}">
                     <f:facet name="header">Tracks</f:facet>                                        
                     <h:outputText value="#{album.numberOfTracks}" />
                 </p:column>
-                <p:column>
+                <p:column headerText="Discs" sortBy="#{album.numberOfDiscs}">
                     <f:facet name="header">Discs</f:facet>                                        
                     <h:outputText value="#{album.numberOfDiscs}" />
                 </p:column>
-                <p:column>
+                <p:column headerText="Genre" sortBy="#{album.genre}">
                     <f:facet name="header">Genre</f:facet>                                        
                     <h:outputText value="#{album.genre}" />
                 </p:column>
-                <p:column>
+                <p:column headerText="In Collection" sortBy="#{album.albumCount}">
                     <f:facet name="header">In Collection </f:facet>                                        
                     <h:outputText value="#{album.albumCount}" />
                 </p:column>
