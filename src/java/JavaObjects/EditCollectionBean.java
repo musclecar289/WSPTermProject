@@ -16,6 +16,7 @@ import javax.annotation.Resource;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.sql.DataSource;
+import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -244,6 +245,15 @@ public class EditCollectionBean implements Serializable {
         album.toggleEditable();
     }
 
+    public void onRowEdit(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Car Edited", ((Album) event.getObject()).getTitle());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+     
+    public void onRowCancel(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Edit Cancelled", ((Album) event.getObject()).getTitle());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
     public int getNumberOfAlbums() {
         return numberOfAlbums;
     }
