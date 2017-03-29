@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Edit Collection View</title>
     </h:head>
@@ -11,86 +12,92 @@
         <h:form id="editAlbumForm">
             <h3>Album List</h3>
             <h:message for="form" errorStyle="color:red"/>
-            <h:dataTable id="editAlbumList" value="#{editCollectionBean.albums}" var="album">
+            <p:dataTable id="editAlbumList" value="#{editCollectionBean.albums}" 
+                         var="album" resizableColumns="true" rows="10" 
+                         paginator="true" style="margin-bottom:20px" 
+                         draggableColumns="true" 
+                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
+                         {PageLinks} {NextPageLink} {LastPageLink} 
+                         {RowsPerPageDropdown}" rowsPerPageTemplate="10,25,50,100">
 
-                <h:column>
+                <p:column headerText="Id" sortBy="#{album.albumID}">
                     <f:facet name="header">Album ID</f:facet> 
                     <h:inputText id="albumID" value="#{editCollectionBean.albumID}" 
                                  rendered="#{not album.editable}" size="10"/>
                     <h:message for="albumID" errorStyle="color: red" />
                     <h:outputText value="#{album.albumID}" rendered="#{album.editable}" />
-                </h:column>
-                <h:column>
+                </p:column>
+                <p:column headerText="Title" sortBy="#{album.title}">
                     <f:facet name="header">Title</f:facet> 
                     <h:inputText id="title" value="#{editCollectionBean.title}" 
                                  rendered="#{not album.editable}" size="10"/>
                     <h:message for="title" errorStyle="color: red" />
                     <h:outputText value="#{album.title}" rendered="#{album.editable}" />
-                </h:column>
-                <h:column>
+                </p:column>
+                <p:column headerText="Artist" sortBy="#{album.artist}">
                     <f:facet name="header">Artist</f:facet> 
                     <h:inputText id="artist" value="#{editCollectionBean.artist}" 
                                  rendered="#{not album.editable}" size="10"/>
                     <h:message for="artist" errorStyle="color: red" />
                     <h:outputText value="#{album.artist}" rendered="#{album.editable}" />
-                </h:column>
-                <h:column>
+                </p:column>
+                <p:column headerText="Year" sortBy="#{album.releaseYear}">
                     <f:facet name="header">Year</f:facet> 
                     <h:inputText id="releaseYear" value="#{editCollectionBean.releaseYear}" 
                                  rendered="#{not album.editable}" size="10"/>
                     <h:message for="releaseYear" errorStyle="color: red" />
                     <h:outputText value="#{album.releaseYear}" rendered="#{album.editable}" />
-                </h:column>
-                <h:column>
+                </p:column>
+                <p:column headerText="Tracks" sortBy="#{album.numberOfTracks}">
                     <f:facet name="header">Tracks</f:facet> 
                     <h:inputText id="numberOfTracks" value="#{editCollectionBean.numberOfTracks}" 
                                  rendered="#{not album.editable}" size="10"/>
                     <h:message for="numberOfTracks" errorStyle="color: red" />
                     <h:outputText value="#{album.numberOfTracks}" rendered="#{album.editable}" />
-                </h:column>
-                <h:column>
+                </p:column>
+                <p:column headerText="Discs" sortBy="#{album.numberOfDiscs}">
                     <f:facet name="header">Discs</f:facet> 
                     <h:inputText id="numberOfDiscs" value="#{editCollectionBean.numberOfDiscs}" 
                                  rendered="#{not album.editable}" size="10"/>
                     <h:message for="numberOfDiscs" errorStyle="color: red" />
                     <h:outputText value="#{album.numberOfDiscs}" rendered="#{album.editable}" />
-                </h:column>
-                <h:column>
+                </p:column>
+                <p:column headerText="Genre" sortBy="#{album.genre}">
                     <f:facet name="header">Genre</f:facet> 
                     <h:inputText id="genre" value="#{editCollectionBean.genre}" 
                                  rendered="#{not album.editable}" size="10"/>
                     <h:message for="genre" errorStyle="color: red" />
                     <h:outputText value="#{album.genre}" rendered="#{album.editable}" />
-                </h:column>
-                <h:column>
-                    <f:facet name="header">In Collection</f:facet> 
+                </p:column>
+                <p:column headerText="Copies" sortBy="#{album.albumCount}">
+                    <f:facet name="header">Copies</f:facet> 
                     <h:inputText id="albumCount" value="#{editCollectionBean.albumCount}" 
                                  rendered="#{not album.editable}" size="10"/>
                     <h:message for="albumCount" errorStyle="color: red" />
                     <h:outputText value="#{album.albumCount}" rendered="#{album.editable}" />
-                </h:column>
-                <h:column>
+                </p:column>
+                <p:column>
                     <f:facet name="header">Edit/Save</f:facet>
-                    <h:commandButton value="Edit" 
+                    <p:commandButton value="Edit" 
                                      action="#{editCollectionBean.makeEditable(album)}"
                                      rendered="#{album.editable}"/>                                    
-                    <h:commandButton value="Save"                                                     
+                    <p:commandButton value="Save"                                                     
                                      action="#{editCollectionBean.updateAlbum(album.albumID)}"
                                      rendered="#{not album.editable}"/>
-                </h:column>
-                <h:column>
+                </p:column>
+                <p:column>
                     <f:facet name="header">Delete</f:facet>
-                    <h:commandButton id="delete" value="Delete"                                                     
+                    <p:commandButton id="delete" value="Delete"                                                     
                                      action="#{editCollectionBean.deleteAlbum(album.albumID, album.title)}"/>
                     <h:message for="delete" errorStyle="color: red" />
-                </h:column>
+                </p:column>
 
-            </h:dataTable>
-            <h:commandButton value="Refresh" action="#{editCollectionBean.refresh}" />
+            </p:dataTable>
+            <p:commandButton value="Refresh" action="#{editCollectionBean.refresh}" />
         </h:form>
-        <h:link value = "Add New Album" outcome="/customerFolder/addalbum" /><br />
-        <h:link value="Go Home" outcome="/index" /><br />
-        <h:link value="Logout" outcome="/logout" />
+        <p:link value = "Add New Album" outcome="/customerFolder/addalbum" /><br />
+        <p:link value="Go Home" outcome="/index" /><br />
+        <p:link value="Logout" outcome="/logout" />
     </h:body>
 </html>
 
