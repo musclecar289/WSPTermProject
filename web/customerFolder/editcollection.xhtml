@@ -15,7 +15,7 @@
             <p:dataTable id="editAlbumList" value="#{editCollectionBean.albums}" editable="true"
                          var="album" resizableColumns="true" rows="10" 
                          paginator="true" style="margin-bottom:20px" 
-                         draggableColumns="true" 
+                         draggableColumns="true" paginatorPosition="bottom"
                          paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
                          {PageLinks} {NextPageLink} {LastPageLink} 
                          {RowsPerPageDropdown}" rowsPerPageTemplate="10,25,50,100">
@@ -74,12 +74,16 @@
                 <p:column>
                     <f:facet name="header">Delete</f:facet>
                     <p:commandButton id="delete" value="Delete"                                                     
-                                     action="#{editCollectionBean.deleteAlbum(album.albumID, album.title)}"/>
+                                     action="#{editCollectionBean.deleteAlbum(album.albumID, album.title)}">
+                        <f:ajax execute="@form" render="@form"/>
+                    </p:commandButton>
                     <h:message for="delete" errorStyle="color: red" />
                 </p:column>
 
             </p:dataTable>
-            <p:commandButton value="Refresh" action="#{editCollectionBean.refresh}" />
+            <p:commandButton value="Refresh" action="#{editCollectionBean.refresh}" icon="ui-icon-refresh">
+                <f:ajax execute="@form" render="@form"/>
+            </p:commandButton>
         </h:form>
         <p:link value = "Add New Album" outcome="/customerFolder/addalbum" /><br />
         <p:link value="Go Home" outcome="/index" /><br />
