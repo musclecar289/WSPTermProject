@@ -75,24 +75,24 @@
                 </p:column>
                 <p:column>
                     <f:facet name="header">Delete</f:facet>
-                    <p:commandButton id="delete" value="Delete"                                                     
+                    <p:commandButton id="delete" value="Delete" update="editAlbumList "                                                    
                                      action="#{editCollectionBean.deleteAlbum(album.albumID, album.title)}">
-                        <f:ajax execute="@form" render="@form"/>
+                       
                     </p:commandButton>
                     <h:message for="delete" errorStyle="color: red" />
                 </p:column>
                 <p:column>
                     <f:facet name="header">Update</f:facet>
-                    <p:commandButton id="update" value="Update"                                                     
+                    <p:commandButton id="update" value="Update" update ="editAlbumList "                                                    
                                      action="#{editCollectionBean.updateAlbum(album)}">
-                        <f:ajax execute="@form" render="@form"/>
+                       
                     </p:commandButton>
                     <h:message for="delete" errorStyle="color: red" />
                 </p:column>
 
             </p:dataTable>
-            <p:commandButton value="Refresh" action="#{editCollectionBean.refresh}" icon="ui-icon-refresh">
-                <f:ajax execute="@form" render="@form"/>
+            <p:commandButton value="Refresh" update="editAlbumList " action="#{editCollectionBean.refresh}" icon="ui-icon-refresh">
+               
             </p:commandButton>
         </h:form>
         <p:link value = "Add New Album" outcome="/customerFolder/addalbum" /><br />
