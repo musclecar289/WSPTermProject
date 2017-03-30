@@ -79,6 +79,14 @@
                     </p:commandButton>
                     <h:message for="delete" errorStyle="color: red" />
                 </p:column>
+                <p:column>
+                    <f:facet name="header">Update</f:facet>
+                    <p:commandButton id="update" value="Update"                                                     
+                                     action="#{editCollectionBean.updateAlbum(album)}">
+                        <f:ajax execute="@form" render="@form"/>
+                    </p:commandButton>
+                    <h:message for="delete" errorStyle="color: red" />
+                </p:column>
 
             </p:dataTable>
             <p:commandButton value="Refresh" action="#{editCollectionBean.refresh}" icon="ui-icon-refresh">

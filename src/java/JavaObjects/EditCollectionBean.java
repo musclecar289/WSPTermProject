@@ -81,7 +81,7 @@ public class EditCollectionBean implements Serializable {
 
             while (result.next()) {
                 Album a = new Album();
-                a.setAlbumID(result.getLong("ALBUM_ID"));
+                a.setAlbumID(result.getInt("ALBUM_ID"));
                 a.setTitle(result.getString("TITLE"));
                 a.setArtist(result.getString("ARTIST"));
                 a.setReleaseYear(result.getInt("YEAR"));
@@ -154,7 +154,7 @@ public class EditCollectionBean implements Serializable {
 
     }
 
-    public String updateAlbum(Integer id) throws SQLException {
+    public String updateAlbum(Album id) throws SQLException {
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (ds == null) {
@@ -164,17 +164,19 @@ public class EditCollectionBean implements Serializable {
         if (conn == null) {
             throw new SQLException("conn is null; Can't get db connection");
         }
-        try {
-            PreparedStatement updateQuery = conn.prepareStatement(
+        
+         PreparedStatement updateQuery = conn.prepareStatement(
                     "update ALBUMTABLE set TITLE = ?, ARTIST = ?, YEAR = ?, NUMBER_OF_TRACKS = ?, NUMBER_OF_DISCS = ?, GENRE = ?, ALBUMCOUNT = ? where ALBUM_ID=?");
-            updateQuery.setString(1, getTitle());
-            updateQuery.setString(2, getArtist());
-            updateQuery.setInt(3, getReleaseYear());
-            updateQuery.setInt(4, getNumberOfTracks());
-            updateQuery.setInt(5, getNumberOfDiscs());
-            updateQuery.setString(6, getGenre());
-            updateQuery.setInt(7, getAlbumCount());
-            updateQuery.setInt(8, id);
+        try {
+            
+            updateQuery.setString(1, id.getTitle());
+            updateQuery.setString(2, id.getArtist());
+            updateQuery.setInt(3, id.getReleaseYear());
+            updateQuery.setInt(4, id.getNumberOfTracks());
+            updateQuery.setInt(5, id.getNumberOfDiscs());
+            updateQuery.setString(6, id.getGenre());
+            updateQuery.setInt(7, id.getAlbumCount());
+            updateQuery.setInt(8, id.getAlbumID());
 
             int result = updateQuery.executeUpdate();
             if (result == 1) {

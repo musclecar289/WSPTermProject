@@ -56,6 +56,9 @@
             <p:commandButton value="Refresh" action="#{viewCollectionBean.refresh}" icon="ui-icon-refresh">
                 <f:ajax execute="@form" render="@form"/>
             </p:commandButton>
+            <p:commandButton value="Save edit" action="#{editCollectionBean.updateAlbum(album)}" icon="ui-icon-refresh">
+                <f:ajax execute="@form" render="@form"/>
+            </p:commandButton>
         </h:form>
 
         <p:link value = "Edit Collection" outcome="/customerFolder/editcollection" /><br />

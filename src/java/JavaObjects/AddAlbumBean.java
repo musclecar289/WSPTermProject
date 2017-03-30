@@ -80,7 +80,7 @@ public class AddAlbumBean implements Serializable {
 
             while (result.next()) {
                 Album a = new Album();
-                a.setAlbumID(result.getLong("ALBUM_ID"));
+                a.setAlbumID(result.getInt("ALBUM_ID"));
                 a.setTitle(result.getString("TITLE"));
                 a.setArtist(result.getString("ARTIST"));
                 a.setReleaseYear(result.getInt("YEAR"));
