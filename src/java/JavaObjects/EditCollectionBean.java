@@ -16,6 +16,7 @@ import javax.annotation.Resource;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.sql.DataSource;
+import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -154,7 +155,7 @@ public class EditCollectionBean implements Serializable {
 
     }
 
-    public String updateAlbum(Album id) throws SQLException {
+    public String updateAlbum(Album a) throws SQLException {
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (ds == null) {
@@ -169,14 +170,14 @@ public class EditCollectionBean implements Serializable {
                     "update ALBUMTABLE set TITLE = ?, ARTIST = ?, YEAR = ?, NUMBER_OF_TRACKS = ?, NUMBER_OF_DISCS = ?, GENRE = ?, ALBUMCOUNT = ? where ALBUM_ID=?");
         try {
             
-            updateQuery.setString(1, id.getTitle());
-            updateQuery.setString(2, id.getArtist());
-            updateQuery.setInt(3, id.getReleaseYear());
-            updateQuery.setInt(4, id.getNumberOfTracks());
-            updateQuery.setInt(5, id.getNumberOfDiscs());
-            updateQuery.setString(6, id.getGenre());
-            updateQuery.setInt(7, id.getAlbumCount());
-            updateQuery.setInt(8, id.getAlbumID());
+            updateQuery.setString(1, a.getTitle());
+            updateQuery.setString(2, a.getArtist());
+            updateQuery.setInt(3, a.getReleaseYear());
+            updateQuery.setInt(4, a.getNumberOfTracks());
+            updateQuery.setInt(5, a.getNumberOfDiscs());
+            updateQuery.setString(6, a.getGenre());
+            updateQuery.setInt(7, a.getAlbumCount());
+            updateQuery.setInt(8, a.getAlbumID());
 
             int result = updateQuery.executeUpdate();
             if (result == 1) {
@@ -247,15 +248,29 @@ public class EditCollectionBean implements Serializable {
         album.toggleEditable();
     }
 
-    public void onRowEdit(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Car Edited", ((Album) event.getObject()).getTitle());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-     
-    public void onRowCancel(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Edit Cancelled", ((Album) event.getObject()).getTitle());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
+//    public void onRowEdit(RowEditEvent event) throws SQLException {
+//        Album albumToEdit = (Album) event.getObject();
+//        this.updateAlbum(albumToEdit);
+//        
+//        FacesMessage msg = new FacesMessage("Album Edited", ((Album) event.getObject()).getTitle());
+//        FacesContext.getCurrentInstance().addMessage(null, msg);
+//    }
+//     
+//    public void onRowCancel(RowEditEvent event) {
+//        FacesMessage msg = new FacesMessage("Edit Cancelled", ((Album) event.getObject()).getTitle());
+//        FacesContext.getCurrentInstance().addMessage(null, msg);
+//    }
+//    
+//    public void onCellEdit(CellEditEvent event) {
+//        Object oldValue = event.getOldValue();
+//        Object newValue = event.getNewValue();
+//         
+//        if(newValue != null && !newValue.equals(oldValue)) {
+//            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
+//            FacesContext.getCurrentInstance().addMessage(null, msg);
+//        }
+//    }
+    
     public int getNumberOfAlbums() {
         return numberOfAlbums;
     }
