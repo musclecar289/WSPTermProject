@@ -39,13 +39,12 @@
                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                         rowsPerPageTemplate="6,12,16">
                         <f:facet name="header">
-                            #{albumsBean.collection}'s Albums
+
                         </f:facet>
                         <p:panel header="#{albums.title}" style="text-align:center">
                             <h:panelGrid columns="1" style="width:100%">
                                 <!--<a href="/WSPTermProject/faces/viewAlbums.xhtml">-->
-                                    <img src="pictures/default.png" alt="Show Tracks" onclick="rc()"/>
-                                    <!--<p:remoteCommand name="rc" actionListener="#{tracksBean.setAlbum(albums.albumID)}" />-->
+                                    <img src="pictures/default.png" alt="Show Tracks" onclick="#{tracksBean.setAlbum(albums.albumID)}"/>
                                 <!--</a>-->
                                 <h:outputText value="Track Count: #{albums.numberOfTracks}" />
                             </h:panelGrid>
