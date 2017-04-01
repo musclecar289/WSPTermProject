@@ -13,4 +13,8 @@ create table COLLECTION_ITEMS(
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME)
     values (1, 'My First Collection');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME)
+    values (1, 'My First Collection');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME)
+    values (1, 'My First Collection');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME)
     values (2, 'My Second Collection');
