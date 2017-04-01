@@ -1,15 +1,12 @@
-/* create the following table
-   in WSP database
-*/
+
 drop table USERTABLE;
 drop table GROUPTABLE;
 
 create table USERTABLE (
-    ID INT NOT NULL AUTO_INCREMENT,
-    USERNAME varchar(255),
-    PASSWORD char(64), /* SHA-256 encryption */
-    EMAIL varchar(255),
-    primary key (id)
+    USERNAME varchar(255) UNIQUE NOT NULL,
+    PASSWORD char(64),                      /* SHA-256 encryption */
+    EMAIL varchar(255) UNIQUE,
+    primary key (USERNAME)
 );
 
 create table GROUPTABLE (
