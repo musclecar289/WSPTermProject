@@ -141,7 +141,10 @@ public class RegisteredBean implements Serializable{
             //ps.executeQuery();            
             ps.executeUpdate();
             System.out.println("group" + group);
+            
+            //checks if its part of both groups
             if(!group.equals("customergroup, admingroup")){
+                
             //into grouptable
             PreparedStatement ps2 = conn.prepareStatement(
                     "Insert into GROUPTABLE (groupname, username)values(?,?)"
@@ -326,12 +329,18 @@ public class RegisteredBean implements Serializable{
         //System.out.println("id = " + id );
         return finalList;
     }
+    
+    // allows row to be edited
     public void editRow(Customer player){
         player.setEdited(true);
     }
     
+    // allows row to be updated
     public void updateRow(Customer player) throws SQLException {          
         
+        System.out.println("old = " + this.groupname );
+        System.out.println("new = " + player.group );
+        System.out.println("get = " + getGroupname() );
        // setTitle(player.title);
         String tempusername = player.username;
         String tempemail = player.email;
@@ -359,6 +368,8 @@ public class RegisteredBean implements Serializable{
             setEmail(player.email);
            setGroupname(player.group);
            
+           //checks if it single function or double function.
+            if(!player.group.equals("customergroup, admingroup")){
            //updates email in usertable
             PreparedStatement ps = conn.prepareStatement(
                     "UPDATE usertable set Email=? where USERNAME = ?"
@@ -383,6 +394,37 @@ public class RegisteredBean implements Serializable{
             
             player.setEdited(false);
 
+            }else{
+                
+                //into grouptable customer
+            PreparedStatement ps2 = conn.prepareStatement(
+                    "Insert into GROUPTABLE (groupname, username)values(?,?)"
+            );
+            
+            ps2.setString(1,"customergroup");
+            ps2.setString(2,username);
+                                   
+            //ps.executeQuery();            
+            ps2.executeUpdate();
+            
+            conn.commit();
+            
+            //into grouptable admin
+            PreparedStatement ps3 = conn.prepareStatement(
+                    "Insert into GROUPTABLE (groupname, username)values(?,?)"
+            );
+            
+            ps3.setString(1,"admingroup");
+            ps3.setString(2,username);
+                                   
+            //ps.executeQuery();            
+            ps3.executeUpdate();
+            
+            conn.commit();
+                
+                
+            }
+            
             conn.close();
             
             
@@ -451,6 +493,7 @@ public class RegisteredBean implements Serializable{
         username = null;
         password = null;
         email = null;
+        groupname = "customergroup";
         try {
             customers = loadCustomers();
         } catch (SQLException ex) {
