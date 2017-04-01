@@ -15,9 +15,9 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
-@Named(value = "viewAlbumsBean")
+@Named(value = "albumsBean")
 @SessionScoped
-public class ViewAlbumsBean implements Serializable {
+public class AlbumsBean implements Serializable {
 
     //resource injection
     @Resource(name = "jdbc/ds_wsp")
@@ -31,7 +31,7 @@ public class ViewAlbumsBean implements Serializable {
         try {
             albums = loadAlbums(fromCollection);
         } catch (SQLException ex) {
-            Logger.getLogger(ViewAlbumsBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AlbumsBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

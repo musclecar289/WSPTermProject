@@ -34,20 +34,20 @@
                 </h3>
                 <center>
                     <h:link value="Sign Up Now!" outcome="/regForm" /><br /><br /><br />
-                    <p:dataGrid var="collection" value="#{collectionsBean.collections}" columns="5"
+                    <p:dataGrid var="albums" value="#{albumsBean.albums}" columns="5"
                         rows="12" paginator="true" id="dataGrid"
                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                         rowsPerPageTemplate="6,12,16">
                         <f:facet name="header">
-                            View Some of Our Favorite Collections
+                            #{albumsBean.collection}'s Albums
                         </f:facet>
-                        <p:panel header="#{collection.collectionName}" style="text-align:center">
+                        <p:panel header="#{albums.title}" style="text-align:center">
                             <h:panelGrid columns="1" style="width:100%">
-                                <a href="/WSPTermProject/faces/albumsview.xhtml">
-                                    <img src="pictures/default.png" alt="Show Albums" onclick="rc()"/>
-                                    <p:remoteCommand name="rc" actionListener="#{albumsBean.setAlbums(collection.getRecords())}" />
-                                </a>
-                                <h:outputText value="Record Count: #{collection.numberOfRecords}" />
+                                <!--<a href="/WSPTermProject/faces/viewAlbums.xhtml">-->
+                                    <img src="pictures/default.png" alt="Show Tracks" onclick="rc()"/>
+                                    <!--<p:remoteCommand name="rc" actionListener="#{tracksBean.setAlbum(albums.albumID)}" />-->
+                                <!--</a>-->
+                                <h:outputText value="Track Count: #{albums.numberOfTracks}" />
                             </h:panelGrid>
                         </p:panel>
                     </p:dataGrid>
