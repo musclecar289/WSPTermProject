@@ -10,7 +10,6 @@ import javax.enterprise.context.SessionScoped;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.*;
-import org.hibernate.validator.constraints.Length;
 import java.lang.annotation.Target;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,7 +23,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import javax.validation.GroupSequence;
-import org.hibernate.validator.*;
 
 
 
@@ -35,6 +33,7 @@ public class RegisteredBean implements Serializable{
     // resource injection
     @Resource(name = "jdbc/ds_wsp")
     private DataSource ds;
+    
 
     @Pattern(regexp = "[a-zA-Z]+{3}", message = "Please enter a Alphabetical Username") 
     private String username;
@@ -100,9 +99,8 @@ public class RegisteredBean implements Serializable{
     public void newMessage() throws IOException, SQLException {
         //String hitMessage = null;
         Customer c2 = new Customer();
-        String group= getGroupname();
+        String group= "customergroup";
         
-               
         if (ds == null) {
             throw new SQLException("ds is null; Can't get data source");
         }
@@ -120,7 +118,6 @@ public class RegisteredBean implements Serializable{
 
         try 
         {
-           
             //adding customer to array
             c2.setUsername(username);
             c2.setGroup(group);
@@ -128,7 +125,8 @@ public class RegisteredBean implements Serializable{
             c2.setEmail(email);            
             customers.add(c2);
             
-             System.out.println( " username = " + username);       
+             System.out.println( " username = " + username);    
+             
             // into usertable
             PreparedStatement ps = conn.prepareStatement(
                     "Insert into USERTABLE (username, password, email)values(?,?,?)"
@@ -140,11 +138,7 @@ public class RegisteredBean implements Serializable{
                        
             //ps.executeQuery();            
             ps.executeUpdate();
-            System.out.println("group" + group);
             
-            //checks if its part of both groups
-            if(!group.equals("customergroup, admingroup")){
-                
             //into grouptable
             PreparedStatement ps2 = conn.prepareStatement(
                     "Insert into GROUPTABLE (groupname, username)values(?,?)"
@@ -157,35 +151,6 @@ public class RegisteredBean implements Serializable{
             ps2.executeUpdate();
             
             conn.commit();
-            }else{
-                
-                //into grouptable customer
-            PreparedStatement ps2 = conn.prepareStatement(
-                    "Insert into GROUPTABLE (groupname, username)values(?,?)"
-            );
-            
-            ps2.setString(1,"customergroup");
-            ps2.setString(2,username);
-                                   
-            //ps.executeQuery();            
-            ps2.executeUpdate();
-            
-            conn.commit();
-            
-            //into grouptable admin
-            PreparedStatement ps3 = conn.prepareStatement(
-                    "Insert into GROUPTABLE (groupname, username)values(?,?)"
-            );
-            
-            ps3.setString(1,"admingroup");
-            ps3.setString(2,username);
-                                   
-            //ps.executeQuery();            
-            ps3.executeUpdate();
-            
-            conn.commit();
-            
-            }
             conn.close();
             
         } finally {
@@ -193,6 +158,7 @@ public class RegisteredBean implements Serializable{
            }
         
     }
+    
     public List<Customer> getArrayCust() throws SQLException {
     
          if (ds == null) {
