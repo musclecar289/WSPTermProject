@@ -24,7 +24,7 @@ import javax.annotation.Resource;
 import javax.sql.DataSource;
 import javax.validation.GroupSequence;
 
-
+//tesat
 
 @Named(value = "regBean")
 @SessionScoped
