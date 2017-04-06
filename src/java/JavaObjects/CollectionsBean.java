@@ -7,8 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
@@ -32,19 +30,14 @@ public class CollectionsBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        try {
-            collections = loadCollections();
-            numberOfCollections = collections.size();
-        } catch (SQLException ex) {
-            Logger.getLogger(ViewCollectionBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }
 
     public List<Collection> getCollections() {
         return collections;
     }
 
-    public List<Album> loadAlbums(String collection_name) throws SQLException {
+    public List<Album> loadAlbums() throws SQLException {
 
         if (ds == null) {
             throw new SQLException("ds is null; Can't get data source");
@@ -60,7 +53,7 @@ public class CollectionsBean implements Serializable {
 
         try {
             PreparedStatement ps = conn.prepareStatement(
-                "SELECT a.* FROM collection_items AS c JOIN albumtable AS a WHERE a.ALBUM_ID=c.ALBUM_ID and collection_name='"+collection_name+"'"
+                    "select ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE from ALBUMTABLE"
             );
 
             // retrieve book data from database
@@ -75,7 +68,6 @@ public class CollectionsBean implements Serializable {
                 a.setNumberOfTracks(result.getInt("NUMBER_OF_TRACKS"));
                 a.setNumberOfDiscs(result.getInt("NUMBER_OF_DISCS"));
                 a.setGenre(result.getString("GENRE"));
-                a.setAlbumCount(result.getInt("ALBUMCOUNT"));
                 list.add(a);
             }
 
@@ -92,41 +84,6 @@ public class CollectionsBean implements Serializable {
 
     public void setNumberOfCollections(int numberOfCollections) {
         this.numberOfCollections = numberOfCollections;
-    }
-
-    private List<Collection> loadCollections() throws SQLException {
-        if (ds == null) {
-            throw new SQLException("ds is null; Can't get data source");
-        }
-
-        Connection conn = ds.getConnection();
-
-        if (conn == null) {
-            throw new SQLException("conn is null; Can't get db connection");
-        }
-
-        List<Collection> list = new ArrayList<>();
-
-        try {
-            PreparedStatement ps = conn.prepareStatement(
-                "SELECT collection_name, COUNT(*) FROM collection_items GROUP BY collection_name;"
-            );
-            // retrieve book data from database
-            ResultSet result = ps.executeQuery();
-            
-            while (result.next()) {
-                Collection c = new Collection();
-                c.setCollectionName(result.getString("collection_name"));
-                c.setNumberOfRecords(result.getInt("COUNT(*)"));
-                c.setRecords(this.loadAlbums(c.getCollectionName()));
-                list.add(c);
-            }
-
-        } finally {
-            conn.close();
-        }
-
-        return list;
     }
 
 }

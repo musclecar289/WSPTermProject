@@ -47,6 +47,10 @@ public class AlbumsBean implements Serializable {
         return albums;
     }
 
+    public void setAlbums(List<Album> albums) {
+        this.albums = albums;
+    }
+
     public List<Album> loadAlbums(String collection_name) throws SQLException {
 
         if (ds == null) {

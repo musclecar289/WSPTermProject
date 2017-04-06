@@ -71,22 +71,7 @@ insert into ALBUMTABLE (TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, 
     values ('Animals', 'Pink Floyd', 1976, 5, 1, 'Progressive Rock', 1);
 insert into ALBUMTABLE (TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
     values ('The Wall', 'Pink Floyd', 1979, 26, 2, 'Heavy metal', 1);
-insert into ALBUMTABLE (TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-   values ('Ride the Lightning', 'Metallica', 1984, 8, 1, 'Thrash metal', 1);
-insert into ALBUMTABLE (TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-   values ('Master of Puppets', 'Metallica', 1986, 8, 1, 'Thrash metal', 2);
-insert into ALBUMTABLE (TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-   values ('...And Justice for All', 'Metallica', 1988, 9, 1, 'Thrash metal', 1);
-insert into ALBUMTABLE (TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-   values ('Metallica', 'Metallica', 1991, 12, 1, 'Thrash metal', 1);
-insert into ALBUMTABLE (TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-   values ('Load', 'Metallica', 1996, 14, 1, 'Heavy metal', 1);
-insert into ALBUMTABLE (TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-   values ('Reload', 'Metallica', 1997, 13, 1, 'Heavy metal', 1);
-insert into ALBUMTABLE (TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-   values ('Garage Inc.', 'Metallica', 1998, 11, 1, 'Heavy metal', 1);
-insert into ALBUMTABLE (TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-   values ('St. Anger', 'Metallica', 2003, 11, 1, 'Heavy metal', 1);
+
 
 
 
