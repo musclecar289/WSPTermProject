@@ -2,8 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Collection View</title>
     </h:head>
@@ -11,56 +10,49 @@
         <h:form >
             <h3>Album List</h3>
             <h:message for="form" errorStyle="color:red"/>
-            <p:dataTable id="albumList" value="#{viewCollectionBean.albums}" 
-                         var="album" resizableColumns="true" rows="10" 
-                         paginator="true" style="margin-bottom:20px" 
-                         draggableColumns="true" paginatorPosition="bottom"
-                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
-                         {PageLinks} {NextPageLink} {LastPageLink} 
-                         {RowsPerPageDropdown}" rowsPerPageTemplate="10,25,50,100">
+            <h:dataTable id="albumList" value="#{viewCollectionBean.albums}" var="album">
 
-                <p:column headerText="Id" sortBy="#{album.albumID}">
+                <h:column>
                     <f:facet name="header">Album ID</f:facet>                                        
                     <h:outputText value="#{album.albumID}" />
-                </p:column>
-                <p:column headerText="Title" sortBy="#{album.title}">
+                </h:column>
+                <h:column>
                     <f:facet name="header">Title</f:facet>                                        
                     <h:outputText value="#{album.title}" />
-                </p:column>
-                <p:column headerText="Artist" sortBy="#{album.artist}">
+                </h:column>
+                <h:column>
                     <f:facet name="header">Artist</f:facet>                                        
                     <h:outputText value="#{album.artist}" />
-                </p:column>
-                <p:column headerText="Year" sortBy="#{album.releaseYear}">
+                </h:column>
+                <h:column>
                     <f:facet name="header">Year</f:facet>                                        
                     <h:outputText value="#{album.releaseYear}" />
-                </p:column>
-                <p:column headerText="Tracks" sortBy="#{album.numberOfTracks}">
+                </h:column>
+                <h:column>
                     <f:facet name="header">Tracks</f:facet>                                        
                     <h:outputText value="#{album.numberOfTracks}" />
-                </p:column>
-                <p:column headerText="Discs" sortBy="#{album.numberOfDiscs}">
+                </h:column>
+                <h:column>
                     <f:facet name="header">Discs</f:facet>                                        
                     <h:outputText value="#{album.numberOfDiscs}" />
-                </p:column>
-                <p:column headerText="Genre" sortBy="#{album.genre}">
+                </h:column>
+                <h:column>
                     <f:facet name="header">Genre</f:facet>                                        
                     <h:outputText value="#{album.genre}" />
-                </p:column>
-                <p:column headerText="Copies" sortBy="#{album.albumCount}">
-                    <f:facet name="header">Copies </f:facet>                                        
+                </h:column>
+                <h:column>
+                    <f:facet name="header">In Collection </f:facet>                                        
                     <h:outputText value="#{album.albumCount}" />
-                </p:column>
+                </h:column>
 
-            </p:dataTable>
-            <p:commandButton value="Refresh" action="#{viewCollectionBean.refresh}" icon="ui-icon-refresh">
-                <f:ajax execute="@form" render="@form"/>
-            </p:commandButton>
+
+            </h:dataTable>
+            <h:commandButton value="Refresh" action="#{viewCollectionBean.refresh}" />
         </h:form>
-
-        <p:link value = "Edit Collection" outcome="/customerFolder/editcollection" /><br />
-        <p:link value="Go Home" outcome="/index" /><br />
-        <p:link value="Logout" outcome="/logout" />
+        
+        <h:link value = "Edit Collection" outcome="/customerFolder/editcollection" /><br />
+        <h:link value="Go Home" outcome="/index" /><br />
+        <h:link value="Logout" outcome="/logout" />
     </h:body>
 </html>
 

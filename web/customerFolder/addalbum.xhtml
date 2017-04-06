@@ -10,35 +10,35 @@
             <h3>Add Album</h3>
             <h:panelGrid columns="3">
                 Album Title:
-                <h:inputText id="addTitle" value="#{addAlbumBean.title}"/>
+                <h:inputText id="addTitle" value="#{editCollectionBean.title}"/>
                 <h:message for="addTitle" 
                            errorStyle="color: red" infoStyle="color: green" />
                 Album Artist:
-                <h:inputText id="addArtist" value="#{addAlbumBean.artist}"/>
+                <h:inputText id="addArtist" value="#{editCollectionBean.artist}"/>
                 <h:message for="addArtist" 
                            errorStyle="color: red" infoStyle="color: green" />
                 Release Year:
-                <h:inputText id="addReleaseYear" value="#{addAlbumBean.releaseYear}"/>
+                <h:inputText id="addReleaseYear" value="#{editCollectionBean.releaseYear}"/>
                 <h:message for="addReleaseYear" 
                            errorStyle="color: red" infoStyle="color: green" />
                 Genre:
-                <h:inputText id="addGenre" value="#{addAlbumBean.genre}"/>
+                <h:inputText id="addGenre" value="#{editCollectionBean.genre}"/>
                 <h:message for="addGenre" 
                            errorStyle="color: red" infoStyle="color: green" />
                 Number of Tracks:
-                <h:inputText id="addNumberOfTracks" value="#{addAlbumBean.numberOfTracks}"/>
+                <h:inputText id="addNumberOfTracks" value="#{editCollectionBean.numberOfTracks}"/>
                 <h:message for="addNumberOfTracks" 
                            errorStyle="color: red" infoStyle="color: green" />
                 Number of Discs:
-                <h:inputText id="addNumberOfDiscs" value="#{addAlbumBean.numberOfDiscs}"/>
+                <h:inputText id="addNumberOfDiscs" value="#{editCollectionBean.numberOfDiscs}"/>
                 <h:message for="addNumberOfDiscs" 
                            errorStyle="color: red" infoStyle="color: green" />
                 Album Count:
-                <h:inputText id="addAlbumCount" value="#{addAlbumBean.albumCount}"/>
+                <h:inputText id="addAlbumCount" value="#{editCollectionBean.albumCount}"/>
                 <h:message for="addAlbumCount" 
                            errorStyle="color: red" infoStyle="color: green" />
-                <h:commandButton id="addAlbum" value="Add Album" action="#{addAlbumBean.insertAlbum()}"/>
-                <h:message for="addAlbum" 
+                <h:commandButton id="addAlbum" value="Add Album" action="#{editCollectionBean.insertAlbum()}"/>
+                <h:message for="addBook" 
                            errorStyle="color: red" infoStyle="color: green" />
             </h:panelGrid>
         </h:form>
