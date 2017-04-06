@@ -421,28 +421,66 @@ public class RegisteredBean implements Serializable{
             setUsername(player.username);
             setEmail(player.email);
            setGroupname(player.group);
+           System.out.println("group name" + tempgroup);
            
-           //updates email in usertable
-            PreparedStatement ps = conn.prepareStatement(
-                    "UPDATE usertable set Email=? where USERNAME = ?"
+           if(!player.group.equals("customergroup, admingroup")){
+               
+            //updates email in usertable
+             PreparedStatement ps = conn.prepareStatement(
+                     "UPDATE usertable set Email=? where USERNAME = ?"
+             );
+
+             ps.setString(1, player.email);
+             ps.setString(2, player.username);
+
+             ps.executeUpdate();
+
+             // updates group in group table
+             PreparedStatement ps2 = conn.prepareStatement(
+                     "UPDATE grouptable set GROUPNAME=? where USERNAME = ?"
+             );
+
+             ps2.setString(1, player.group);
+             ps2.setString(2, player.username);
+
+             ps2.executeUpdate();
+            System.out.println("in if");
+            }else{
+            // group is both
+            
+             //updates email in usertable
+             PreparedStatement ps = conn.prepareStatement(
+                     "UPDATE usertable set Email=? where USERNAME = ?"
+             );
+
+             ps.setString(1, player.email);
+             ps.setString(2, player.username);
+
+             ps.executeUpdate();
+
+             // updates group in group table
+             PreparedStatement ps2 = conn.prepareStatement(
+                     "UPDATE grouptable set GROUPNAME=? where USERNAME = ?"
+             );
+
+             ps2.setString(1, "customergroup");
+             ps2.setString(2, player.username);
+             ps2.executeUpdate();
+             
+            //into grouptable
+            PreparedStatement ps3 = conn.prepareStatement(
+                    "Insert into GROUPTABLE (groupname, username)values(?,?)"
             );
             
-            ps.setString(1, player.email);
-            ps.setString(2, player.username);
+            ps3.setString(1,"admingroup");
+            ps3.setString(2,username);
+                                   
+            //ps.executeQuery();            
+            ps3.executeUpdate();
             
-            ps.executeUpdate();
-            
-            // updates group in group table
-            PreparedStatement ps2 = conn.prepareStatement(
-                    "UPDATE grouptable set GROUPNAME=? where USERNAME = ?"
-            );
-            
-            ps2.setString(1, player.group);
-            ps2.setString(2, player.username);
-            
-            ps2.executeUpdate();
-            
-            
+            conn.commit();
+            System.out.println("in else");
+           }
             
             player.setEdited(false);
 
