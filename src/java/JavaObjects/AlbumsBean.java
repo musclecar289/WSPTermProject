@@ -15,35 +15,39 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
-/**
- *
- * @author Nicholas Clemmons
- */
-@Named(value = "viewCollectionBean")
+@Named(value = "albumsBean")
 @SessionScoped
-public class ViewCollectionBean implements Serializable {
+public class AlbumsBean implements Serializable {
 
     //resource injection
     @Resource(name = "jdbc/ds_wsp")
     private DataSource ds;
 
     private List<Album> albums;
-    private int numberOfAlbums;
+    private String fromCollection;
 
     @PostConstruct
     public void init() {
         try {
-            albums = loadAlbums();
+            albums = loadAlbums(fromCollection);
         } catch (SQLException ex) {
-            Logger.getLogger(ViewCollectionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AlbumsBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public String getCollection() {
+        return fromCollection;
+    }
+
+    public void setCollection(String collection) {
+        this.fromCollection = collection;
     }
 
     public List<Album> getAlbums() {
         return albums;
     }
 
-    public List<Album> loadAlbums() throws SQLException {
+    public List<Album> loadAlbums(String collection_name) throws SQLException {
 
         if (ds == null) {
             throw new SQLException("ds is null; Can't get data source");
@@ -59,7 +63,7 @@ public class ViewCollectionBean implements Serializable {
 
         try {
             PreparedStatement ps = conn.prepareStatement(
-                    "select ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT from ALBUMTABLE"
+                "SELECT a.* FROM collection_items AS c JOIN albumtable AS a WHERE a.ALBUM_ID=c.ALBUM_ID and collection_name='"+collection_name+"'"
             );
 
             // retrieve book data from database
@@ -83,15 +87,5 @@ public class ViewCollectionBean implements Serializable {
         }
 
         return list;
-    }
-
-    public String refresh() {
-        try {
-            albums = loadAlbums();
-        } catch (SQLException ex) {
-            Logger.getLogger(ViewCollectionBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return null;
     }
 }
