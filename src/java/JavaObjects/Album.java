@@ -12,7 +12,7 @@ public class Album {
     private int releaseYear;
     private int numberOfTracks;
     private int numberOfDiscs;
-    private int albumID;
+    private long albumID;
     private int albumCount;
     private boolean editable;
 
@@ -64,11 +64,11 @@ public class Album {
         this.numberOfDiscs = numberOfDiscs;
     }
 
-    public int getAlbumID() {
+    public long getAlbumID() {
         return albumID;
     }
 
-    public void setAlbumID(int albumID) {
+    public void setAlbumID(long albumID) {
         this.albumID = albumID;
     }
 
