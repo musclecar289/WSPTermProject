@@ -112,8 +112,6 @@ public class CollectionsBean implements Serializable {
         this.selectedRecord = selectedRecord;
     }
 
-    
-    
     private List<Collection> loadCollections() throws SQLException {
         if (ds == null) {
             throw new SQLException("ds is null; Can't get data source");
