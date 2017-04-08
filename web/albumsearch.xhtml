@@ -8,22 +8,66 @@
         <title>Album Search</title>
     </h:head>
     <h:body>
-        <h:form id="albumSearch">  
-            <h3>Album Search</h3>
-            <h:panelGrid columns="2">
-                <p:inputText id="albumToFind" value="#{albumSearchBean.title}"/>
-                <h:message for="albumToFind" 
-                           errorStyle="color: red" infoStyle="color: green" />
-                <p:selectOneListbox>
-                    <f:selectItems value="#{albumSearchBean.albums}" var="album" itemValue="#{album.getName()}"/>
-                </p:selectOneListbox>
-                <h:commandButton id="addAlbum" value="Add Album" action="#{bookBean.insertBook()}"/>
-                <h:message for="addAlbum" 
-                           errorStyle="color: red" infoStyle="color: green" />
-            </h:panelGrid>
-            <h:graphicImage url="https://i.scdn.co/image/4db90273419a26fe4b6b998f5cfc359a19d3c817"/>
+        <p:toolbar>
+            <f:facet name="right">
+                <h:link value="User Login" outcome="/customerFolder/profile" />
+                <span class="ui-separator">
+                    <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                </span>
+                <h:link value="Reset Password" outcome="/resetPassword" />
+            </f:facet>
+        </p:toolbar>
+        <p:fieldset style="margin-bottom:20px">
+            <h:form id="albumSearch">
+                <h3>Album Search</h3>
+                <h:panelGrid columns="1">
+                    <p:inputText id="albumToFind" value="#{albumSearchBean.title}"/>
+                    <!--<h:message for="albumToFind" 
+                               errorStyle="color: red" infoStyle="color: green" />-->
 
-        </h:form>
+                    <p:commandButton id="albumSearch" value="Search" action="#{albumSearchBean.albumSearch()}" update="albumSearchList"/>
+
+                    <p:selectOneListbox>
+                        <f:selectItems value="#{albumSearchBean.albums}" var="simpleAlbum" itemValue="#{simpleAlbum.getId()}"/>
+                    </p:selectOneListbox>
+                    <!--<h:commandButton id="addAlbum" value="Add Album" action=""/>
+                    <h:message for="addAlbum" 
+                               errorStyle="color: red" infoStyle="color: green" />-->
+                </h:panelGrid>
+                <p:dataTable id="albumSearchList" value="#{albumSearchBean.albums}" 
+                             var="album" resizableColumns="true" rows="10" 
+                             paginator="true" style="margin-bottom:20px" 
+                             draggableColumns="true" paginatorPosition="bottom"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
+                             {PageLinks} {NextPageLink} {LastPageLink} 
+                             {RowsPerPageDropdown}" rowsPerPageTemplate="10,25,50,100">
+
+                    <p:column headerText="Id" >
+                        <f:facet name="header">Album ID</f:facet>                                        
+                        <h:outputText value="#{album.getId()}" />
+                    </p:column>
+                    <p:column headerText="Name" >
+                        <f:facet name="header">Name</f:facet>                                        
+                        <h:outputText value="#{album.getName()}" />
+                    </p:column>
+                    <p:column headerText="href" >
+                        <f:facet name="header">href</f:facet>                                        
+                        <h:outputText value="#{album.getHref()}" />
+                    </p:column>
+                    <p:column headerText="uri" >
+                        <f:facet name="header">uri</f:facet>                                        
+                        <h:outputText value="#{album.getUri()}" />
+                    </p:column>
+
+
+                </p:dataTable>
+
+
+                <!--<h:graphicImage url="https://i.scdn.co/image/4db90273419a26fe4b6b998f5cfc359a19d3c817"/>-->
+
+            </h:form>
+        </p:fieldset>
+
     </h:body>
 </html>
 
