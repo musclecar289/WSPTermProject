@@ -29,7 +29,7 @@ public class AddAlbumBean implements Serializable {
     @Resource(name = "jdbc/ds_wsp")
     private DataSource ds;
 
-    private List<Album> albums;
+    private List<Record> albums;
     private int numberOfAlbums;
 
     private long albumID;
@@ -52,11 +52,11 @@ public class AddAlbumBean implements Serializable {
         }
     }
 
-    public List<Album> getAlbums() {
+    public List<Record> getAlbums() {
         return albums;
     }
 
-    public List<Album> loadAlbums() throws SQLException {
+    public List<Record> loadAlbums() throws SQLException {
 
         if (ds == null) {
             throw new SQLException("ds is null; Can't get data source");
@@ -68,7 +68,7 @@ public class AddAlbumBean implements Serializable {
             throw new SQLException("conn is null; Can't get db connection");
         }
 
-        List<Album> list = new ArrayList<>();
+        List<Record> list = new ArrayList<>();
 
         try {
             PreparedStatement ps = conn.prepareStatement(
@@ -79,7 +79,7 @@ public class AddAlbumBean implements Serializable {
             ResultSet result = ps.executeQuery();
 
             while (result.next()) {
-                Album a = new Album();
+                Record a = new Record();
                 a.setAlbumID(result.getInt("ALBUM_ID"));
                 a.setTitle(result.getString("TITLE"));
                 a.setArtist(result.getString("ARTIST"));
@@ -231,7 +231,7 @@ public class AddAlbumBean implements Serializable {
         return null; // re-display index.xhtml
     }
 
-    public void makeEditable(Album album) {
+    public void makeEditable(Record album) {
 
         this.albumID = album.getAlbumID();
         this.title = album.getTitle();

@@ -3,6 +3,7 @@ package JavaObjects;
 import com.wrapper.spotify.Api;
 import com.wrapper.spotify.exceptions.WebApiException;
 import com.wrapper.spotify.methods.AlbumSearchRequest;
+import com.wrapper.spotify.models.Album;
 import com.wrapper.spotify.models.Page;
 import com.wrapper.spotify.models.SimpleAlbum;
 import java.io.IOException;
@@ -31,17 +32,30 @@ public class AlbumSearchBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        AlbumSearchRequest request = api.searchAlbums("led zeppelin").offset(0).limit(5).build();
+        AlbumSearchRequest request = api.searchAlbums("led zeppelin").offset(0).limit(10).build();
         try {
             Page<SimpleAlbum> albumSearchResult = request.get();
             albums = albumSearchResult.getItems();
+            System.out.println("test");
         } catch (IOException ex) {
             Logger.getLogger(AlbumSearchBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (WebApiException ex) {
             Logger.getLogger(AlbumSearchBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    public void albumSearch(){
+        AlbumSearchRequest request = api.searchAlbums(getTitle()).offset(0).limit(25).build();
+        try {
+            Page<SimpleAlbum> albumSearchResult = request.get();
+            albums = albumSearchResult.getItems();
+            System.out.println("test");
+        } catch (IOException ex) {
+            Logger.getLogger(AlbumSearchBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (WebApiException ex) {
+            Logger.getLogger(AlbumSearchBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     public List<SimpleAlbum> getAlbums() {
         return albums;
     }

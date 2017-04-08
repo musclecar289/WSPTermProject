@@ -4,7 +4,7 @@ package JavaObjects;
  *
  * @author Nicholas Clemmons
  */
-public class Album {
+public class Record {
     
     private String title;
     private String artist;
