@@ -46,28 +46,25 @@
                              {PageLinks} {NextPageLink} {LastPageLink} 
                              {RowsPerPageDropdown}" rowsPerPageTemplate="10,25,50,100">
 
-                    <p:column headerText="Id" >
+                    <!--<p:column headerText="Id" >
                         <f:facet name="header">Album ID</f:facet>                                        
                         <h:outputText value="#{album.getId()}" />
-                    </p:column>
+                    </p:column>-->
                     <p:column headerText="Name" >
                         <f:facet name="header">Name</f:facet>                                        
                         <h:outputText value="#{album.getName()}" />
                     </p:column>
-                    <p:column headerText="href" >
+                    <!--<p:column headerText="href" >
                         <f:facet name="header">href</f:facet>                                        
                         <h:outputText value="#{album.getHref()}" />
                     </p:column>
                     <p:column headerText="uri" >
                         <f:facet name="header">uri</f:facet>                                        
                         <h:outputText value="#{album.getUri()}" />
-                    </p:column>
+                    </p:column>-->
 
 
                 </p:dataTable>
-
-
-                <!--<h:graphicImage url="https://i.scdn.co/image/4db90273419a26fe4b6b998f5cfc359a19d3c817"/>-->
 
             </h:form>
         </p:fieldset>
