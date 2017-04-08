@@ -37,14 +37,11 @@ public class RegisteredBean implements Serializable {
 
     @Size(min = 3, message = "Greater than 2 Characters")
     private String password;
-
     private String email;
-
     private String groupname;
-
-    Customer c1;
     private List<Customer> customers;
-
+    Customer c1;
+    
     @Size(min = 3, message = "Greater than 2 Characters")
     public String getUsername() {
         return username;
@@ -114,7 +111,7 @@ public class RegisteredBean implements Serializable {
             c2.setGroup(group);
             c2.setPassword(password);
             c2.setEmail(email);
-//            customers.add(c2);
+            customers.add(c2);
 
             System.out.println(" username = " + username);
 
@@ -147,7 +144,7 @@ public class RegisteredBean implements Serializable {
         } finally {
             conn.close();
         }
-        refresh();
+
     }
 
     public void newMessageTwo() throws IOException, SQLException {
@@ -177,7 +174,7 @@ public class RegisteredBean implements Serializable {
             c2.setGroup(group);
             c2.setPassword(password);
             c2.setEmail(email);
-//            customers.add(c2);
+            customers.add(c2);
 
             System.out.println(" username = " + username);
             // into usertable
@@ -242,7 +239,6 @@ public class RegisteredBean implements Serializable {
         } finally {
             conn.close();
         }
-        refresh();
     }
 
     public List<Customer> getArrayCust() throws SQLException {
@@ -263,7 +259,7 @@ public class RegisteredBean implements Serializable {
 
         try {
             PreparedStatement ps = conn.prepareStatement(
-                    "select USERNAME, EMAIL, ID from usertable"
+                    "select * from usertable"                        //this works now! Yippie!
             );
 
             // retrieve customer data from database
@@ -275,10 +271,9 @@ public class RegisteredBean implements Serializable {
                 c.setEmail(result.getString("EMAIL"));
 
                 list.add(c);
-                conn.commit();
-                committed = true;
             }
-
+            conn.commit();
+            committed = true;
         } finally {
             conn.close();
         }
@@ -538,12 +533,12 @@ public class RegisteredBean implements Serializable {
 
             }
             conn.close();
-//            customers.remove(player);
+            customers.remove(player);
 
         } finally {
             conn.close();
         }
-        refresh();
+
     }
 
     @PostConstruct
@@ -554,21 +549,11 @@ public class RegisteredBean implements Serializable {
         try {
             customers = loadCustomers();
         } catch (SQLException ex) {
-            Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         c1 = new Customer();
 
     }
 
-    public String refresh() {
-
-        try {
-            customers = loadCustomers();
-        } catch (SQLException ex) {
-            Logger.getLogger(RegisteredBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return null;
-    }
 
 }
