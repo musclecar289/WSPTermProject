@@ -41,6 +41,7 @@ public class AlbumsBean implements Serializable {
 
     public void setCollection(String collection) {
         this.fromCollection = collection;
+        init();
     }
 
     public List<Album> getAlbums() {

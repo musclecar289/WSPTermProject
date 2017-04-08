@@ -18,84 +18,75 @@
                 font-style: italic;
             }
             p{
-                  background-color:black;
-                  color:white;
-                  text-align:right;
-                  padding:5px;
-                  
-              }
-              h2{
-                  background-color:black;
-                  color:white;
-                  text-align:right;
-                  padding:5px;
-                  
-              }
-            </style>
+                background-color:black;
+                color:white;
+                text-align:right;
+                padding:5px;
+
+            }
+            h2{
+                background-color:black;
+                color:white;
+                text-align:right;
+                padding:5px;
+
+            }
+        </style>
     </h:head>
     <h:body>
-        
-        
-         <p> <h:button value="Home" outcome="/index" style="background: limegreen" />
+        <p>
+            <h:button value="Home" outcome="/index" style="background: limegreen" />
             <h:button value="Back" outcome="adminhome.xhtml" style="background: limegreen" />
             <h:button value="Logout" outcome="/logout" style="background:limegreen" />
-            
-        <h1>All Users</h1></p>
-        
-         <h:form id="form"><center>
-                 
-            <h:message for="form" errorStyle="color:red"/>
-            <h:dataTable value="#{regBean.customers}" var="customer" border="3" cellpadding="5" headerClass="data">
-                
-                <h:column>
-                    <f:facet name="header">Username:</f:facet>
-                    #{customer.username}
-                        
-                </h:column>
-                
-                <h:column>
-                    <f:facet name="header">Email:</f:facet>
-                    <h:inputText id ="email" value="#{customer.email}" size="10" rendered="#{customer.edited}" 
-                                 required="true" 
-                                 requiredMessage="[2-10] chars" 
-                                 validatorMessage="[2-10] chars"    >
-                         <f:validateLength minimum="2" maximum="20"  />                     
-                    </h:inputText>
-                     <h:message for="email"  errorStyle="color: red"/>
-                    <h:outputText value="#{customer.email}" rendered="#{not customer.edited}" />
-                       
-                </h:column>
-                
-                <h:column>
-                    <f:facet name="header">GroupName</f:facet>
-                    <h:inputText id ="group" value="#{customer.group}" size="10" rendered="#{customer.edited}" 
-                                 required="true" 
-                                 requiredMessage="[Type a group]" 
-                                 validatorMessage="[customergroup, admingroup]"    >
-                         <f:validateLength minimum="10" maximum="25"  />                     
-                    </h:inputText>
-                     <h:message for="group"  errorStyle="color: red"/>
-                    <h:outputText value="#{customer.group}" rendered="#{not customer.edited}" />
-                        
-                </h:column>
-                
-                <h:column >
-                   <f:facet name="header">Edit/Save</f:facet>
-                   <h:commandButton value="Edit" action="#{regBean.editRow(customer)}" rendered="#{not customer.edited}"  /> 
-                   <h:commandButton value="Save" action="#{regBean.updateRow(customer)}" rendered="#{customer.edited}"      /> 
-                </h:column>       
-                                   
-                <h:column >
-                   <f:facet name="header">Delete</f:facet>
-                   <h:commandButton value="Delete" action="#{regBean.deleteRow(customer)}" rendered="#{not customer.edited}"/> 
-                   
-                </h:column>
-                
-            </h:dataTable>
-            
-            
-        </center></h:form>
-         
+            <h1>All Users</h1>
+        </p>
+
+        <h:form id="form">
+            <center>
+                <h:message for="form" errorStyle="color:red"/>
+                <h:dataTable value="#{regBean.customers}" var="customer" border="3" cellpadding="5" headerClass="data">
+                    <h:column>
+                        <f:facet name="header">Username:</f:facet>
+                            #{customer.username}
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Email:</f:facet>
+                        <h:inputText id ="email" value="#{customer.email}" size="10" rendered="#{customer.edited}" 
+                                     required="true" 
+                                     requiredMessage="[2-10] chars" 
+                                     validatorMessage="[2-10] chars" >
+                            <f:validateLength minimum="2" maximum="20" />                     
+                        </h:inputText>
+                        <h:message for="email" errorStyle="color: red"/>
+                        <h:outputText value="#{customer.email}" rendered="#{not customer.edited}" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">GroupName</f:facet>
+                        <h:inputText id ="group" value="#{customer.group}" size="10" rendered="#{customer.edited}" 
+                                     required="true" 
+                                     requiredMessage="[Type a group]" 
+                                     validatorMessage="[customergroup, admingroup]"    >
+                            <f:validateLength minimum="10" maximum="25"  />                     
+                        </h:inputText>
+                        <h:message for="group"  errorStyle="color: red"/>
+                        <h:outputText value="#{customer.group}" rendered="#{not customer.edited}" />
+                    </h:column>
+
+                    <h:column >
+                        <f:facet name="header">Edit/Save</f:facet>
+                        <h:commandButton value="Edit" action="#{regBean.editRow(customer)}" rendered="#{not customer.edited}"  /> 
+                        <h:commandButton value="Save" action="#{regBean.updateRow(customer)}" rendered="#{customer.edited}"      /> 
+                    </h:column>       
+
+                    <h:column >
+                        <f:facet name="header">Delete</f:facet>
+                        <h:commandButton value="Delete" action="#{regBean.deleteRow(customer)}" rendered="#{not customer.edited}"/> 
+                    </h:column>
+                </h:dataTable>
+            </center>
+        </h:form>
     </h:body>
 </html>
 

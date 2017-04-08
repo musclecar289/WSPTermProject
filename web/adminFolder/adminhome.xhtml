@@ -16,58 +16,48 @@
             </style>
     </h:head>
     <h:body>
-        <p> <h:button value="Home" outcome="/index" style="background: limegreen" />
+        <p> 
+            <h:button value="Home" outcome="/index" style="background: limegreen" />
             <h:button value="Manage Database" outcome="dbmanage" style="background: limegreen" />
             <h:button value="Logout" outcome="/logout" style="background:limegreen" />       
         
-        <h1 style=" background-color: grey; color: white; text-align: center; padding: 10px" >
-            Welcome #{facesContext.externalContext.userPrincipal.name}
-        </h1></p> 
+            <h1 style=" background-color: grey; color: white; text-align: center; padding: 10px" >
+                Welcome #{facesContext.externalContext.userPrincipal.name}
+            </h1>
+        </p>
+        <h:form id="componentForm">
             
-            
-            <h:form id="componentForm">
-            
-                <h1 align="center"><i>Add User</i></h1>
+            <h1 align="center"><i>Add User</i></h1>
             
             <center>
                 <h:panelGrid columns="3"  > 
-                
-                <h:outputText value="Username"   />
-                <h:inputText id="username" value="#{regBean.username}" 
-                             required="true" requiredMessage="Enter adleast 3 Alphabetical Characters"/>
-                <h:message for="username"  errorStyle="color: red"/> 
-                 
-                
-            
-                <h:outputText value="Password:" />
-                <h:inputSecret id="password" value="#{regBean.password}" required="true"
-                               requiredMessage="Enter adleast 3 Characters" />                 
-                <h:message for="password"  errorStyle="color: red"/> 
-                
-            
-                <h:outputText value="Email:" />
-                <h:inputText  id="email" value="#{regBean.email}" required="true"
-                              requiredMessage="Format XX@uco.edu" /> 
-                <h:message for="email"  errorStyle="color: red" /> 
-                
-                <h:outputText value="Group:" />
-                <h:selectOneRadio id="group" value="#{regBean.groupname}">
-                    <f:selectItem itemValue="customergroup" itemLabel="Customer"></f:selectItem>
-                    <f:selectItem itemValue="admingroup" itemLabel="Admin"/>
-                    <f:selectItem itemValue="customergroup, admingroup" itemLabel="Both"/>
-                </h:selectOneRadio>
-                <h:message for="gender"  errorStyle="color: red" />
-            
-                
-             
-            </h:panelGrid>
-            
-                  <h:commandButton id="addMessage" action="#{regBean.newMessageTwo()}"
-                                   value="Sign Up" style="align-content: center"/>
-           
-            </center>
-        </h:form>  
-        
+                    <h:outputText value="Username"   />
+                    <h:inputText id="username" value="#{regBean.username}" 
+                                required="true" requiredMessage="Enter adleast 3 Alphabetical Characters"/>
+                    <h:message for="username" errorStyle="color: red"/> 
 
+                    <h:outputText value="Password:" />
+                    <h:inputSecret id="password" value="#{regBean.password}" required="true"
+                                requiredMessage="Enter adleast 3 Characters" />                 
+                    <h:message for="password" errorStyle="color: red"/> 
+
+
+                    <h:outputText value="Email:" />
+                    <h:inputText  id="email" value="#{regBean.email}" required="true"
+                                  requiredMessage="Format XX@uco.edu" /> 
+                    <h:message for="email" errorStyle="color: red" /> 
+
+                    <h:outputText value="Group:" />
+                    <h:selectOneRadio id="group" value="#{regBean.groupname}">
+                        <f:selectItem itemValue="customergroup" itemLabel="Customer"></f:selectItem>
+                        <f:selectItem itemValue="admingroup" itemLabel="Admin"/>
+                        <f:selectItem itemValue="customergroup, admingroup" itemLabel="Both"/>
+                    </h:selectOneRadio>
+                    <h:message for="gender" errorStyle="color: red" />
+                </h:panelGrid>
+                <h:commandButton id="addMessage" action="#{regBean.newMessageTwo()}"
+                                value="Sign Up" style="align-content: center"/>
+            </center>
+        </h:form>
     </h:body>
 </html>

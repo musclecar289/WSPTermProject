@@ -10,55 +10,49 @@
     </head>
     <h:body>
         <style type="text/css">
-            h1 {
+            h1{
                 background-color:grey;
                 color:white;
                 text-align:center;
                 padding:10px;
                 
               }
-              p{
-                  background-color:black;
-                  color:white;
-                  text-align:center;
-                  padding:5px;
+            p {
+                background-color:black;
+                color:white;
+                text-align:center;
+                padding:5px;
                   
               }
               
         </style>
-        
-        
+
         <h:form id="componentForm">
             
             <h1><i>Registration Form</i></h1>
             
             <center>
                 <h:panelGrid columns="3"  > 
-                
-                <h:outputText value="Username"   />
-                <h:inputText id="username" value="#{regBean.username}" 
-                             required="true" requiredMessage="Enter adleast 3 Alphabetical Characters"/>
-                <h:message for="username"  errorStyle="color: red"/> 
-                 
-                
+                    <h:outputText value="Username"/>
+                    <h:inputText id="username" value="#{regBean.username}" required="true"
+                                requiredMessage="Enter adleast 3 Alphabetical Characters"/>
+                    <h:message for="username"  errorStyle="color: red"/>
+                    
+                    <h:outputText value="Password:" />
+                    <h:inputSecret id="password" value="#{regBean.password}" required="true"
+                                requiredMessage="Enter adleast 3 Characters" />                 
+                    <h:message for="password"  errorStyle="color: red"/> 
+
+                    <h:outputText value="Email:" />
+                    <h:inputText  id="email" value="#{regBean.email}" required="true"
+                                  requiredMessage="Format XX@uco.edu" /> 
+                    <h:message for="email"  errorStyle="color: red" /> 
+                </h:panelGrid>
             
-                <h:outputText value="Password:" />
-                <h:inputSecret id="password" value="#{regBean.password}" required="true"
-                               requiredMessage="Enter adleast 3 Characters" />                 
-                <h:message for="password"  errorStyle="color: red"/> 
-                
-            
-                <h:outputText value="Email:" />
-                <h:inputText  id="email" value="#{regBean.email}" required="true"
-                              requiredMessage="Format XX@uco.edu" /> 
-                <h:message for="email"  errorStyle="color: red" /> 
-                           
-             
-            </h:panelGrid>
-            
-                <p>  <h:commandButton id="addMessage" action="#{regBean.newMessage()}"
-                             value="Sign Up"/>
-           <h:button value="Main Page" outcome="/index" /><br /></p>
+                <p>
+                    <h:commandButton id="addMessage" value="Sign Up" action="#{regBean.newMessage()}" />
+                    <h:button value="Main Page" outcome="/index" /><br />
+                </p>
             </center>
         </h:form>  
         

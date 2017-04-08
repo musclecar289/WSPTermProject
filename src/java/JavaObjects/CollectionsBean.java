@@ -29,6 +29,7 @@ public class CollectionsBean implements Serializable {
 
     private List<Collection> collections;
     private int numberOfCollections;
+    private Collection selectedCollection;
 
     @PostConstruct
     public void init() {
@@ -94,6 +95,16 @@ public class CollectionsBean implements Serializable {
         this.numberOfCollections = numberOfCollections;
     }
 
+    public Collection getSelectedCollection() {
+        return selectedCollection;
+    }
+
+    public void setSelectedCollection(Collection selectedCollection) {
+        this.selectedCollection = selectedCollection;
+    }
+
+    
+    
     private List<Collection> loadCollections() throws SQLException {
         if (ds == null) {
             throw new SQLException("ds is null; Can't get data source");
@@ -121,12 +132,9 @@ public class CollectionsBean implements Serializable {
                 c.setRecords(this.loadAlbums(c.getCollectionName()));
                 list.add(c);
             }
-
         } finally {
             conn.close();
         }
-
         return list;
     }
-
 }
