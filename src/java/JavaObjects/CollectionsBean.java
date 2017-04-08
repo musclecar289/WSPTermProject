@@ -1,5 +1,6 @@
 package JavaObjects;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +13,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.sql.DataSource;
 
@@ -137,4 +139,37 @@ public class CollectionsBean implements Serializable {
         }
         return list;
     }
+    
+     public void deleteCollect(Collection c) throws IOException,SQLException {
+         
+        
+         
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
+
+        Connection conn = ds.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
+
+        
+       
+            PreparedStatement ps = conn.prepareStatement(
+                "DELETE FROM collection_items WHERE COLLECTION_NAME=? " 
+            );
+            // retrieve book data from database
+           try {
+            ps.setString(1, c.getCollectionName());
+            
+            
+
+            ps.executeUpdate();
+        } finally {
+            conn.close();
+        }
+     }
+       
+    
 }
