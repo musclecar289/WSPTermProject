@@ -32,16 +32,16 @@ public class AlbumSearchBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        AlbumSearchRequest request = api.searchAlbums("led zeppelin").offset(0).limit(10).build();
-        try {
-            Page<SimpleAlbum> albumSearchResult = request.get();
-            albums = albumSearchResult.getItems();
-            System.out.println("test");
-        } catch (IOException ex) {
-            Logger.getLogger(AlbumSearchBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (WebApiException ex) {
-            Logger.getLogger(AlbumSearchBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        AlbumSearchRequest request = api.searchAlbums("led zeppelin").offset(0).limit(10).build();
+//        try {
+//            Page<SimpleAlbum> albumSearchResult = request.get();
+//            albums = albumSearchResult.getItems();
+//            System.out.println("test");
+//        } catch (IOException ex) {
+//            Logger.getLogger(AlbumSearchBean.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (WebApiException ex) {
+//            Logger.getLogger(AlbumSearchBean.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
     
     public void albumSearch(){
@@ -50,9 +50,7 @@ public class AlbumSearchBean implements Serializable {
             Page<SimpleAlbum> albumSearchResult = request.get();
             albums = albumSearchResult.getItems();
             System.out.println("test");
-        } catch (IOException ex) {
-            Logger.getLogger(AlbumSearchBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (WebApiException ex) {
+        } catch (IOException | WebApiException ex) {
             Logger.getLogger(AlbumSearchBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

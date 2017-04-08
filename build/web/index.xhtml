@@ -18,7 +18,12 @@
     <h:body>
         <h:form>            
             <p:toolbar>
+
                 <f:facet name="right">
+                    <h:link  value="Vircoms" outcome="/index" />
+                    <span class="ui-separator">
+                        <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                    </span>
                     <h:link value="User Login" outcome="/customerFolder/profile" />
                     <span class="ui-separator">
                         <span class="ui-icon ui-icon-grip-dotted-vertical" />
@@ -27,17 +32,21 @@
                 </f:facet>
             </p:toolbar>
             <p:fieldset style="margin-bottom:20px">
-                <h3 style=" background-color: white; color: black; text-align: center; padding: 10px"  >
-                    Vircoms offers collectors the flexibility and reliability of database management software with the convenience of a browser.
-                    Since our services are offered in the browser, you can access your musical collection anywhere anytime. 
-                    Right now, only our registered users can create and manage a collection, so you should sign up now for free! Takes mere seconds!
-                </h3>
+                <p:fieldset style="margin-bottom:20px">
+                    <h3 style=" background-color: white; color: black; text-align: center; padding: 10px"  >
+                        Vircoms offers collectors the flexibility and reliability of database management software with the convenience of a browser.
+                        Since our services are offered in the browser, you can access your musical collection anywhere anytime. 
+                        Right now, only our registered users can create and manage a collection, so you should sign up now for free! Takes mere seconds!
+                    </h3>
+                    <center>
+                        <h:link value="Sign Up Now!" outcome="/regForm" /><br /><br /><br />
+                    </center>
+                </p:fieldset>
                 <center>
-                    <h:link value="Sign Up Now!" outcome="/regForm" /><br /><br /><br />
                     <p:dataGrid var="collection" value="#{collectionsBean.collections}" columns="5"
-                        rows="12" paginator="true" id="dataGrid"
-                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                        rowsPerPageTemplate="6,12,16">
+                                rows="12" paginator="true" id="dataGrid"
+                                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                rowsPerPageTemplate="6,12,16">
                         <f:facet name="header">
                             View Some of Our Favorite Collections
                         </f:facet>
