@@ -53,14 +53,12 @@
                         <h:outputText value="#{collection.numberOfRecords}" />
                     </p:column>
 
-                    <p:column colspan="2">
+                    <f:facet name="footer">
                         <p:commandButton process="collectionTable" update=":form:collectionDetail" value="View"
                                          icon="ui-icon-search"  oncomplete="PF('collectionDialog').show()" />
-                    </p:column>
-
-                    <f:facet name="footer">
-                        In total there are #{collectionsBean.collections.size()} collections!
+                        <br />In total there are #{collectionsBean.collections.size()} collections!
                     </f:facet>
+
                 </p:dataTable>
             </p:fieldset>
             
@@ -69,7 +67,6 @@
                     <p:panelGrid  columns="2" rendered="#{not empty collectionsBean.selectedCollection}" >
                         
                         <p:column>
-                            <!--<p:graphicImage name="pictures/default.png"/>Would love to see this work! But I can't get the name right-->
                             <img src="pictures/default.png"/>
                         </p:column>
                         
@@ -81,12 +78,63 @@
                                 <p:column>
                                     #{record.title}
                                 </p:column>
+                                <p:column>
+                                    #{record.artist}
+                                </p:column>
+                                <p:column>
+                                    #{record.genre}
+                                </p:column>
+                                <p:column>
+                                    #{record.numberOfTracks}
+                                </p:column>
+                                <p:column>
+                                    #{record.releaseYear}
+                                </p:column>
                             </p:dataTable>
                         </p:column>
                         
                     </p:panelGrid>
                 </p:outputPanel>
             </p:dialog>
+<!--
+    Needs a POJO Track(trackID, name, album, length, genre, ...) PK(trackID, album) FK(album refs Album)
+    Need to modify the CollectionsBean to add Record selectedRecord and List<Tracks> tracks members with getters/setters.
+    Need to modify the CollectionsBean to add loadTracks(selectRecord) method which accesses the database. 
+
+            <p:dialog header="Record Info" widgetVar="recordDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="recordDetail" style="text-align:center;">
+                    <p:panelGrid  columns="2" rendered="#{not empty collectionsBean.selectedRecord}" >
+                        
+                        <p:column>
+                            <img src="pictures/14.png"/>
+                        </p:column>
+                        
+                        <p:column>
+                            <p:dataTable var="track" value="#{collectionsBean.selectedCollection.records.tracks}">
+                                <f:facet name="header">
+                                    Tracks on #{collectionsBean.selectedCollection.collectionName.selectedRecord}
+                                </f:facet>
+                                <p:column>
+                                    #{track.trackID}
+                                </p:column>
+                                <p:column>
+                                    #{track.Name}
+                                </p:column>
+                                <p:column>
+                                    #{track.album}
+                                </p:column>
+                                <p:column>
+                                    #{track.length}
+                                </p:column>
+                                <p:column>
+                                    #{track.genre}
+                                </p:column>
+                            </p:dataTable>
+                        </p:column>
+                        
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>-->
             
 <!--            <p:fieldset style="margin-bottom:20px" id="collectionField" >
                 <h3 style=" background-color: white; color: black; text-align: center; padding: 10px"  >

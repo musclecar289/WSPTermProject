@@ -30,6 +30,7 @@ public class CollectionsBean implements Serializable {
     private List<Collection> collections;
     private int numberOfCollections;
     private Collection selectedCollection;
+    private Album selectedRecord;
 
     @PostConstruct
     public void init() {
@@ -101,6 +102,14 @@ public class CollectionsBean implements Serializable {
 
     public void setSelectedCollection(Collection selectedCollection) {
         this.selectedCollection = selectedCollection;
+    }
+
+    public Album getSelectedRecord() {
+        return selectedRecord;
+    }
+
+    public void setSelectedRecord(Album selectedRecord) {
+        this.selectedRecord = selectedRecord;
     }
 
     
