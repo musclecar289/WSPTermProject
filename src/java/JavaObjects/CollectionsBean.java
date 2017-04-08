@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.sql.DataSource;
 
@@ -140,36 +139,33 @@ public class CollectionsBean implements Serializable {
         return list;
     }
     
-     public void deleteCollect(Collection c) throws IOException,SQLException {
-         
-        
-         
-        if (ds == null) {
-            throw new SQLException("ds is null; Can't get data source");
-        }
+     public void deleteCollect(Collection c) throws IOException, SQLException {
 
-        Connection conn = ds.getConnection();
+       if (ds == null) {
+           throw new SQLException("ds is null; Can't get data source");
+       }
 
-        if (conn == null) {
-            throw new SQLException("conn is null; Can't get db connection");
-        }
+       Connection conn = ds.getConnection();
 
-        
+       if (conn == null) {
+           throw new SQLException("conn is null; Can't get db connection");
+       }
+
+       PreparedStatement ps = conn.prepareStatement(
+           "DELETE FROM collection WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='john';"
+       );
+
+
+       PreparedStatement ps2 = conn.prepareStatement(
+           "DELETE FROM collection_items WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='john';"
+       );
        
-            PreparedStatement ps = conn.prepareStatement(
-                "DELETE FROM collection_items WHERE COLLECTION_NAME=? " 
-            );
-            // retrieve book data from database
-           try {
-            ps.setString(1, c.getCollectionName());
-            
-            
-
-            ps.executeUpdate();
-        } finally {
-            conn.close();
-        }
-     }
-       
-    
+       // retrieve book data from database
+       try {
+           ps2.executeQuery();
+           ps.executeQuery();
+       } finally {
+           conn.close();
+       }
+   }
 }
