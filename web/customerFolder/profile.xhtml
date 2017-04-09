@@ -29,8 +29,8 @@
                     Right now, only our registered users can create and manage a collection, so you should sign up now for free! Takes mere seconds!
                 </h3>
                 
-                <p:dataTable id="collectionTable2" var="collection" value="#{collectionsBean.collections}"
-                             selectionMode="single" selection="#{collectionsBean.selectedCollection}" 
+                <p:dataTable id="collectionTable2" var="collection" value="#{profileBean.collections}"
+                             selectionMode="single" selection="#{profileBean.selectedCollection}" 
                              rowKey="#{collection.collectionName}" >
                     <f:facet name="header">
                         Some Of Our Awesome Collections
@@ -45,7 +45,7 @@
                             <p:inputText value="#{collection.collectionName}" required="true" label="text">
                             </p:inputText>
                             
-                            <p:ajax event="save" listener="#{collectionsBean.updateCollect(collection)}"></p:ajax>
+                            <p:ajax event="save" listener="#{profileBean.updateCollect(collection)}"></p:ajax>
                                                                                                                                                                                                                                                                                                                                              
                         
                         </p:inplace>
@@ -64,18 +64,18 @@
                     </p:column>
                      <p:column colspan="2">
                          <p:commandButton id="deleteCollection" icon="ui-icon-trash"  
-                                          actionListener="#{collectionsBean.deleteCollect(collection)}" update="@form" />
+                                          actionListener="#{profileBean.deleteCollect(collection)}" update="@form" />
                          
                         
                     </p:column>
                     <f:facet name="footer">
-                        In total there are #{collectionsBean.collections.size()} collections!
+                        In total there are #{profileBean.collections.size()} collections!
                     </f:facet>
                 </p:dataTable>
             </p:fieldset>
             <p:dialog header="Collection Info" widgetVar="collectionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="collectionDetail" style="text-align:center;">
-                    <p:panelGrid  columns="2" rendered="#{not empty collectionsBean.selectedCollection}" >
+                    <p:panelGrid  columns="2" rendered="#{not empty profileBean.selectedCollection}" >
                         
                         <p:column>
                             <p:graphicImage name="pictures/default.png"/>Would love to see this work! But I can't get the name right
@@ -83,9 +83,9 @@
                         </p:column>
                         
                         <p:column>
-                            <p:dataTable var="record" value="#{collectionsBean.selectedCollection.records}">
+                            <p:dataTable var="record" value="#{profileBean.selectedCollection.records}">
                                 <f:facet name="header">
-                                    Records in #{collectionsBean.selectedCollection.collectionName}
+                                    Records in #{profileBean.selectedCollection.collectionName}
                                 </f:facet>
                                 <p:column>
                                     #{record.title}
