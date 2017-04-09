@@ -24,16 +24,14 @@
             </p:toolbar>
             <p:fieldset style="margin-bottom:20px" id="collectionField" >
                 <h3 style=" background-color: white; color: black; text-align: center; padding: 10px"  >
-                    Vircoms offers collectors the flexibility and reliability of database management software with the convenience of a browser.
-                    Since our services are offered in the browser, you can access your musical collection anywhere anytime. 
-                    Right now, only our registered users can create and manage a collection, so you should sign up now for free! Takes mere seconds!
+                                Here Are All Your Collections !!!!!
                 </h3>
                 
                 <p:dataTable id="collectionTable2" var="collection" value="#{profileBean.collections}"
                              selectionMode="single" selection="#{profileBean.selectedCollection}" 
                              rowKey="#{collection.collectionName}" >
                     <f:facet name="header">
-                        Some Of Our Awesome Collections
+                       My Collections
                     </f:facet>
 
                     <p:column headerText="Collection Name">
@@ -63,10 +61,11 @@
                         
                     </p:column>
                      <p:column colspan="2">
-                         <p:commandButton id="deleteCollection" icon="ui-icon-trash"  
-                                          actionListener="#{profileBean.deleteCollect(collection)}" update="@form" />
                          
-                        
+                         <h:commandButton value ="delete" action="#{profileBean.deleteCollect(collection)}">
+                         <f:ajax render="collectionTable2"/>
+                         
+                         </h:commandButton>
                     </p:column>
                     <f:facet name="footer">
                         In total there are #{profileBean.collections.size()} collections!
@@ -78,7 +77,7 @@
                     <p:panelGrid  columns="2" rendered="#{not empty profileBean.selectedCollection}" >
                         
                         <p:column>
-                            <p:graphicImage name="pictures/default.png"/>Would love to see this work! But I can't get the name right
+                            
                             <img src="pictures/default.png"/>
                         </p:column>
                         
@@ -89,6 +88,18 @@
                                 </f:facet>
                                 <p:column>
                                     #{record.title}
+                                </p:column>
+                                <p:column>
+                                    #{record.artist}
+                                </p:column>
+                                <p:column>
+                                    #{record.genre}
+                                </p:column>
+                                <p:column>
+                                    #{record.numberOfTracks}
+                                </p:column>
+                                <p:column>
+                                    #{record.releaseYear}
                                 </p:column>
                             </p:dataTable>
                         </p:column>
