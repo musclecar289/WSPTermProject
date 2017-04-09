@@ -22,6 +22,7 @@
             </f:facet>
         </p:toolbar>
         <p:fieldset style="margin-bottom:20px">
+            
             <h:form id="albumSearch">
                 <h3>Album Search</h3>
                 <h:panelGrid columns="2">
@@ -35,9 +36,10 @@
                     <h:message for="addAlbum" 
                                errorStyle="color: red" infoStyle="color: green" />-->
                 </h:panelGrid>
+                <center>
                 <p:dataTable id="albumSearchList" value="#{albumSearchBean.albums}" 
                              var="album" resizableColumns="true" rows="10" 
-                             style="margin-bottom:20px" scrollable="true" 
+                             style="margin-bottom:20px;width:75%" scrollable="true" 
                              draggableColumns="true" scrollHeight="600">
 
                     <!--<p:column headerText="Id" >
@@ -45,11 +47,11 @@
                         <h:outputText value="#{album.getId()}" />
                     </p:column>-->
                     <p:column headerText="Name" >
-                        <f:facet name="header">Name</f:facet>                                        
-                        <img src="#{album.images.get(0).getUrl()}" />
+                        <f:facet name="header">Cover Art:</f:facet>                                        
+                        <img style="width:25%"  src="#{album.images.get(0).getUrl()}" />
                     </p:column>
                     <p:column headerText="Name" >
-                        <f:facet name="header">Name</f:facet>                                        
+                        <f:facet name="header">Title</f:facet>                                        
                         <h:outputText value="#{album.getName()}" />
                     </p:column>
                     <!--<p:column headerText="href" >
@@ -63,7 +65,7 @@
 
 
                 </p:dataTable>
-
+                </center>
             </h:form>
         </p:fieldset>
 
