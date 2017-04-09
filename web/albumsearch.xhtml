@@ -24,32 +24,30 @@
         <p:fieldset style="margin-bottom:20px">
             <h:form id="albumSearch">
                 <h3>Album Search</h3>
-                <h:panelGrid columns="1">
+                <h:panelGrid columns="2">
                     <p:inputText id="albumToFind" value="#{albumSearchBean.title}"/>
                     <!--<h:message for="albumToFind" 
                                errorStyle="color: red" infoStyle="color: green" />-->
 
                     <p:commandButton id="albumSearch" value="Search" action="#{albumSearchBean.albumSearch()}" update="albumSearchList"/>
 
-                    <p:selectOneListbox>
-                        <f:selectItems value="#{albumSearchBean.albums}" var="simpleAlbum" itemValue="#{simpleAlbum.getId()}"/>
-                    </p:selectOneListbox>
                     <!--<h:commandButton id="addAlbum" value="Add Album" action=""/>
                     <h:message for="addAlbum" 
                                errorStyle="color: red" infoStyle="color: green" />-->
                 </h:panelGrid>
                 <p:dataTable id="albumSearchList" value="#{albumSearchBean.albums}" 
                              var="album" resizableColumns="true" rows="10" 
-                             paginator="true" style="margin-bottom:20px" 
-                             draggableColumns="true" paginatorPosition="bottom"
-                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
-                             {PageLinks} {NextPageLink} {LastPageLink} 
-                             {RowsPerPageDropdown}" rowsPerPageTemplate="10,25,50,100">
+                             style="margin-bottom:20px" scrollable="true" 
+                             draggableColumns="true" scrollHeight="600">
 
                     <!--<p:column headerText="Id" >
                         <f:facet name="header">Album ID</f:facet>                                        
                         <h:outputText value="#{album.getId()}" />
                     </p:column>-->
+                    <p:column headerText="Name" >
+                        <f:facet name="header">Name</f:facet>                                        
+                        <img src="#{album.images.get(0).getUrl()}" />
+                    </p:column>
                     <p:column headerText="Name" >
                         <f:facet name="header">Name</f:facet>                                        
                         <h:outputText value="#{album.getName()}" />
