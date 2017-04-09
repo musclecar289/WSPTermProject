@@ -154,22 +154,20 @@ public class CollectionsBean implements Serializable {
        PreparedStatement ps = conn.prepareStatement(
            "DELETE FROM collection WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='john';"
        );
-
-
        PreparedStatement ps2 = conn.prepareStatement(
            "DELETE FROM collection_items WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='john';"
        );
        
        // retrieve book data from database
        try {
-           
-           
-           ps2.executeUpdate();
-           ps.executeUpdate();
+           ps2.executeQuery();
+           ps.executeQuery();
        } finally {
            conn.close();
        }
    }
+
+
      
      public void updateCollect(Collection c) throws IOException, SQLException {
 
