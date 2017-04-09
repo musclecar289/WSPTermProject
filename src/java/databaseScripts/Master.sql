@@ -38,9 +38,22 @@ insert into USERTABLE (username, email, password)
     values ('john','john@uco.edu',
         'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc7');
 insert into GROUPTABLE (groupname, username) values ('customergroup', 'john');
-
-
-
+insert into USERTABLE (username, email, password)
+    values ('nick','nick@uco.edu',
+        'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc7');
+insert into GROUPTABLE (groupname, username) values ('customergroup', 'nick');
+insert into USERTABLE (username, email, password)
+    values ('caleb','caleb@uco.edu',
+        'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc7');
+insert into GROUPTABLE (groupname, username) values ('customergroup', 'caleb');
+insert into USERTABLE (username, email, password)
+    values ('juan','juan@uco.edu',
+        'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc7');
+insert into GROUPTABLE (groupname, username) values ('customergroup', 'juan');
+insert into USERTABLE (username, email, password)
+    values ('seth','seth@uco.edu',
+        'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc7');
+insert into GROUPTABLE (groupname, username) values ('customergroup', 'seth');
 
 -----------------------------------Album.sql------------------------------------
 create table ALBUMTABLE (
@@ -92,7 +105,7 @@ insert into ALBUMTABLE (TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, 
 
 ---------------------------------Collection.sql---------------------------------
 create table COLLECTION (
-	COLLECTION_NAME VARCHAR(20) NOT NULL,
+	COLLECTION_NAME VARCHAR(50) NOT NULL,
 	OWNER VARCHAR(255),
 	primary key (COLLECTION_NAME, OWNER),
 	foreign key (OWNER) references USERTABLE(USERNAME)
@@ -102,6 +115,22 @@ insert into COLLECTION (COLLECTION_NAME, OWNER)
     values ('My First Collection', 'john');
 insert into COLLECTION (COLLECTION_NAME, OWNER)
     values ('My Second Collection', 'john');
+insert into COLLECTION (COLLECTION_NAME, OWNER)
+    values ('Nicks First Collection', 'nick');
+insert into COLLECTION (COLLECTION_NAME, OWNER)
+    values ('Nicks Second Collection', 'nick');
+insert into COLLECTION (COLLECTION_NAME, OWNER)
+    values ('Calebs First Collection', 'caleb');
+insert into COLLECTION (COLLECTION_NAME, OWNER)
+    values ('Calebs Second Collection', 'caleb');
+insert into COLLECTION (COLLECTION_NAME, OWNER)
+    values ('Juans First Collection', 'juan');
+insert into COLLECTION (COLLECTION_NAME, OWNER)
+    values ('Juans Second Collection', 'juan');
+insert into COLLECTION (COLLECTION_NAME, OWNER)
+    values ('Seths First Collection', 'seth');
+insert into COLLECTION (COLLECTION_NAME, OWNER)
+    values ('Seths Second Collection', 'seth');
 
 
 
@@ -129,33 +158,107 @@ insert into ALBUM_TRACKS (TRACKNUMBER, NAME, ALBUM, SIDE, TRACKLENGTH)
 
 
 ------------------------------CollectionItems.sql-------------------------------
-create table COLLECTION_ITEMS (
+create table COLLECTION_ITEMS(
 	ALBUM_ID INT,
-	COLLECTION_NAME VARCHAR(20),
-	primary key (album_ID, collection_name),
+	COLLECTION_NAME VARCHAR(50),
+        OWNER VARCHAR(255),
+	primary key (album_ID, collection_name, owner),
 	foreign key (album_ID) references ALBUMTABLE(album_ID),
-	foreign key (collection_name) references COLLECTION(collection_name)
+	foreign key (collection_name) references COLLECTION(collection_name),
+        foreign key (owner) references USERTABLE(username)
 );
 
-insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME)
-    values (1, 'My First Collection');
-insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME)
-    values (3, 'My First Collection');
-insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME)
-    values (5, 'My First Collection');
-insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME)
-    values (7, 'My First Collection');
-insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME)
-    values (1, 'My Second Collection');
-insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME)
-    values (2, 'My Second Collection');
-insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME)
-    values (4, 'My Second Collection');
-insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME)
-    values (6, 'My Second Collection');
-insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME)
-    values (8, 'My Second Collection');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (1, 'My First Collection', 'john');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (3, 'My First Collection', 'john');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (5, 'My First Collection', 'john');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (7, 'My First Collection', 'john');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (1, 'My Second Collection', 'john');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (2, 'My Second Collection', 'john');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (4, 'My Second Collection', 'john');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (6, 'My Second Collection', 'john');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (8, 'My Second Collection', 'john');
 
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (1, 'Nicks First Collection', 'nick');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (3, 'Nicks First Collection', 'nick');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (5, 'Nicks First Collection', 'nick');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (7, 'Nicks First Collection', 'nick');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (1, 'Nicks Second Collection', 'nick');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (2, 'Nicks Second Collection', 'nick');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (4, 'Nicks Second Collection', 'nick');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (6, 'Nicks Second Collection', 'nick');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (8, 'Nicks Second Collection', 'nick');
 
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (1, 'Calebs First Collection', 'caleb');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (3, 'Calebs First Collection', 'caleb');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (5, 'Calebs First Collection', 'caleb');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (7, 'Calebs First Collection', 'caleb');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (1, 'Calebs Second Collection', 'caleb');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (2, 'Calebs Second Collection', 'caleb');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (4, 'Calebs Second Collection', 'caleb');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (6, 'Calebs Second Collection', 'caleb');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (8, 'Calebs Second Collection', 'caleb');
 
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (1, 'Juans First Collection', 'juan');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (3, 'Juans First Collection', 'juan');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (5, 'Juans First Collection', 'juan');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (7, 'Juans First Collection', 'juan');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (1, 'Juans Second Collection', 'juan');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (2, 'Juans Second Collection', 'juan');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (4, 'Juans Second Collection', 'juan');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (6, 'Juans Second Collection', 'juan');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (8, 'Juans Second Collection', 'juan');
 
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (1, 'Seths First Collection', 'seth');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (3, 'Seths First Collection', 'seth');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (5, 'Seths First Collection', 'seth');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (7, 'Seths First Collection', 'seth');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (1, 'Seths Second Collection', 'seth');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (2, 'Seths Second Collection', 'seth');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (4, 'Seths Second Collection', 'seth');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (6, 'Seths Second Collection', 'seth');
+insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
+    values (8, 'Seths Second Collection', 'seth');

@@ -20,9 +20,9 @@ import javax.sql.DataSource;
  *
  * @author Nicholas Clemmons
  */
-@Named(value = "collectionsBean")
+@Named(value = "profileBean")
 @SessionScoped
-public class CollectionsBean implements Serializable {
+public class ProfileBean implements Serializable {
 
     //resource injection
     @Resource(name = "jdbc/ds_wsp")
