@@ -12,7 +12,7 @@
             Welcome #{facesContext.externalContext.userPrincipal.name}</h1>
         <br />
 
-         <h:form id="form">            
+         <h:form id="form1">            
             <p:toolbar>
                 <f:facet name="right">
                     <h:link value="User Login" outcome="/customerFolder/profile" />
@@ -37,7 +37,20 @@
                     </f:facet>
 
                     <p:column headerText="Collection Name">
-                        <h:outputText value="#{collection.collectionName}" />
+                        
+                        <p:inplace id="ajax2" editor="true">
+                            
+                           
+                        
+                            <p:inputText value="#{collection.collectionName}" required="true" label="text">
+                            </p:inputText>
+                            
+                            <p:ajax event="save" listener="#{collectionsBean.updateCollect(collection)}"></p:ajax>
+                                                                                                                                                                                                                                                                                                                                               " />
+                        
+                        </p:inplace>
+                       
+                       
                     </p:column>
 
                     <p:column headerText="Number of Records">
@@ -45,12 +58,15 @@
                     </p:column>
 
                     <p:column colspan="2">
-                        <p:commandButton process="collectionTable2" update=":form:collectionTable2" value="View"
+                        <p:commandButton process="collectionTable2" update=":form1:collectionTable2" value="View"
                                          icon="ui-icon-search"  oncomplete="PF('collectionDialog').show()" />
                         
                     </p:column>
                      <p:column colspan="2">
-                         <p:commandButton id="deleteCollection" icon="ui-icon-trash" value="Delete" update=":form:collectionTable2" action="#{collectionsBean.deleteCollect(collection.collectionName)}"/>
+                         <p:commandButton id="deleteCollection" icon="ui-icon-trash"  
+                                          actionListener="#{collectionsBean.deleteCollect(collection)}" update="@form" />
+                         
+                        
                     </p:column>
                     <f:facet name="footer">
                         In total there are #{collectionsBean.collections.size()} collections!

@@ -162,10 +162,46 @@ public class CollectionsBean implements Serializable {
        
        // retrieve book data from database
        try {
-           ps2.executeQuery();
-           ps.executeQuery();
+           
+           
+           ps2.executeUpdate();
+           ps.executeUpdate();
        } finally {
            conn.close();
        }
    }
+     
+     public void updateCollect(Collection c) throws IOException, SQLException {
+
+       if (ds == null) {
+           throw new SQLException("ds is null; Can't get data source");
+       }
+
+       Connection conn = ds.getConnection();
+
+       if (conn == null) {
+           throw new SQLException("conn is null; Can't get db connection");
+       }
+
+       PreparedStatement ps = conn.prepareStatement(
+           "UPDATE COLLECTION SET COLLECTION_NAME = ? WHERE OWNER='john'"
+       );
+        try {
+            ps.setString(1, c.getCollectionName());
+           
+            ps.executeUpdate();
+        
+
+      
+       
+      
+         
+          
+       } finally {
+           conn.close();
+       }
+   }
+
+
+     
 }
