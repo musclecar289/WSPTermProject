@@ -182,7 +182,7 @@ public class CollectionsBean implements Serializable {
        }
 
        PreparedStatement ps = conn.prepareStatement(
-           "UPDATE COLLECTION SET COLLECTION_NAME = ? WHERE OWNER='john'"
+           "UPDATE COLLECTION SET COLLECTION_NAME = ? WHERE OWNER='john';"
        );
         try {
             ps.setString(1, c.getCollectionName());
