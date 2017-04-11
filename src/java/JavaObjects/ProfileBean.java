@@ -2,6 +2,7 @@ package JavaObjects;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.security.Principal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +14,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.sql.DataSource;
 
@@ -20,9 +22,9 @@ import javax.sql.DataSource;
  *
  * @author Nicholas Clemmons
  */
-@Named(value = "collectionsBean")
+@Named(value = "profileBean")
 @SessionScoped
-public class CollectionsBean implements Serializable {
+public class ProfileBean implements Serializable {
 
     //resource injection
     @Resource(name = "jdbc/ds_wsp")
@@ -32,10 +34,14 @@ public class CollectionsBean implements Serializable {
     private int numberOfCollections;
     private Collection selectedCollection;
     private Album selectedRecord;
+    private String username;
 
     @PostConstruct
     public void init() {
         try {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            Principal p = fc.getExternalContext().getUserPrincipal();
+            username = p.getName();
             collections = loadCollections();
             numberOfCollections = collections.size();
         } catch (SQLException ex) {
@@ -47,6 +53,15 @@ public class CollectionsBean implements Serializable {
         return collections;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    
     public List<Album> loadAlbums(String collection_name) throws SQLException {
 
         if (ds == null) {
@@ -130,16 +145,18 @@ public class CollectionsBean implements Serializable {
 
         try {
             PreparedStatement ps = conn.prepareStatement(
-                "SELECT collection_name, COUNT(*) FROM collection_items GROUP BY collection_name;"
+                "SELECT collection_name, COUNT(*) FROM collection_items WHERE OWNER = '"+username+"' GROUP BY collection_name "
             );
             // retrieve book data from database
             ResultSet result = ps.executeQuery();
             
             while (result.next()) {
                 Collection c = new Collection();
+                UserBean s = new UserBean();
                 c.setCollectionName(result.getString("collection_name"));
                 c.setNumberOfRecords(result.getInt("COUNT(*)"));
                 c.setRecords(this.loadAlbums(c.getCollectionName()));
+               
                 list.add(c);
             }
         } finally {
@@ -162,16 +179,16 @@ public class CollectionsBean implements Serializable {
        }
 
        PreparedStatement ps = conn.prepareStatement(
-           "DELETE FROM collection WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='john';"
+           "DELETE FROM collection WHERE COLLECTION_NAME='My First Collection' AND OWNER='john'"
        );
        PreparedStatement ps2 = conn.prepareStatement(
-           "DELETE FROM collection_items WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='john';"
+           "DELETE FROM collection_items WHERE COLLECTION_NAME='My First Collection' AND OWNER='john'"
        );
        
        // retrieve book data from database
        try {
-           ps2.executeQuery();
-           ps.executeQuery();
+           ps2.executeUpdate();
+           ps.executeUpdate();
        } finally {
            conn.close();
        }
@@ -179,36 +196,7 @@ public class CollectionsBean implements Serializable {
 
 
      
-     public void updateCollect(Collection c) throws IOException, SQLException {
-
-       if (ds == null) {
-           throw new SQLException("ds is null; Can't get data source");
-       }
-
-       Connection conn = ds.getConnection();
-
-       if (conn == null) {
-           throw new SQLException("conn is null; Can't get db connection");
-       }
-
-       PreparedStatement ps = conn.prepareStatement(
-           "UPDATE COLLECTION SET COLLECTION_NAME = ? WHERE OWNER='john';"
-       );
-        try {
-            ps.setString(1, c.getCollectionName());
-           
-            ps.executeUpdate();
-        
-
-      
-       
-      
-         
-          
-       } finally {
-           conn.close();
-       }
-   }
+     
 
 
      

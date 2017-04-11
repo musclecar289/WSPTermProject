@@ -144,7 +144,6 @@ public class RegisteredBean implements Serializable {
         } finally {
             conn.close();
         }
-
     }
 
     public void newMessageTwo() throws IOException, SQLException {
@@ -259,7 +258,7 @@ public class RegisteredBean implements Serializable {
 
         try {
             PreparedStatement ps = conn.prepareStatement(
-                    "select * from usertable" //this works now! Yippie!
+                    "select * from usertable"
             );
 
             // retrieve customer data from database
@@ -603,7 +602,6 @@ public class RegisteredBean implements Serializable {
         } finally {
             conn.close();
         }
-
     }
 
     @PostConstruct
@@ -619,5 +617,4 @@ public class RegisteredBean implements Serializable {
         c1 = new Customer();
 
     }
-
 }
