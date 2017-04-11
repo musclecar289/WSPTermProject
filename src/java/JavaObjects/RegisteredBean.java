@@ -37,13 +37,10 @@ public class RegisteredBean implements Serializable {
 
     @Size(min = 3, message = "Greater than 2 Characters")
     private String password;
-
     private String email;
-
     private String groupname;
-
-    Customer c1;
     private List<Customer> customers;
+    Customer c1;
 
     @Size(min = 3, message = "Greater than 2 Characters")
     public String getUsername() {
@@ -114,7 +111,7 @@ public class RegisteredBean implements Serializable {
             c2.setGroup(group);
             c2.setPassword(password);
             c2.setEmail(email);
-//            customers.add(c2);
+            customers.add(c2);
 
             System.out.println(" username = " + username);
 
@@ -147,7 +144,6 @@ public class RegisteredBean implements Serializable {
         } finally {
             conn.close();
         }
-        refresh();
     }
 
     public void newMessageTwo() throws IOException, SQLException {
@@ -177,7 +173,7 @@ public class RegisteredBean implements Serializable {
             c2.setGroup(group);
             c2.setPassword(password);
             c2.setEmail(email);
-//            customers.add(c2);
+            customers.add(c2);
 
             System.out.println(" username = " + username);
             // into usertable
@@ -191,7 +187,7 @@ public class RegisteredBean implements Serializable {
 
             //ps.executeQuery();            
             ps.executeUpdate();
-            System.out.println("group" + group);
+            System.out.println("group = " + group);
 
             //checks if its part of both groups
             if (!group.equals("customergroup, admingroup")) {
@@ -242,7 +238,6 @@ public class RegisteredBean implements Serializable {
         } finally {
             conn.close();
         }
-        refresh();
     }
 
     public List<Customer> getArrayCust() throws SQLException {
@@ -263,7 +258,7 @@ public class RegisteredBean implements Serializable {
 
         try {
             PreparedStatement ps = conn.prepareStatement(
-                    "select USERNAME, EMAIL, ID from usertable"
+                    "select * from usertable"
             );
 
             // retrieve customer data from database
@@ -275,10 +270,9 @@ public class RegisteredBean implements Serializable {
                 c.setEmail(result.getString("EMAIL"));
 
                 list.add(c);
-                conn.commit();
-                committed = true;
             }
-
+            conn.commit();
+            committed = true;
         } finally {
             conn.close();
         }
@@ -400,67 +394,132 @@ public class RegisteredBean implements Serializable {
             setUsername(player.username);
             setEmail(player.email);
             setGroupname(player.group);
-            System.out.println("group name" + tempgroup);
+            
 
-            if (!player.group.equals("customergroup, admingroup")) {
+            //main if
+            if (!player.group.equals("customergroup, admingroup") && !player.group.equals("admingroup, customergroup")){
+                    
 
-                //updates email in usertable
-                PreparedStatement ps = conn.prepareStatement(
-                        "UPDATE usertable set Email=? where USERNAME = ?"
-                );
+                PreparedStatement ps5 = conn.prepareStatement(
+                        "select * from grouptable where username = ?");
 
-                ps.setString(1, player.email);
-                ps.setString(2, player.username);
+                ps5.setString(1, player.username);
 
-                ps.executeUpdate();
+                // retrieve customer data from database
+                ResultSet result = ps5.executeQuery();
 
-                // updates group in group table
-                PreparedStatement ps2 = conn.prepareStatement(
-                        "UPDATE grouptable set GROUPNAME=? where USERNAME = ?"
-                );
+                List<Customer> accessArray = new ArrayList<>();
+                while (result.next()) {
+                    Customer c = new Customer();
+                    c.setUsername(result.getString("USERNAME"));
+                    c.setGroup(result.getString("GROUPNAME"));
 
-                ps2.setString(1, player.group);
-                ps2.setString(2, player.username);
+                    accessArray.add(c);
+                }
 
-                ps2.executeUpdate();
-                System.out.println("in if");
-            } else {
+                if (accessArray.size() == 2) {
+
+                    if (player.group.equals("customergroup")) {
+                        // System.out.println("size = " + accessArray.size());
+                        PreparedStatement ps1 = conn.prepareStatement(
+                                "delete from grouptable where USERNAME = ? and GROUPNAME= ?"
+                        );
+
+                        ps1.setString(1, player.username);
+                        ps1.setString(2, "admingroup");
+                        ps1.executeUpdate();
+                        conn.commit();
+                        ps1.executeUpdate();
+                    } else {
+                        PreparedStatement ps1 = conn.prepareStatement(
+                                "delete from grouptable where USERNAME = ? and GROUPNAME= ?"
+                        );
+
+                        ps1.setString(1, player.username);
+                        ps1.setString(2, "customergroup");
+                        ps1.executeUpdate();
+                        conn.commit();
+                        ps1.executeUpdate();
+                    }
+                    //size == 1
+                } else {
+
+//                 updates group in group table
+                    PreparedStatement ps2 = conn.prepareStatement(
+                            "UPDATE grouptable set GROUPNAME=? where USERNAME = ?"
+                    );
+                    ps2.setString(1, player.group);
+                    ps2.setString(2, player.username);
+
+                    ps2.executeUpdate();
+                }
+                //else of main if
+             } else {
+                System.out.println("in else main if");
                 // group is both
 
-                //updates email in usertable
-                PreparedStatement ps = conn.prepareStatement(
-                        "UPDATE usertable set Email=? where USERNAME = ?"
-                );
+                if (player.group.equals("customergroup, admingroup")) {
 
-                ps.setString(1, player.email);
-                ps.setString(2, player.username);
+                    // updates group in group table
+                    PreparedStatement ps2 = conn.prepareStatement(
+                            "UPDATE grouptable set GROUPNAME=? where USERNAME = ?"
+                    );
 
-                ps.executeUpdate();
+                    ps2.setString(1, "customergroup");
+                    ps2.setString(2, player.username);
+                    ps2.executeUpdate();
 
-                // updates group in group table
-                PreparedStatement ps2 = conn.prepareStatement(
-                        "UPDATE grouptable set GROUPNAME=? where USERNAME = ?"
-                );
+                    //into grouptable
+                    PreparedStatement ps3 = conn.prepareStatement(
+                            "Insert into GROUPTABLE (groupname, username)values(?,?)"
+                    );
 
-                ps2.setString(1, "customergroup");
-                ps2.setString(2, player.username);
-                ps2.executeUpdate();
+                    ps3.setString(1, "admingroup");
+                    ps3.setString(2, username);
 
-                //into grouptable
-                PreparedStatement ps3 = conn.prepareStatement(
-                        "Insert into GROUPTABLE (groupname, username)values(?,?)"
-                );
+                    //ps.executeQuery();            
+                    ps3.executeUpdate();
 
-                ps3.setString(1, "admingroup");
-                ps3.setString(2, username);
+                    conn.commit();
+//                System.out.println("in else");
+                } else {
+                    System.out.println("in admin cust");
+                    
 
-                //ps.executeQuery();            
-                ps3.executeUpdate();
+                        // updates group in group table
+                        PreparedStatement ps2 = conn.prepareStatement(
+                                "UPDATE grouptable set GROUPNAME=? where USERNAME = ?"
+                        );
 
-                conn.commit();
-                System.out.println("in else");
+                        ps2.setString(1, "admingroup");
+                        ps2.setString(2, player.username);
+                        ps2.executeUpdate();
+
+                        //into grouptable
+                        PreparedStatement ps3 = conn.prepareStatement(
+                                "Insert into grouptable (groupname, username)values(?,?)"
+                        );
+
+                        ps3.setString(1, "customergroup");
+                        ps3.setString(2, username);
+
+                        //ps.executeQuery();            
+                        ps3.executeUpdate();
+
+                        conn.commit();
+
+                    
+                }
             }
+            //updates email in usertable
+            PreparedStatement ps = conn.prepareStatement(
+                    "UPDATE usertable set Email=? where USERNAME = ?"
+            );
 
+            ps.setString(1, player.email);
+            ps.setString(2, player.username);
+
+            ps.executeUpdate();
             player.setEdited(false);
 
             conn.close();
@@ -538,12 +597,11 @@ public class RegisteredBean implements Serializable {
 
             }
             conn.close();
-//            customers.remove(player);
+            customers.remove(player);
 
         } finally {
             conn.close();
         }
-        refresh();
     }
 
     @PostConstruct
@@ -554,21 +612,9 @@ public class RegisteredBean implements Serializable {
         try {
             customers = loadCustomers();
         } catch (SQLException ex) {
-            Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         c1 = new Customer();
 
     }
-
-    public String refresh() {
-
-        try {
-            customers = loadCustomers();
-        } catch (SQLException ex) {
-            Logger.getLogger(RegisteredBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return null;
-    }
-
 }
