@@ -2,29 +2,38 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>admin home</title>
         <style type="text/css">
-            p{
+/*            p{
                   background-color:black;
                   color:white;
                   text-align:right;
                   padding: 5px;             
                   
-              }
-            </style>
+              }*/
+        </style>
     </h:head>
     <h:body>
-        <p> 
-            <h:button value="Home" outcome="/index" style="background: limegreen" />
-            <h:button value="Manage Database" outcome="dbmanage" style="background: limegreen" />
-            <h:button value="Logout" outcome="/logout" style="background:limegreen" />       
+        <p:toolbar>
+          <f:facet name="right">
+            <h:link value="Home" outcome="/index" />
+            <span class="ui-separator">
+              <span class="ui-icon ui-icon-grip-dotted-vertical" />
+            </span>
+            <h:link value="Manage Database" outcome="dbmanage" />
+            <span class="ui-separator">
+              <span class="ui-icon ui-icon-grip-dotted-vertical" />
+            </span>
+            <h:link value="Logout" outcome="/logout" />
+          </f:facet>
+        </p:toolbar>
         
-            <h1 style=" background-color: grey; color: white; text-align: center; padding: 10px" >
-                Welcome #{facesContext.externalContext.userPrincipal.name}
-            </h1>
-        </p>
+        <h1 style=" background-color: grey; color: white; text-align: center; padding: 10px" >
+            Welcome #{facesContext.externalContext.userPrincipal.name}
+        </h1>
         <h:form id="componentForm">
             
             <h1 align="center"><i>Add User</i></h1>
