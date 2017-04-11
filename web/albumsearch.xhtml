@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Album Search</title>
+    </h:head>
+    <h:body>
+        <p:toolbar>
+            <f:facet name="right">
+                <h:link  value="Vircoms" outcome="/index" />
+                <span class="ui-separator">
+                    <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                </span>
+                <h:link value="User Login" outcome="/customerFolder/profile" />
+                <span class="ui-separator">
+                    <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                </span>
+                <h:link value="Reset Password" outcome="/resetPassword" />
+            </f:facet>
+        </p:toolbar>
+        <p:fieldset style="margin-bottom:20px">
+            
+            <h:form id="albumSearch">
+                <h3>Album Search</h3>
+                <h:panelGrid columns="2">
+                    <p:inputText id="albumToFind" value="#{albumSearchBean.title}"/>
+                    <!--<h:message for="albumToFind" 
+                               errorStyle="color: red" infoStyle="color: green" />-->
+
+                    <p:commandButton id="albumSearch" value="Search" action="#{albumSearchBean.albumSearch()}" update="albumSearchList"/>
+
+                    <!--<h:commandButton id="addAlbum" value="Add Album" action=""/>
+                    <h:message for="addAlbum" 
+                               errorStyle="color: red" infoStyle="color: green" />-->
+                </h:panelGrid>
+                <center>
+                <p:dataTable id="albumSearchList" value="#{albumSearchBean.albums}" 
+                             var="album" resizableColumns="true" rows="10" 
+                             style="margin-bottom:20px;width:75%" scrollable="true" 
+                             draggableColumns="true" scrollHeight="600">
+
+                    <!--<p:column headerText="Id" >
+                        <f:facet name="header">Album ID</f:facet>                                        
+                        <h:outputText value="#{album.getId()}" />
+                    </p:column>-->
+                    <p:column headerText="Name" >
+                        <f:facet name="header">Cover Art:</f:facet>                                        
+                        <img style="width:25%"  src="#{album.images.get(0).getUrl()}" />
+                    </p:column>
+                    <p:column headerText="Name" >
+                        <f:facet name="header">Title</f:facet>                                        
+                        <h:outputText value="#{album.getName()}" />
+                    </p:column>
+                    <!--<p:column headerText="href" >
+                        <f:facet name="header">href</f:facet>                                        
+                        <h:outputText value="#{album.getHref()}" />
+                    </p:column>
+                    <p:column headerText="uri" >
+                        <f:facet name="header">uri</f:facet>                                        
+                        <h:outputText value="#{album.getUri()}" />
+                    </p:column>-->
+
+
+                </p:dataTable>
+                </center>
+            </h:form>
+        </p:fieldset>
+
+    </h:body>
+</html>
+

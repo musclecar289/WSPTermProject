@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Collection {
     private String collectionName;
-    private List<Album> records;
+    private List<Record> records;
     private int numberOfRecords;
     private int collectionID;
 
@@ -22,11 +22,11 @@ public class Collection {
         this.collectionName = collectionName;
     }
 
-    public List<Album> getRecords() {
+    public List<Record> getRecords() {
         return records;
     }
 
-    public void setRecords(List<Album> records) {
+    public void setRecords(List<Record> records) {
         this.records = records;
     }
 

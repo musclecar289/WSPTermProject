@@ -47,7 +47,7 @@ public class CollectionsBean implements Serializable {
         return collections;
     }
 
-    public List<Album> loadAlbums(String collection_name) throws SQLException {
+    public List<Record> loadAlbums(String collection_name) throws SQLException {
 
         if (ds == null) {
             throw new SQLException("ds is null; Can't get data source");
@@ -59,7 +59,7 @@ public class CollectionsBean implements Serializable {
             throw new SQLException("conn is null; Can't get db connection");
         }
 
-        List<Album> list = new ArrayList<>();
+        List<Record> list = new ArrayList<>();
 
         try {
             PreparedStatement ps = conn.prepareStatement(
@@ -70,7 +70,7 @@ public class CollectionsBean implements Serializable {
             ResultSet result = ps.executeQuery();
 
             while (result.next()) {
-                Album a = new Album();
+                Record a = new Record();
                 a.setAlbumID(result.getInt("ALBUM_ID"));
                 a.setTitle(result.getString("TITLE"));
                 a.setArtist(result.getString("ARTIST"));
