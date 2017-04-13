@@ -7,6 +7,7 @@ import com.wrapper.spotify.methods.AlbumSearchRequest;
 import com.wrapper.spotify.models.Album;
 import com.wrapper.spotify.models.Page;
 import com.wrapper.spotify.models.SimpleAlbum;
+import com.wrapper.spotify.models.SimpleTrack;
 import java.io.IOException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -34,6 +35,7 @@ public class AlbumSearchBean implements Serializable {
     List<SimpleAlbum> albums;
     Album test;
     Album selectedAlbum;
+    List<SimpleTrack> selectedTracks;
     private String title;
 
     @PostConstruct
@@ -68,7 +70,8 @@ public class AlbumSearchBean implements Serializable {
         AlbumRequest request = api.getAlbum(idToFind).build();
         try {
             test = request.get();
-
+            Page<SimpleTrack> trackList = test.getTracks();
+            selectedTracks = trackList.getItems();
         } catch (IOException | WebApiException ex) {
             Logger.getLogger(AlbumSearchBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -112,6 +115,14 @@ public class AlbumSearchBean implements Serializable {
 
     public void setSelectedAlbum(Album selectedAlbum) {
         this.selectedAlbum = selectedAlbum;
+    }
+
+    public List<SimpleTrack> getSelectedTracks() {
+        return selectedTracks;
+    }
+
+    public void setSelectedTracks(List<SimpleTrack> selectedTracks) {
+        this.selectedTracks = selectedTracks;
     }
     
     

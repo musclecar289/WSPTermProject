@@ -92,6 +92,36 @@
                     
                     <h:outputText value="Released:" />
                     <h:outputText value="#{albumSearchBean.test.getReleaseDate()}" />
+                    
+                    <p:dataTable id="albumTrackList" value="#{albumSearchBean.selectedTracks}" 
+                                 var="track" resizableColumns="true" rows="10" 
+                                 style="width:50%" scrollable="true" 
+                                 draggableColumns="true" scrollHeight="600" >
+
+                        <p:column headerText="Track Number" >
+                            <f:facet name="header">Track Number</f:facet>                                        
+                            <h:outputText value="#{track.getTrackNumber()}" />
+                        </p:column>
+                        <p:column headerText="Title" >
+                            <f:facet name="header">Track Name</f:facet>                                        
+                            <h:outputText value="#{track.getName()}" />
+                        </p:column>
+                        <p:column headerText="Length" >
+                            <f:facet name="header">Length</f:facet>                                        
+                            <h:outputText value="#{track.getDuration()}" />
+                        </p:column>
+                        <p:column headerText="Disc" >
+                            <f:facet name="header">Disc</f:facet>                                        
+                            <h:outputText value="#{track.getDiscNumber()}" />
+                        </p:column>
+                        <p:column headerText="Preview" >
+                            <f:facet name="header">Preview</f:facet>                                        
+                            <h:link value="#{track.getPreviewUrl()}" />
+                        </p:column>
+                        
+                        
+
+                    </p:dataTable>
                     <!--<h:outputText value="#{albumSearchBean.test.getReleaseDatePrecision()}" />-->
                     
                     <!--<h:commandButton id="addAlbum" value="Add Album" action=""/>
