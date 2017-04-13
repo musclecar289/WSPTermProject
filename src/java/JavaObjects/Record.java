@@ -4,11 +4,12 @@ package JavaObjects;
  *
  * @author Nicholas Clemmons
  */
-public class Album {
+public class Record {
     
     private String title;
     private String artist;
     private String genre;
+    private String spotifyAlbumID;
     private int releaseYear;
     private int numberOfTracks;
     private int numberOfDiscs;
@@ -38,6 +39,14 @@ public class Album {
 
     public void setGenre(String genre) {
         this.genre = genre;
+    }
+
+    public String getSpotifyAlbumID() {
+        return spotifyAlbumID;
+    }
+
+    public void setSpotifyAlbumID(String spotifyAlbumID) {
+        this.spotifyAlbumID = spotifyAlbumID;
     }
 
     public int getReleaseYear() {
@@ -91,4 +100,5 @@ public class Album {
     public void setEditable(boolean editable) {
         this.editable = editable;
     }
+    
 }

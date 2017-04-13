@@ -33,7 +33,7 @@ public class ProfileBean implements Serializable {
     private List<Collection> collections;
     private int numberOfCollections;
     private Collection selectedCollection;
-    private Album selectedRecord;
+    private Record selectedRecord;
     private String username;
 
     @PostConstruct
@@ -62,7 +62,7 @@ public class ProfileBean implements Serializable {
     }
 
     
-    public List<Album> loadAlbums(String collection_name) throws SQLException {
+    public List<Record> loadAlbums(String collection_name) throws SQLException {
 
         if (ds == null) {
             throw new SQLException("ds is null; Can't get data source");
@@ -74,7 +74,7 @@ public class ProfileBean implements Serializable {
             throw new SQLException("conn is null; Can't get db connection");
         }
 
-        List<Album> list = new ArrayList<>();
+        List<Record> list = new ArrayList<>();
 
         try {
             PreparedStatement ps = conn.prepareStatement(
@@ -85,7 +85,7 @@ public class ProfileBean implements Serializable {
             ResultSet result = ps.executeQuery();
 
             while (result.next()) {
-                Album a = new Album();
+                Record a = new Record();
                 a.setAlbumID(result.getInt("ALBUM_ID"));
                 a.setTitle(result.getString("TITLE"));
                 a.setArtist(result.getString("ARTIST"));
@@ -120,11 +120,11 @@ public class ProfileBean implements Serializable {
         this.selectedCollection = selectedCollection;
     }
 
-    public Album getSelectedRecord() {
+    public Record getSelectedRecord() {
         return selectedRecord;
     }
 
-    public void setSelectedRecord(Album selectedRecord) {
+    public void setSelectedRecord(Record selectedRecord) {
         this.selectedRecord = selectedRecord;
     }
 
@@ -179,10 +179,10 @@ public class ProfileBean implements Serializable {
        }
 
        PreparedStatement ps = conn.prepareStatement(
-           "DELETE FROM collection WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='"+username+"'"
+           "DELETE FROM collection WHERE COLLECTION_NAME='My First Collection' AND OWNER='john'"
        );
        PreparedStatement ps2 = conn.prepareStatement(
-           "DELETE FROM collection_items WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='"+username+"'"
+           "DELETE FROM collection_items WHERE COLLECTION_NAME='My First Collection' AND OWNER='john'"
        );
        
        // retrieve book data from database
@@ -196,33 +196,7 @@ public class ProfileBean implements Serializable {
 
 
      
-      public void updateCollect(Collection c) throws IOException, SQLException {
-
-       if (ds == null) {
-           throw new SQLException("ds is null; Can't get data source");
-       }
-
-       Connection conn = ds.getConnection();
-
-       if (conn == null) {
-           throw new SQLException("conn is null; Can't get db connection");
-       }
-
-       PreparedStatement ps = conn.prepareStatement(
-           "Update  collection Set COLLECTION_NAME='"+c.getCollectionName()+"' Where OWNER='"+username+"'"
-       );
-       PreparedStatement ps2 = conn.prepareStatement(
-           "Update  collection_items set COLLECTION_NAME='"+c.getCollectionName()+"' Where OWNER='"+username+"'"
-       );
-       
-       // retrieve book data from database
-       try {
-           ps2.executeUpdate();
-           ps.executeUpdate();
-       } finally {
-           conn.close();
-       }
-   }
+     
 
 
      
