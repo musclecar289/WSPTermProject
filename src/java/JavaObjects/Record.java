@@ -4,7 +4,7 @@ package JavaObjects;
  *
  * @author Nicholas Clemmons
  */
-public class Album {
+public class Record {
     
     private String title;
     private String artist;
@@ -13,6 +13,7 @@ public class Album {
     private int numberOfTracks;
     private int numberOfDiscs;
     private int albumID;
+    private String spotifyId;
     private int albumCount;
     private boolean editable;
 
@@ -70,6 +71,14 @@ public class Album {
 
     public void setAlbumID(int albumID) {
         this.albumID = albumID;
+    }
+
+    public String getSpotifyId() {
+        return spotifyId;
+    }
+
+    public void setSpotifyId(String spotifyId) {
+        this.spotifyId = spotifyId;
     }
 
     public int getAlbumCount() {

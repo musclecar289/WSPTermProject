@@ -20,6 +20,7 @@ import javax.sql.DataSource;
  *
  * @author Nicholas Clemmons
  */
+
 @Named(value = "collectionsBean")
 @SessionScoped
 public class CollectionsBean implements Serializable {
@@ -31,7 +32,7 @@ public class CollectionsBean implements Serializable {
     private List<Collection> collections;
     private int numberOfCollections;
     private Collection selectedCollection;
-    private Album selectedRecord;
+    private Record selectedRecord;
 
     @PostConstruct
     public void init() {
@@ -43,11 +44,7 @@ public class CollectionsBean implements Serializable {
         }
     }
 
-    public List<Collection> getCollections() {
-        return collections;
-    }
-
-    public List<Album> loadAlbums(String collection_name) throws SQLException {
+    public List<Record> loadAlbums(String collection_name) throws SQLException {
 
         if (ds == null) {
             throw new SQLException("ds is null; Can't get data source");
@@ -59,18 +56,18 @@ public class CollectionsBean implements Serializable {
             throw new SQLException("conn is null; Can't get db connection");
         }
 
-        List<Album> list = new ArrayList<>();
+        List<Record> list = new ArrayList<>();
 
         try {
             PreparedStatement ps = conn.prepareStatement(
-                "SELECT a.* FROM collection_items AS c JOIN albumtable AS a WHERE a.ALBUM_ID=c.ALBUM_ID and collection_name='"+collection_name+"'"
+                    "SELECT a.* FROM collection_items AS c JOIN albumtable AS a WHERE a.ALBUM_ID=c.ALBUM_ID and collection_name='" + collection_name + "'"
             );
 
             // retrieve book data from database
             ResultSet result = ps.executeQuery();
 
             while (result.next()) {
-                Album a = new Album();
+                Record a = new Record();
                 a.setAlbumID(result.getInt("ALBUM_ID"));
                 a.setTitle(result.getString("TITLE"));
                 a.setArtist(result.getString("ARTIST"));
@@ -89,6 +86,96 @@ public class CollectionsBean implements Serializable {
         return list;
     }
 
+    private List<Collection> loadCollections() throws SQLException {
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
+
+        Connection conn = ds.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
+
+        List<Collection> list = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(
+                    "SELECT collection_name, COUNT(*) FROM collection_items GROUP BY collection_name;"
+            );
+            // retrieve book data from database
+            ResultSet result = ps.executeQuery();
+
+            while (result.next()) {
+                Collection c = new Collection();
+                c.setCollectionName(result.getString("collection_name"));
+                c.setNumberOfRecords(result.getInt("COUNT(*)"));
+                c.setRecords(this.loadAlbums(c.getCollectionName()));
+                list.add(c);
+            }
+        } finally {
+            conn.close();
+        }
+        return list;
+    }
+
+    public void deleteCollect(Collection c) throws IOException, SQLException {
+
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
+
+        Connection conn = ds.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
+
+        PreparedStatement ps = conn.prepareStatement(
+                "DELETE FROM collection WHERE COLLECTION_NAME='" + c.getCollectionName() + "' AND OWNER='john';"
+        );
+        PreparedStatement ps2 = conn.prepareStatement(
+                "DELETE FROM collection_items WHERE COLLECTION_NAME='" + c.getCollectionName() + "' AND OWNER='john';"
+        );
+
+        // retrieve book data from database
+        try {
+            ps2.executeQuery();
+            ps.executeQuery();
+        } finally {
+            conn.close();
+        }
+    }
+
+    public void updateCollect(Collection c) throws IOException, SQLException {
+
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
+
+        Connection conn = ds.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
+
+        PreparedStatement ps = conn.prepareStatement(
+                "UPDATE COLLECTION SET COLLECTION_NAME = ? WHERE OWNER='john';"
+        );
+        try {
+            ps.setString(1, c.getCollectionName());
+
+            ps.executeUpdate();
+
+        } finally {
+            conn.close();
+        }
+    }
+
+    public List<Collection> getCollections() {
+        return collections;
+    }
+
     public int getNumberOfCollections() {
         return numberOfCollections;
     }
@@ -105,112 +192,11 @@ public class CollectionsBean implements Serializable {
         this.selectedCollection = selectedCollection;
     }
 
-    public Album getSelectedRecord() {
+    public Record getSelectedRecord() {
         return selectedRecord;
     }
 
-    public void setSelectedRecord(Album selectedRecord) {
+    public void setSelectedRecord(Record selectedRecord) {
         this.selectedRecord = selectedRecord;
     }
-
-    
-    
-    private List<Collection> loadCollections() throws SQLException {
-        if (ds == null) {
-            throw new SQLException("ds is null; Can't get data source");
-        }
-
-        Connection conn = ds.getConnection();
-
-        if (conn == null) {
-            throw new SQLException("conn is null; Can't get db connection");
-        }
-
-        List<Collection> list = new ArrayList<>();
-
-        try {
-            PreparedStatement ps = conn.prepareStatement(
-                "SELECT collection_name, COUNT(*) FROM collection_items GROUP BY collection_name;"
-            );
-            // retrieve book data from database
-            ResultSet result = ps.executeQuery();
-            
-            while (result.next()) {
-                Collection c = new Collection();
-                c.setCollectionName(result.getString("collection_name"));
-                c.setNumberOfRecords(result.getInt("COUNT(*)"));
-                c.setRecords(this.loadAlbums(c.getCollectionName()));
-                list.add(c);
-            }
-        } finally {
-            conn.close();
-        }
-        return list;
-    }
-    
-
-     public void deleteCollect(Collection c) throws IOException, SQLException {
-
-       if (ds == null) {
-           throw new SQLException("ds is null; Can't get data source");
-       }
-
-       Connection conn = ds.getConnection();
-
-       if (conn == null) {
-           throw new SQLException("conn is null; Can't get db connection");
-       }
-
-       PreparedStatement ps = conn.prepareStatement(
-           "DELETE FROM collection WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='john';"
-       );
-       PreparedStatement ps2 = conn.prepareStatement(
-           "DELETE FROM collection_items WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='john';"
-       );
-       
-       // retrieve book data from database
-       try {
-           ps2.executeQuery();
-           ps.executeQuery();
-       } finally {
-           conn.close();
-       }
-   }
-
-
-     
-     public void updateCollect(Collection c) throws IOException, SQLException {
-
-       if (ds == null) {
-           throw new SQLException("ds is null; Can't get data source");
-       }
-
-       Connection conn = ds.getConnection();
-
-       if (conn == null) {
-           throw new SQLException("conn is null; Can't get db connection");
-       }
-
-       PreparedStatement ps = conn.prepareStatement(
-           "UPDATE COLLECTION SET COLLECTION_NAME = ? WHERE OWNER='john';"
-       );
-        try {
-            ps.setString(1, c.getCollectionName());
-           
-            ps.executeUpdate();
-        
-
-      
-       
-      
-         
-          
-       } finally {
-           conn.close();
-       }
-   }
-
-
-     
-
 }

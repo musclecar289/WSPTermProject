@@ -42,7 +42,9 @@
                     <p:dataTable id="albumSearchList" value="#{albumSearchBean.albums}" 
                                  var="album" resizableColumns="true" rows="10" 
                                  style="margin-bottom:20px;width:75%" scrollable="true" 
-                                 draggableColumns="true" scrollHeight="600" selectionMode="single" selection="#{albumSearchBean.selectedAlbum}" rowKey="#{album.name}">
+                                 scrollHeight="600" draggableColumns="true" 
+                                 selectionMode="single" selection="#{albumSearchBean.selectedAlbum}" 
+                                 rowKey="#{album.name}">
 
                         <p:ajax event="rowSelect" listener="#{albumSearchBean.onRowSelect}" update=":albumSearch:msgs :albumSearchById" />
                         <p:ajax event="rowUnselect" listener="#{albumSearchBean.onRowUnselect}" update=":albumSearch:msgs" />
