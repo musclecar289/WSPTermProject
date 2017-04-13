@@ -17,9 +17,17 @@
     </h:head>
     <h:body>
         <h:form id="form">
-            
+
             <p:toolbar>
                 <f:facet name="right">
+                    <h:link  value="Vircoms" outcome="/index" />
+                    <span class="ui-separator">
+                        <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                    </span>
+                    <h:link  value="Album Search" outcome="/albumsearch" />
+                    <span class="ui-separator">
+                        <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                    </span>
                     <h:link value="User Login" outcome="/customerFolder/profile" />
                     <span class="ui-separator">
                         <span class="ui-icon ui-icon-grip-dotted-vertical" />
@@ -27,7 +35,7 @@
                     <h:link value="Reset Password" outcome="/resetPassword" />
                 </f:facet>
             </p:toolbar>
-            
+
             <p:fieldset style="margin-bottom:20px" id="collectionField" >
                 <h3 style=" background-color: white; color: black; text-align: center; padding: 10px"  >
                     Vircoms offers collectors the flexibility and reliability of database management software with the convenience of a browser.
@@ -35,9 +43,9 @@
                     Right now, only our registered users can create and manage a collection, so you should sign up now for free! Takes mere seconds!
                 </h3>
                 <center>
-                        <h:link value="Sign Up Now!" outcome="/regForm" style="text-decoration:underline;color:blue;" /><br /><br /><br />
+                    <h:link value="Sign Up Now!" outcome="/regForm" style="text-decoration:underline;color:blue;" /><br /><br /><br />
                 </center>
-            
+
                 <p:dataTable id="collectionTable" var="collection" value="#{collectionsBean.collections}"
                              selectionMode="single" selection="#{collectionsBean.selectedCollection}" 
                              rowKey="#{collection.collectionName}" >
@@ -61,15 +69,15 @@
 
                 </p:dataTable>
             </p:fieldset>
-            
+
             <p:dialog header="Collection Info" widgetVar="collectionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="collectionDetail" style="text-align:center;">
                     <p:panelGrid  columns="2" rendered="#{not empty collectionsBean.selectedCollection}" >
-                        
+
                         <p:column>
                             <img src="pictures/default.png"/>
                         </p:column>
-                        
+
                         <p:column>
                             <p:dataTable var="record" value="#{collectionsBean.selectedCollection.records}">
                                 <f:facet name="header">
@@ -92,76 +100,76 @@
                                 </p:column>
                             </p:dataTable>
                         </p:column>
-                        
+
                     </p:panelGrid>
                 </p:outputPanel>
             </p:dialog>
-<!--
-    Needs a POJO Track(trackID, name, album, length, genre, ...) PK(trackID, album) FK(album refs Album)
-    Need to modify the CollectionsBean to add Record selectedRecord and List<Tracks> tracks members with getters/setters.
-    Need to modify the CollectionsBean to add loadTracks(selectRecord) method which accesses the database. 
-
-            <p:dialog header="Record Info" widgetVar="recordDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                <p:outputPanel id="recordDetail" style="text-align:center;">
-                    <p:panelGrid  columns="2" rendered="#{not empty collectionsBean.selectedRecord}" >
-                        
-                        <p:column>
-                            <img src="pictures/14.png"/>
-                        </p:column>
-                        
-                        <p:column>
-                            <p:dataTable var="track" value="#{collectionsBean.selectedCollection.records.tracks}">
-                                <f:facet name="header">
-                                    Tracks on #{collectionsBean.selectedCollection.collectionName.selectedRecord}
-                                </f:facet>
-                                <p:column>
-                                    #{track.trackID}
-                                </p:column>
-                                <p:column>
-                                    #{track.Name}
-                                </p:column>
-                                <p:column>
-                                    #{track.album}
-                                </p:column>
-                                <p:column>
-                                    #{track.length}
-                                </p:column>
-                                <p:column>
-                                    #{track.genre}
-                                </p:column>
-                            </p:dataTable>
-                        </p:column>
-                        
-                    </p:panelGrid>
-                </p:outputPanel>
-            </p:dialog>-->
+            <!--
+                Needs a POJO Track(trackID, name, album, length, genre, ...) PK(trackID, album) FK(album refs Album)
+                Need to modify the CollectionsBean to add Record selectedRecord and List<Tracks> tracks members with getters/setters.
+                Need to modify the CollectionsBean to add loadTracks(selectRecord) method which accesses the database. 
             
-<!--            <p:fieldset style="margin-bottom:20px" id="collectionField" >
-                <h3 style=" background-color: white; color: black; text-align: center; padding: 10px"  >
-                    Vircoms offers collectors the flexibility and reliability of database management software with the convenience of a browser.
-                    Since our services are offered in the browser, you can access your musical collection anywhere anytime. 
-                    Right now, only our registered users can create and manage a collection, so you should sign up now for free! Takes mere seconds!
-                </h3>
-                <center>
-                    <h:link value="Sign Up Now!" outcome="/regForm" /><br /><br /><br />
-                    <p:dataGrid var="collection" value="#{collectionsBean.collections}" columns="5"
-                        rows="12" paginator="true" id="dataGrid"
-                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                        rowsPerPageTemplate="6,12,16">
-                        <f:facet name="header">
-                            View Some of Our Favorite Collections
-                        </f:facet>
-                        <p:panel header="#{collection.collectionName}" style="text-align:center">
-                            <h:panelGrid columns="1" style="width:100%">
-                                <a href="/WSPTermProject/faces/albumsview.xhtml">
-                                    <img src="pictures/default.png" alt="Show Albums" />
-                                </a>
-                                <h:outputText value="Record Count: #{collection.numberOfRecords}" />
-                            </h:panelGrid>
-                        </p:panel>
-                    </p:dataGrid>
-                </center>
-            </p:fieldset>-->
+                        <p:dialog header="Record Info" widgetVar="recordDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <p:outputPanel id="recordDetail" style="text-align:center;">
+                                <p:panelGrid  columns="2" rendered="#{not empty collectionsBean.selectedRecord}" >
+                                    
+                                    <p:column>
+                                        <img src="pictures/14.png"/>
+                                    </p:column>
+                                    
+                                    <p:column>
+                                        <p:dataTable var="track" value="#{collectionsBean.selectedCollection.records.tracks}">
+                                            <f:facet name="header">
+                                                Tracks on #{collectionsBean.selectedCollection.collectionName.selectedRecord}
+                                            </f:facet>
+                                            <p:column>
+            #{track.trackID}
+        </p:column>
+        <p:column>
+            #{track.Name}
+        </p:column>
+        <p:column>
+            #{track.album}
+        </p:column>
+        <p:column>
+            #{track.length}
+        </p:column>
+        <p:column>
+            #{track.genre}
+        </p:column>
+    </p:dataTable>
+</p:column>
+
+</p:panelGrid>
+</p:outputPanel>
+</p:dialog>-->
+
+            <!--            <p:fieldset style="margin-bottom:20px" id="collectionField" >
+                            <h3 style=" background-color: white; color: black; text-align: center; padding: 10px"  >
+                                Vircoms offers collectors the flexibility and reliability of database management software with the convenience of a browser.
+                                Since our services are offered in the browser, you can access your musical collection anywhere anytime. 
+                                Right now, only our registered users can create and manage a collection, so you should sign up now for free! Takes mere seconds!
+                            </h3>
+                            <center>
+                                <h:link value="Sign Up Now!" outcome="/regForm" /><br /><br /><br />
+                                <p:dataGrid var="collection" value="#{collectionsBean.collections}" columns="5"
+                                    rows="12" paginator="true" id="dataGrid"
+                                    paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                    rowsPerPageTemplate="6,12,16">
+                                    <f:facet name="header">
+                                        View Some of Our Favorite Collections
+                                    </f:facet>
+                                    <p:panel header="#{collection.collectionName}" style="text-align:center">
+                                        <h:panelGrid columns="1" style="width:100%">
+                                            <a href="/WSPTermProject/faces/albumsview.xhtml">
+                                                <img src="pictures/default.png" alt="Show Albums" />
+                                            </a>
+                                            <h:outputText value="Record Count: #{collection.numberOfRecords}" />
+                                        </h:panelGrid>
+                                    </p:panel>
+                                </p:dataGrid>
+                            </center>
+                        </p:fieldset>-->
             <br />
             <center>
                 <a href="/WSPTermProject/faces/adminFolder/adminhome.xhtml">
