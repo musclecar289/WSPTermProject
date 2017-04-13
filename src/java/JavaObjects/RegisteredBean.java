@@ -37,6 +37,7 @@ public class RegisteredBean implements Serializable {
 
     @Size(min = 3, message = "Greater than 2 Characters")
     private String password;
+    private String rePassword;
     private String email;
     private String groupname;
     private List<Customer> customers;
@@ -57,6 +58,13 @@ public class RegisteredBean implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    public String getRePassword() {
+        return rePassword;
+    }
+
+    public void setRePassword(String rePassword) {
+        this.rePassword = rePassword;
     }
 
     @Pattern(regexp = "[a-zA-Z0-9]+@[uco]+\\.[edu]+", message = "Please enter an UCO email")

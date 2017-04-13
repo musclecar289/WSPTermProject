@@ -179,10 +179,10 @@ public class ProfileBean implements Serializable {
        }
 
        PreparedStatement ps = conn.prepareStatement(
-           "DELETE FROM collection WHERE COLLECTION_NAME='My First Collection' AND OWNER='john'"
+           "DELETE FROM collection WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='"+username+"'"
        );
        PreparedStatement ps2 = conn.prepareStatement(
-           "DELETE FROM collection_items WHERE COLLECTION_NAME='My First Collection' AND OWNER='john'"
+           "DELETE FROM collection_items WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='"+username+"'"
        );
        
        // retrieve book data from database
@@ -196,7 +196,33 @@ public class ProfileBean implements Serializable {
 
 
      
-     
+      public void updateCollect(Collection c) throws IOException, SQLException {
+
+       if (ds == null) {
+           throw new SQLException("ds is null; Can't get data source");
+       }
+
+       Connection conn = ds.getConnection();
+
+       if (conn == null) {
+           throw new SQLException("conn is null; Can't get db connection");
+       }
+
+       PreparedStatement ps = conn.prepareStatement(
+           "Update  collection Set COLLECTION_NAME='"+c.getCollectionName()+"' Where OWNER='"+username+"'"
+       );
+       PreparedStatement ps2 = conn.prepareStatement(
+           "Update  collection_items set COLLECTION_NAME='"+c.getCollectionName()+"' Where OWNER='"+username+"'"
+       );
+       
+       // retrieve book data from database
+       try {
+           ps2.executeUpdate();
+           ps.executeUpdate();
+       } finally {
+           conn.close();
+       }
+   }
 
 
      
