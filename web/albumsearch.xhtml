@@ -8,6 +8,7 @@
         <title>Album Search</title>
     </h:head>
     <h:body>
+
         <p:toolbar>
             <f:facet name="right">
                 <h:link  value="Vircoms" outcome="/index" />
@@ -22,8 +23,9 @@
             </f:facet>
         </p:toolbar>
         <p:fieldset style="margin-bottom:20px">
-            
+
             <h:form id="albumSearch">
+                <p:growl id="msgs" showDetail="true" />
                 <h3>Album Search</h3>
                 <h:panelGrid columns="2">
                     <p:inputText id="albumToFind" value="#{albumSearchBean.title}"/>
@@ -37,35 +39,66 @@
                                errorStyle="color: red" infoStyle="color: green" />-->
                 </h:panelGrid>
                 <center>
-                <p:dataTable id="albumSearchList" value="#{albumSearchBean.albums}" 
-                             var="album" resizableColumns="true" rows="10" 
-                             style="margin-bottom:20px;width:75%" scrollable="true" 
-                             draggableColumns="true" scrollHeight="600">
+                    <p:dataTable id="albumSearchList" value="#{albumSearchBean.albums}" 
+                                 var="album" resizableColumns="true" rows="10" 
+                                 style="margin-bottom:20px;width:75%" scrollable="true" 
+                                 draggableColumns="true" scrollHeight="600" selectionMode="single" selection="#{albumSearchBean.selectedAlbum}" rowKey="#{album.name}">
 
-                    <!--<p:column headerText="Id" >
-                        <f:facet name="header">Album ID</f:facet>                                        
-                        <h:outputText value="#{album.getId()}" />
-                    </p:column>-->
-                    <p:column headerText="Name" >
-                        <f:facet name="header">Cover Art:</f:facet>                                        
-                        <img style="width:25%"  src="#{album.images.get(0).getUrl()}" />
-                    </p:column>
-                    <p:column headerText="Name" >
-                        <f:facet name="header">Title</f:facet>                                        
-                        <h:outputText value="#{album.getName()}" />
-                    </p:column>
-                    <!--<p:column headerText="href" >
-                        <f:facet name="header">href</f:facet>                                        
-                        <h:outputText value="#{album.getHref()}" />
-                    </p:column>
-                    <p:column headerText="uri" >
-                        <f:facet name="header">uri</f:facet>                                        
-                        <h:outputText value="#{album.getUri()}" />
-                    </p:column>-->
+                        <p:ajax event="rowSelect" listener="#{albumSearchBean.onRowSelect}" update=":albumSearch:msgs :albumSearchById" />
+                        <p:ajax event="rowUnselect" listener="#{albumSearchBean.onRowUnselect}" update=":albumSearch:msgs" />
+                        <p:column headerText="Id" >
+                            <f:facet name="header">Album ID</f:facet>                                        
+                            <h:outputText value="#{album.getId()}" />
+                        </p:column>
+                        <p:column headerText="Name" >
+                            <f:facet name="header">Cover Art:</f:facet>                                        
+                            <img style="width:25%"  src="#{album.images.get(0).getUrl()}" />
+                        </p:column>
+                        <p:column headerText="Name" >
+                            <f:facet name="header">Title</f:facet>                                        
+                            <h:outputText value="#{album.getName()}" />
+                        </p:column>
+                        <!--<p:column headerText="href" >
+                            <f:facet name="header">href</f:facet>                                        
+                            <h:outputText value="#{album.getHref()}" />
+                        </p:column>
+                        <p:column headerText="uri" >
+                            <f:facet name="header">uri</f:facet>                                        
+                            <h:outputText value="#{album.getUri()}" />
+                        </p:column>-->
 
 
-                </p:dataTable>
+                    </p:dataTable>
                 </center>
+            </h:form>
+
+            <h:form id="albumSearchById">
+                <h3>Album Detail View</h3>
+                <p:panelGrid columns="2"> 
+                    <f:facet name="header">
+                        <img style="width:50%"  src="#{albumSearchBean.test.images.get(0).getUrl()}" />
+                    </f:facet>
+
+                    <h:outputText value="Album Title:" />
+                    <h:outputText value="#{albumSearchBean.test.getName()}" />
+                    
+                    <h:outputText value="Artist:" />
+                    <h:outputText value="#{albumSearchBean.test.getArtists().get(0).getName()}" />
+                    
+                    
+                    <h:outputText value="Popularity:" />
+                    <h:outputText value="#{albumSearchBean.test.getPopularity()}" />
+                    
+                    
+                    <h:outputText value="Released:" />
+                    <h:outputText value="#{albumSearchBean.test.getReleaseDate()}" />
+                    <!--<h:outputText value="#{albumSearchBean.test.getReleaseDatePrecision()}" />-->
+                    
+                    <!--<h:commandButton id="addAlbum" value="Add Album" action=""/>
+                    <h:message for="addAlbum" 
+                               errorStyle="color: red" infoStyle="color: green" />-->
+                </p:panelGrid>
+
             </h:form>
         </p:fieldset>
 

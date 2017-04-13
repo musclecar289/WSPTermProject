@@ -2,6 +2,7 @@ package JavaObjects;
 
 import com.wrapper.spotify.Api;
 import com.wrapper.spotify.exceptions.WebApiException;
+import com.wrapper.spotify.methods.AlbumRequest;
 import com.wrapper.spotify.methods.AlbumSearchRequest;
 import com.wrapper.spotify.models.Album;
 import com.wrapper.spotify.models.Page;
@@ -14,6 +15,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -28,6 +32,8 @@ public class AlbumSearchBean implements Serializable {
     Api api = Api.DEFAULT_API;
     String spotifyEndPoint = "https://api.spotify.com/v1/search";
     List<SimpleAlbum> albums;
+    Album test;
+    Album selectedAlbum;
     private String title;
 
     @PostConstruct
@@ -43,17 +49,39 @@ public class AlbumSearchBean implements Serializable {
 //            Logger.getLogger(AlbumSearchBean.class.getName()).log(Level.SEVERE, null, ex);
 //        }
     }
+
     
-    public void albumSearch(){
+    
+    public void albumSearch() {
         AlbumSearchRequest request = api.searchAlbums(getTitle()).offset(0).limit(25).build();
         try {
             Page<SimpleAlbum> albumSearchResult = request.get();
             albums = albumSearchResult.getItems();
-            System.out.println("test");
+            
         } catch (IOException | WebApiException ex) {
             Logger.getLogger(AlbumSearchBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void albumSearchById(String idToFind) {
+        //String albumId = "6fRqzJT070Kp9RWlSXmKcY";
+        AlbumRequest request = api.getAlbum(idToFind).build();
+        try {
+            test = request.get();
+
+        } catch (IOException | WebApiException ex) {
+            Logger.getLogger(AlbumSearchBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void onRowSelect(SelectEvent event) {
+        SimpleAlbum record = (SimpleAlbum) event.getObject();
+        albumSearchById(record.getId());
+        FacesMessage msg = new FacesMessage("Album Selected", record.getName());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+    
     public List<SimpleAlbum> getAlbums() {
         return albums;
     }
@@ -70,8 +98,21 @@ public class AlbumSearchBean implements Serializable {
         this.title = title;
     }
 
-    public void searchForAlbum() {
-
+    public Album getTest() {
+        return test;
     }
 
+    public void setTest(Album test) {
+        this.test = test;
+    }
+
+    public Album getSelectedAlbum() {
+        return selectedAlbum;
+    }
+
+    public void setSelectedAlbum(Album selectedAlbum) {
+        this.selectedAlbum = selectedAlbum;
+    }
+    
+    
 }
