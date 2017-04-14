@@ -33,7 +33,7 @@ public class CollectionsBean implements Serializable {
     private int numberOfCollections;
     private Collection selectedCollection;
     private Record selectedRecord;
-
+  
     @PostConstruct
     public void init() {
         try {
@@ -43,7 +43,7 @@ public class CollectionsBean implements Serializable {
             Logger.getLogger(ViewCollectionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public List<Record> loadAlbums(String collection_name) throws SQLException {
 
         if (ds == null) {
@@ -159,7 +159,7 @@ public class CollectionsBean implements Serializable {
         if (conn == null) {
             throw new SQLException("conn is null; Can't get db connection");
         }
-
+//Not correct
         PreparedStatement ps = conn.prepareStatement(
                 "UPDATE COLLECTION SET COLLECTION_NAME = ? WHERE OWNER='john';"
         );

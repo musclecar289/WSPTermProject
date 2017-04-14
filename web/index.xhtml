@@ -79,14 +79,14 @@
                         </p:column>
 
                         <p:column>
-                            <p:dataTable var="record" value="#{collectionsBean.selectedCollection.records}" selectionMode="single" selection="#{collectionsBean.selectedRecord}" 
+                            <p:dataTable id="collectionRecordsTable" var="record" value="#{collectionsBean.selectedCollection.records}" selectionMode="single" selection="#{collectionsBean.selectedRecord}" 
                                          rowKey="#{record.title}">
                                 <f:facet name="header">
                                     Records in #{collectionsBean.selectedCollection.collectionName}
                                 </f:facet>
-                                <p:column>
+                                <!--<p:column>
                                     #{record.spotifyId}
-                                </p:column>
+                                </p:column>-->
                                 <p:column>
                                     #{record.title}
                                 </p:column>
@@ -102,42 +102,27 @@
                                 <p:column>
                                     #{record.releaseYear}
                                 </p:column>
+                                <f:facet name="footer">
+                                    <p:commandButton process="collectionRecordsTable" update=":form:collectionDetail" value="View"
+                                                     icon="ui-icon-search"  oncomplete="PF('recordInCollectionDialog').show()" />
+                                    <br />In total there are #{collectionsBean.collections.size()} collections!
+                                </f:facet>
                             </p:dataTable>
                         </p:column>
 
                     </p:panelGrid>
                 </p:outputPanel>
             </p:dialog>
-            <p:dialog header="Collection Info" widgetVar="recordInCollectionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <p:dialog header="Album Info" widgetVar="recordInCollectionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="recordInCollectionDetail" style="text-align:center;">
-                    <p:panelGrid  columns="2" rendered="#{not empty collectionsBean.selectedCollection}" >
+                    <p:panelGrid  columns="2" rendered="#{not empty collectionsBean.selectedRecord}" >
 
                         <p:column>
-                            <img src="pictures/default.png"/>
+                            <img style="width:50%"  src="#{collectionsBean.albumSearchById(collectionsBean.selectedRecord.spotifyId)}" />
                         </p:column>
 
                         <p:column>
-                            <p:dataTable var="record" value="#{collectionsBean.selectedCollection.records}" selectionMode="single" selection="#{collectionsBean.selectedRecord}" 
-                                         rowKey="#{record.title}">
-                                <f:facet name="header">
-                                    Records in #{collectionsBean.selectedCollection.collectionName}
-                                </f:facet>
-                                <p:column>
-                                    #{record.title}
-                                </p:column>
-                                <p:column>
-                                    #{record.artist}
-                                </p:column>
-                                <p:column>
-                                    #{record.genre}
-                                </p:column>
-                                <p:column>
-                                    #{record.numberOfTracks}
-                                </p:column>
-                                <p:column>
-                                    #{record.releaseYear}
-                                </p:column>
-                            </p:dataTable>
+                            
                         </p:column>
 
                     </p:panelGrid>
