@@ -12,6 +12,15 @@
             Welcome #{facesContext.externalContext.userPrincipal.name}</h1>
         <br />
 
+        <h:form enctype="multipart/form-data">
+             <h:outputLink value="pictures/pic13.jpg" title="Nature 1">  
+        <h:graphicImage name="/../pictures/pic13.jpg" id="pic13" style="height: 77px; width: 100px" />  
+             </h:outputLink><br />
+                                <p:fileUpload mode="simple" value="#{profileBean.file}" />
+                                <p:commandButton value="Upload" actionListener="#{profileBean.upload}" ajax="false" />
+                            </h:form>
+        
+        
          <h:form id="form1">            
             <p:toolbar>
                 <f:facet name="right">
@@ -20,6 +29,14 @@
                         <span class="ui-icon ui-icon-grip-dotted-vertical" />
                     </span>
                     <h:link value="Reset Password" outcome="/resetPassword" />
+                    <span class="ui-separator">
+                        <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                    </span>
+                    <h:link value="Logout" outcome="/logout" />
+                    <span class="ui-separator">
+                        <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                    </span>
+                    <h:link value="Home" outcome="/index" /> <br />
                 </f:facet>
             </p:toolbar>
             <p:fieldset style="margin-bottom:20px" id="collectionField" >
@@ -28,25 +45,43 @@
                 </h3>
                 
                 <p:dataTable id="collectionTable2" var="collection" value="#{profileBean.collections}"
-                             selectionMode="single" selection="#{profileBean.selectedCollection}" 
-                             rowKey="#{collection.collectionName}" >
+                             selectionMode="single" editable="true" editMode="cell" selection="#{profileBean.selectedCollection}" 
+                             rowKey="#{collection.collectionName}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                 paginator="true" rows="10" style="margin-bottom:20px">
+                    <f:facet name="{Exporters}">
+            <h:commandLink>
+                <p:graphicImage name="/demo/images/excel.png" width="24"/>
+                <p:dataExporter type="xls" target="tbl" fileName="cars" />
+            </h:commandLink>
+ 
+            <h:commandLink>
+                <p:graphicImage name="/demo/images/pdf.png" width="24"/>
+                <p:dataExporter type="pdf" target="tbl" fileName="cars"/>
+            </h:commandLink>
+ 
+            <h:commandLink>
+                <p:graphicImage name="/demo/images/csv.png" width="24"/>
+                <p:dataExporter type="csv" target="tbl" fileName="cars" />
+            </h:commandLink>
+ 
+            <h:commandLink>
+                <p:graphicImage name="/demo/images/xml.png" width="24"/>
+                <p:dataExporter type="xml" target="tbl" fileName="cars" />
+            </h:commandLink>
+        </f:facet>
+                    
+                    
                     <f:facet name="header">
                        My Collections
                     </f:facet>
 
-                    <p:column headerText="Collection Name">
+                   <p:column headerText="Collection Name">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{collection.collectionName}" /></f:facet>
+                            <f:facet name="input"><p:inputText id="modelInput" value="#{collection.collectionName}" style="width:100%"/></f:facet>
+           </p:cellEditor>
                         
-                        <p:inplace id="ajax2" editor="true">
-                            
-                           
-                        
-                            <p:inputText value="#{collection.collectionName}" required="true" label="text">
-                            </p:inputText>
-                            
-                            <p:ajax event="save" listener="#{profileBean.updateCollect(collection)}"></p:ajax>
-                                                                                                                                                                                                                                                                                                                                             
-                        
-                        </p:inplace>
+                       
                        
                        
                     </p:column>
@@ -79,6 +114,7 @@
                         <p:column>
                             
                             <img src="pictures/default.png"/>
+                            
                         </p:column>
                         
                         <p:column>
@@ -111,11 +147,6 @@
             
         </h:form>
         
-        
-        <center>
-        <h:link value="Logout" outcome="/logout" /> <br />
-        <h:link value="Home Page" outcome="/index" />
-        </center>
     </h:body>
 </html>
 

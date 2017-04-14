@@ -14,9 +14,11 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.sql.DataSource;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -35,6 +37,7 @@ public class ProfileBean implements Serializable {
     private Collection selectedCollection;
     private Album selectedRecord;
     private String username;
+    private UploadedFile file;
 
     @PostConstruct
     public void init() {
@@ -192,6 +195,8 @@ public class ProfileBean implements Serializable {
        } finally {
            conn.close();
        }
+       
+       collections = loadCollections();
    }
 
 
@@ -209,22 +214,43 @@ public class ProfileBean implements Serializable {
        }
 
        PreparedStatement ps = conn.prepareStatement(
-           "Update  collection Set COLLECTION_NAME='"+c.getCollectionName()+"' Where OWNER='"+username+"'"
+           "Update collection Set COLLECTION_NAME= ? Where OWNER=?"
        );
        PreparedStatement ps2 = conn.prepareStatement(
-           "Update  collection_items set COLLECTION_NAME='"+c.getCollectionName()+"' Where OWNER='"+username+"'"
+           "Update collection_items set COLLECTION_NAME= ? Where OWNER = ?"
        );
        
        // retrieve book data from database
        try {
+           ps2.setString(1, c.getCollectionName());
+            ps2.setString(2, username);
+             ps.setString(1, c.getCollectionName());
+            ps.setString(2, username);
            ps2.executeUpdate();
            ps.executeUpdate();
        } finally {
            conn.close();
+           
+           
        }
    }
 
 
+ 
+    public UploadedFile getFile() {
+        return file;
+    }
+ 
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+     
+    public void upload() {
+        if(file != null) {
+            FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
      
 
 }
