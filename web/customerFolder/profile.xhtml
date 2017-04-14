@@ -12,6 +12,7 @@
             Welcome #{facesContext.externalContext.userPrincipal.name}</h1>
         <br />
 
+
         <h:form enctype="multipart/form-data">
              <h:outputLink value="pictures/pic13.jpg" title="Nature 1">  
         <h:graphicImage name="/../pictures/pic13.jpg" id="pic13" style="height: 77px; width: 100px" />  
@@ -39,6 +40,7 @@
                     <h:link value="Home" outcome="/index" /> <br />
                 </f:facet>
             </p:toolbar>
+             
             <p:fieldset style="margin-bottom:20px" id="collectionField" >
                 <h3 style=" background-color: white; color: black; text-align: center; padding: 10px"  >
                                 Here Are All Your Collections !!!!!
@@ -49,7 +51,8 @@
                              rowKey="#{collection.collectionName}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
                  paginator="true" rows="10" style="margin-bottom:20px">
                     <f:facet name="{Exporters}">
-            <h:commandLink>
+            
+                        <h:commandLink>
                 <p:graphicImage name="/demo/images/excel.png" width="24"/>
                 <p:dataExporter type="xls" target="tbl" fileName="cars" />
             </h:commandLink>
@@ -76,15 +79,13 @@
                     </f:facet>
 
                    <p:column headerText="Collection Name">
-                        <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{collection.collectionName}" /></f:facet>
-                            <f:facet name="input"><p:inputText id="modelInput" value="#{collection.collectionName}" style="width:100%"/></f:facet>
-           </p:cellEditor>
-                        
-                       
-                       
-                       
-                    </p:column>
+               
+                 <p:cellEditor>
+                  <f:facet name="output"><h:outputText value="#{collection.collectionName}" /></f:facet>
+                  <f:facet name="input"><p:inputText id="modelInput" value="#{collection.collectionName}" style="width:96%"/></f:facet>
+              </p:cellEditor>
+            
+                  </p:column>
 
                     <p:column headerText="Number of Records">
                         <h:outputText value="#{collection.numberOfRecords}" />
@@ -147,6 +148,7 @@
             
         </h:form>
         
+
     </h:body>
 </html>
 

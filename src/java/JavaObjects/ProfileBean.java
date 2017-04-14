@@ -182,10 +182,10 @@ public class ProfileBean implements Serializable {
        }
 
        PreparedStatement ps = conn.prepareStatement(
-           "DELETE FROM collection WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='"+username+"'"
+           "DELETE FROM collection WHERE COLLECTION_NAME='"+c.getCollectionNewName()+"' AND OWNER='"+username+"'"
        );
        PreparedStatement ps2 = conn.prepareStatement(
-           "DELETE FROM collection_items WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='"+username+"'"
+           "DELETE FROM collection_items WHERE COLLECTION_NAME='"+c.getCollectionNewName()+"' AND OWNER='"+username+"'"
        );
        
        // retrieve book data from database
