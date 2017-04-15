@@ -15,11 +15,15 @@
         </style>
     </h:head>
     <h:body>
-        <h:form>            
-            <p:toolbar>
+        <h:form id="form">
             
+            <p:toolbar>
                 <f:facet name="right">
                     <h:link  value="Vircoms" outcome="/index" />
+                    <span class="ui-separator">
+                        <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                    </span>
+                    <h:link  value="Album Search" outcome="/albumsearch" />
                     <span class="ui-separator">
                         <span class="ui-icon ui-icon-grip-dotted-vertical" />
                     </span>
@@ -30,36 +34,75 @@
                     <h:link value="Reset Password" outcome="/resetPassword" />
                 </f:facet>
             </p:toolbar>
-            <p:fieldset style="margin-bottom:20px">
-                <p:fieldset style="margin-bottom:20px">
+            
+            <p:fieldset style="margin-bottom:20px" id="collectionField" >
                 <h3 style=" background-color: white; color: black; text-align: center; padding: 10px"  >
                     Vircoms offers collectors the flexibility and reliability of database management software with the convenience of a browser.
                     Since our services are offered in the browser, you can access your musical collection anywhere anytime. 
                     Right now, only our registered users can create and manage a collection, so you should sign up now for free! Takes mere seconds!
                 </h3>
                 <center>
-                        <h:link value="Sign Up Now!" outcome="/regForm" /><br /><br /><br />
+                        <h:link value="Sign Up Now!" outcome="/regForm" style="text-decoration:underline;color:blue;" /><br /><br /><br />
                 </center>
-                </p:fieldset>
-                <center>
-                    <p:dataGrid var="collection" value="#{collectionsBean.collections}" columns="5"
-                                rows="12" paginator="true" id="dataGrid"
-                                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                rowsPerPageTemplate="6,12,16">
+            
+                <p:dataTable id="collectionTable" var="collection" value="#{collectionsBean.collections}"
+                             selectionMode="single" selection="#{collectionsBean.selectedCollection}" 
+                             rowKey="#{collection.collectionName}" >
                     <f:facet name="header">
-                            View Some of Our Favorite Collections
+                        Some Of Our Awesome Collections
                     </f:facet>
-                        <p:panel header="#{collection.collectionName}" style="text-align:center">
-                            <h:panelGrid columns="1" style="width:100%">
-                                <a href="/WSPTermProject/faces/albumsview.xhtml">
-                                    <img src="pictures/default.png" alt="Show Albums" onclick="#{albumsBean.loadAlbums(collection.collectionName)}"/>
-                                </a>
-                                <h:outputText value="Record Count: #{collection.numberOfRecords}" />
-                            </h:panelGrid>
-                        </p:panel>
-                    </p:dataGrid>
-                </center>
+
+                    <p:column headerText="Collection Name">
+                        <h:outputText value="#{collection.collectionName}" />
+                    </p:column>
+
+                    <p:column headerText="Number of Records">
+                        <h:outputText value="#{collection.numberOfRecords}" />
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <p:commandButton process="collectionTable" update=":form:collectionDetail" value="View"
+                                         icon="ui-icon-search"  oncomplete="PF('collectionDialog').show()" />
+                        <br />In total there are #{collectionsBean.collections.size()} collections!
+                    </f:facet>
+
+                </p:dataTable>
             </p:fieldset>
+            
+            <p:dialog header="Collection Info" widgetVar="collectionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="collectionDetail" style="text-align:center;">
+                    <p:panelGrid  columns="2" rendered="#{not empty collectionsBean.selectedCollection}" >
+                        
+                        <p:column>
+                            <img src="pictures/default.png"/>
+                        </p:column>
+                        
+                        <p:column>
+                            <p:dataTable var="record" value="#{collectionsBean.selectedCollection.records}">
+                                <f:facet name="header">
+                                    Records in #{collectionsBean.selectedCollection.collectionName}
+                                </f:facet>
+                                <p:column>
+                                    #{record.title}
+                                </p:column>
+                                <p:column>
+                                    #{record.artist}
+                                </p:column>
+                                <p:column>
+                                    #{record.genre}
+                                </p:column>
+                                <p:column>
+                                    #{record.numberOfTracks}
+                                </p:column>
+                                <p:column>
+                                    #{record.releaseYear}
+                                </p:column>
+                            </p:dataTable>
+                        </p:column>
+                        
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
             <br />
             <center>
                 <a href="/WSPTermProject/faces/adminFolder/adminhome.xhtml">
@@ -69,4 +112,3 @@
         </h:form>
     </h:body>
 </html>
-
