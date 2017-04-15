@@ -15,6 +15,7 @@ create table USERTABLE (
     USERNAME varchar(255) UNIQUE NOT NULL,
     PASSWORD char(64),                      /* SHA-256 encryption */
     EMAIL varchar(255) UNIQUE,
+    PROFILEPIC longblob,
     primary key (USERNAME)
 );
 

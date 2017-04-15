@@ -9,11 +9,21 @@ import javax.inject.Named;
 
 public class Collection {
     private String collectionName;
-     private String collectionNewName;
+     
     private List<Album> records;
     private int numberOfRecords;
     private int collectionID;
+    boolean editable;
 
+    
+    public boolean isEditable() {
+		return editable;
+	}
+    public void setEditable(boolean editable) {
+    this.editable = editable;
+	}
+    
+    
     public String getCollectionName() {
         return collectionName;
     }
@@ -22,13 +32,9 @@ public class Collection {
         this.collectionName = collectionName;
     }
     
-     public String getCollectionNewName() {
-        return collectionName;
-    }
+    
 
-    public void setCollectionNewName(String collectionNewName) {
-        this.collectionNewName = collectionNewName;
-    }
+   
 
     public List<Album> getRecords() {
         return records;

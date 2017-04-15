@@ -1,29 +1,33 @@
 package JavaObjects;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.security.Principal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
+import javax.mail.MessagingException;
+import javax.mail.Part;
 import javax.sql.DataSource;
 import org.primefaces.model.UploadedFile;
 
-/**
- *
- * @author Nicholas Clemmons
- */
+
 @Named(value = "profileBean")
 @SessionScoped
 public class ProfileBean implements Serializable {
@@ -38,6 +42,11 @@ public class ProfileBean implements Serializable {
     private Album selectedRecord;
     private String username;
     private UploadedFile file;
+    boolean editable;
+    private Part part;
+    
+     private Part file2;
+  private String fileContent;
 
     @PostConstruct
     public void init() {
@@ -64,6 +73,10 @@ public class ProfileBean implements Serializable {
         this.username = username;
     }
 
+    
+     
+
+    
     
     public List<Album> loadAlbums(String collection_name) throws SQLException {
 
@@ -182,10 +195,10 @@ public class ProfileBean implements Serializable {
        }
 
        PreparedStatement ps = conn.prepareStatement(
-           "DELETE FROM collection WHERE COLLECTION_NAME='"+c.getCollectionNewName()+"' AND OWNER='"+username+"'"
+           "DELETE FROM collection WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='"+username+"'"
        );
        PreparedStatement ps2 = conn.prepareStatement(
-           "DELETE FROM collection_items WHERE COLLECTION_NAME='"+c.getCollectionNewName()+"' AND OWNER='"+username+"'"
+           "DELETE FROM collection_items WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='"+username+"'"
        );
        
        // retrieve book data from database
@@ -220,37 +233,161 @@ public class ProfileBean implements Serializable {
            "Update collection_items set COLLECTION_NAME= ? Where OWNER = ?"
        );
        
+       PreparedStatement ps3 = conn.prepareStatement("SET foreign_key_checks = 0");
+       PreparedStatement ps4 = conn.prepareStatement("SET foreign_key_checks = 1");
        // retrieve book data from database
        try {
            ps2.setString(1, c.getCollectionName());
             ps2.setString(2, username);
              ps.setString(1, c.getCollectionName());
             ps.setString(2, username);
-           ps2.executeUpdate();
+           ps3.executeUpdate();
+            ps2.executeUpdate();
            ps.executeUpdate();
+           ps4.executeUpdate();
        } finally {
            conn.close();
            
            
        }
+       
+       
    }
 
 
  
-    public UploadedFile getFile() {
-        return file;
-    }
- 
-    public void setFile(UploadedFile file) {
-        this.file = file;
-    }
+   
+   
      
-    public void upload() {
-        if(file != null) {
-            FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+    
+     
+
+   
+ 
+  public void upload2() throws MessagingException {
+    try {
+      fileContent = new Scanner(file2.getInputStream())
+          .useDelimiter("\\A").next();
+    } catch (IOException e) {
+      // Error handling
+    }
+  }
+ 
+  
+    
+    
+     public String saveAction() {
+    //get all existing value but set "editable" to false 
+    for (Collection book : collections){
+      book.setEditable(false);
+    }
+    //return to current page
+    return null;
+  }
+  public String editAction(Collection book) {
+    book.setEditable(true);
+    return null;
+  }
+    
+    public void edit(Collection todo){
+        for (Collection existing : getCollections()){
+            existing.setEditable(false);
+        }
+        todo.setEditable(true);
+    }
+
+    public void cancelEdit(Collection todo){
+        todo.setEditable(false);
+        
+    }
+    
+    public void save(Collection todo){
+        collections.set(collections.indexOf(todo), todo);
+        cancelEdit(todo);
+    }
+    
+    
+    
+     
+     private List<Collection> loadFileList() throws SQLException {
+        
+        List<Collection> files = new ArrayList<>();
+        Connection conn = ds.getConnection();
+
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery(
+                    "SELECT FILE_ID, FILE_NAME, FILE_TYPE, FILE_SIZE FROM FILESTORAGE"
+            );
+            while (result.next()) {
+                Collection file = new Collection();
+                
+            }
+        } finally {
+            conn.close();
+        }
+        return files;
+    }
+
+    public void uploadFile() throws IOException, SQLException, MessagingException {
+
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+
+        Connection conn = ds.getConnection();
+
+        InputStream inputStream;
+        inputStream = null;
+        try {
+            inputStream = part.getInputStream();
+            PreparedStatement insertQuery = conn.prepareStatement(
+                    "INSERT INTO FILESTORAGE (FILE_NAME, FILE_TYPE, FILE_SIZE, FILE_CONTENTS) "
+                    + "VALUES (?,?,?,?)");
+           
+            insertQuery.setString(2, part.getContentType());
+            insertQuery.setLong(3, part.getSize());
+            insertQuery.setBinaryStream(4, inputStream);
+
+            int result = insertQuery.executeUpdate();
+            
+            
+        
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
         }
     }
-     
+
+    public void validateFile(FacesContext ctx, UIComponent comp, Object value) {
+        if (value == null) {
+            throw new ValidatorException(
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Select a file to upload", null));
+        }
+        javax.servlet.http.Part file = (javax.servlet.http.Part) value;
+        long size = file.getSize();
+        if (size <= 0) {
+            throw new ValidatorException(
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "the file is empty", null));
+        }
+        if (size > 1024 * 1024 * 10) { // 10 MB limit
+            throw new ValidatorException(
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            size + "bytes: file too big (limit 10MB)", null));
+        }
+    }
+
+    public Part getPart() {
+        return part;
+    }
+
+    public void setPart(Part part) {
+        this.part = part;
+    }
+
 
 }

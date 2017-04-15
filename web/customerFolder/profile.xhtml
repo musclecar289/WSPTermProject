@@ -14,12 +14,11 @@
 
 
         <h:form enctype="multipart/form-data">
-             <h:outputLink value="pictures/pic13.jpg" title="Nature 1">  
-        <h:graphicImage name="/../pictures/pic13.jpg" id="pic13" style="height: 77px; width: 100px" />  
-             </h:outputLink><br />
-                                <p:fileUpload mode="simple" value="#{profileBean.file}" />
-                                <p:commandButton value="Upload" actionListener="#{profileBean.upload}" ajax="false" />
-                            </h:form>
+            <h:graphicImage value="/pictures/pic13.jpg" /><br    />     
+      <h:inputFile id="file" value="#{profileBean.file}"/>
+  <h:commandButton value="Upload"
+      action="#{profileBean.upload}"/>
+       </h:form>
         
         
          <h:form id="form1">            
@@ -45,32 +44,25 @@
                 <h3 style=" background-color: white; color: black; text-align: center; padding: 10px"  >
                                 Here Are All Your Collections !!!!!
                 </h3>
+                <p:remoteCommand name="onCellEdit" action="#{profileBean.updateCollect}" update="collectionTable2"  />
+                
                 
                 <p:dataTable id="collectionTable2" var="collection" value="#{profileBean.collections}"
                              selectionMode="single" editable="true" editMode="cell" selection="#{profileBean.selectedCollection}" 
                              rowKey="#{collection.collectionName}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
                  paginator="true" rows="10" style="margin-bottom:20px">
+                    <p:ajax event="cellEdit" oncomplete ="updateCollect(collection);" listener="#{profileBean.updateCollect}" />
+                    
+                    
                     <f:facet name="{Exporters}">
+                       
             
                         <h:commandLink>
-                <p:graphicImage name="/demo/images/excel.png" width="24"/>
-                <p:dataExporter type="xls" target="tbl" fileName="cars" />
+                <p:graphicImage name="/../customerFolder/pictures/pdf.jpg" width="12"/>
+                <p:dataExporter type="pdf" target="collectionTable2" fileName="cars" />
             </h:commandLink>
  
-            <h:commandLink>
-                <p:graphicImage name="/demo/images/pdf.png" width="24"/>
-                <p:dataExporter type="pdf" target="tbl" fileName="cars"/>
-            </h:commandLink>
- 
-            <h:commandLink>
-                <p:graphicImage name="/demo/images/csv.png" width="24"/>
-                <p:dataExporter type="csv" target="tbl" fileName="cars" />
-            </h:commandLink>
- 
-            <h:commandLink>
-                <p:graphicImage name="/demo/images/xml.png" width="24"/>
-                <p:dataExporter type="xml" target="tbl" fileName="cars" />
-            </h:commandLink>
+           
         </f:facet>
                     
                     
@@ -80,10 +72,15 @@
 
                    <p:column headerText="Collection Name">
                
-                 <p:cellEditor>
-                  <f:facet name="output"><h:outputText value="#{collection.collectionName}" /></f:facet>
-                  <f:facet name="input"><p:inputText id="modelInput" value="#{collection.collectionName}" style="width:96%"/></f:facet>
-              </p:cellEditor>
+                 <f:facet name="header">Collection Name</f:facet>           
+                 <h:inputText value="#{collection.collectionName}" size="15" rendered="#{collection.editable}"></h:inputText>
+            
+            
+            
+
+                <h:outputText value="#{collection.collectionName}" rendered="#{not collection.editable}">
+               
+                </h:outputText>
             
                   </p:column>
 
@@ -96,13 +93,27 @@
                                          icon="ui-icon-search"  oncomplete="PF('collectionDialog').show()" />
                         
                     </p:column>
-                     <p:column colspan="2">
+                     <p:column colspan="1">
                          
                          <h:commandButton value ="delete" action="#{profileBean.deleteCollect(collection)}">
                          <f:ajax render="collectionTable2"/>
                          
                          </h:commandButton>
                     </p:column>
+                    
+               <p:column colspan="2">
+
+    		<f:facet name="header">Edit</f:facet>
+
+    		<h:commandButton value="Edit" action="#{profileBean.edit(collection)}" rendered="#{not collection.editable}" >
+                    <f:ajax render="form1:collectionTable2" />
+                </h:commandButton>
+                <h:commandButton value="Save" action="#{profileBean.updateCollect(collection)}" rendered="#{collection.editable}" >
+                    <f:ajax execute="@form" render="form1:collectionTable2" />
+                </h:commandButton>
+
+    	     </p:column>
+               
                     <f:facet name="footer">
                         In total there are #{profileBean.collections.size()} collections!
                     </f:facet>
