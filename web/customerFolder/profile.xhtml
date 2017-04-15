@@ -12,7 +12,7 @@
             Welcome #{facesContext.externalContext.userPrincipal.name}</h1>
         <br />
 
-         <h:form id="form1">            
+        <h:form id="form1">            
             <p:toolbar>
                 <f:facet name="right">
                     <h:link value="User Login" outcome="/customerFolder/profile" />
@@ -24,31 +24,23 @@
             </p:toolbar>
             <p:fieldset style="margin-bottom:20px" id="collectionField" >
                 <h3 style=" background-color: white; color: black; text-align: center; padding: 10px"  >
-                                Here Are All Your Collections !!!!!
+                    Here Are All Your Collections !!!!!
                 </h3>
-                
+
                 <p:dataTable id="collectionTable2" var="collection" value="#{profileBean.collections}"
                              selectionMode="single" selection="#{profileBean.selectedCollection}" 
                              rowKey="#{collection.collectionName}" >
                     <f:facet name="header">
-                       My Collections
+                        My Collections
                     </f:facet>
 
                     <p:column headerText="Collection Name">
-                        
                         <p:inplace id="ajax2" editor="true">
-                            
-                           
-                        
                             <p:inputText value="#{collection.collectionName}" required="true" label="text">
                             </p:inputText>
-                            
+
                             <p:ajax event="save" listener="#{profileBean.updateCollect(collection)}"></p:ajax>
-                                                                                                                                                                                                                                                                                                                                             
-                        
                         </p:inplace>
-                       
-                       
                     </p:column>
 
                     <p:column headerText="Number of Records">
@@ -58,14 +50,11 @@
                     <p:column colspan="2">
                         <p:commandButton process="collectionTable2" update=":form1:collectionTable2" value="View"
                                          icon="ui-icon-search"  oncomplete="PF('collectionDialog').show()" />
-                        
                     </p:column>
-                     <p:column colspan="2">
-                         
-                         <h:commandButton value ="delete" action="#{profileBean.deleteCollect(collection)}">
-                         <f:ajax render="collectionTable2"/>
-                         
-                         </h:commandButton>
+                    <p:column colspan="2">
+                        <h:commandButton value ="delete" action="#{profileBean.deleteCollect(collection)}">
+                            <f:ajax render="collectionTable2"/>
+                        </h:commandButton>
                     </p:column>
                     <f:facet name="footer">
                         In total there are #{profileBean.collections.size()} collections!
@@ -75,12 +64,12 @@
             <p:dialog header="Collection Info" widgetVar="collectionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="collectionDetail" style="text-align:center;">
                     <p:panelGrid  columns="2" rendered="#{not empty profileBean.selectedCollection}" >
-                        
+
                         <p:column>
-                            
+
                             <img src="pictures/default.png"/>
                         </p:column>
-                        
+
                         <p:column>
                             <p:dataTable var="record" value="#{profileBean.selectedCollection.records}">
                                 <f:facet name="header">
@@ -103,18 +92,18 @@
                                 </p:column>
                             </p:dataTable>
                         </p:column>
-                        
+
                     </p:panelGrid>
                 </p:outputPanel>
             </p:dialog>           
             <br />
-            
+
         </h:form>
-        
-        
+
+
         <center>
-        <h:link value="Logout" outcome="/logout" /> <br />
-        <h:link value="Home Page" outcome="/index" />
+            <h:link value="Logout" outcome="/logout" /> <br />
+            <h:link value="Home Page" outcome="/index" />
         </center>
     </h:body>
 </html>

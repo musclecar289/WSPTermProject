@@ -12,7 +12,6 @@
                 bottom:0px;
                 left:50%;
             }
-
         </style>
     </h:head>
     <h:body>
@@ -90,9 +89,6 @@
                                 <p:column>
                                     #{record.releaseYear}
                                 </p:column>
-                                <f:facet name="footer">
-                                    In total there are #{collectionsBean.selectedCollection.records.size()} records!
-                                </f:facet>
                             </p:dataTable>
                         </p:column>
                         
@@ -108,3 +104,4 @@
         </h:form>
     </h:body>
 </html>
+

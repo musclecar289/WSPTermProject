@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Vinyl Collections</title>
+        <style type="text/css">
+            .fix{
+                position:fixed;
+                bottom:0px;
+                left:50%;
+            }
+
+        </style>
+    </h:head>
+    <h:body>
+        <h:form>            
+            <p:toolbar>
+
+                <f:facet name="right">
+                    <h:link  value="Vircoms" outcome="/index" />
+                    <span class="ui-separator">
+                        <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                    </span>
+                    <h:link value="User Login" outcome="/customerFolder/profile" />
+                    <span class="ui-separator">
+                        <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                    </span>
+                    <h:link value="Reset Password" outcome="/resetPassword" />
+                </f:facet>
+            </p:toolbar>
+            <p:fieldset style="margin-bottom:20px">
+                <p:fieldset style="margin-bottom:20px">
+                    <h3 style=" background-color: white; color: black; text-align: center; padding: 10px"  >
+                        Vircoms offers collectors the flexibility and reliability of database management software with the convenience of a browser.
+                        Since our services are offered in the browser, you can access your musical collection anywhere anytime. 
+                        Right now, only our registered users can create and manage a collection, so you should sign up now for free! Takes mere seconds!
+                    </h3>
+                    <center>
+                        <h:link value="Sign Up Now!" outcome="/regForm" /><br /><br /><br />
+                    </center>
+                </p:fieldset>
+                <center>
+                    <p:dataGrid var="collection" value="#{collectionsBean.collections}" columns="5"
+                                rows="12" paginator="true" id="dataGrid"
+                                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                rowsPerPageTemplate="6,12,16">
+                        <f:facet name="header">
+                            View Some of Our Favorite Collections
+                        </f:facet>
+                        <p:panel header="#{collection.collectionName}" style="text-align:center">
+                            <h:panelGrid columns="1" style="width:100%">
+                                <a href="/WSPTermProject/faces/albumsview.xhtml">
+                                    <img src="pictures/default.png" alt="Show Albums" onclick="#{albumsBean.loadAlbums(collection.collectionName)}"/>
+                                </a>
+                                <h:outputText value="Record Count: #{collection.numberOfRecords}" />
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:dataGrid>
+                </center>
+            </p:fieldset>
+            <br />
+            <center>
+                <a href="/WSPTermProject/faces/adminFolder/adminhome.xhtml">
+                    <img src="adminLoginLogo.png" width="150" height="150"/>  
+                </a>
+            </center>
+        </h:form>
+    </h:body>
+</html>
+
