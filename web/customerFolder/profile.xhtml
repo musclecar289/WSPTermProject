@@ -106,34 +106,34 @@
                             </p:row>
                             <p:row>
                                 <p:column colspan="2">
-                                    <img style="width:50%"  src="#{albumSearchBean.test.images.get(0).getUrl()}" />
+                                    <img style="width:50%"  src="#{profileBean.test.images.get(0).getUrl()}" />
                                 </p:column>
                             </p:row>
                         </f:facet>
                         <p:row>
                             <p:column><h:outputText value="Album Id:" /></p:column>
-                            <p:column><h:outputText value="#{albumSearchBean.test.getId()}" /></p:column>
+                            <p:column><h:outputText value="#{profileBean.test.getId()}" /></p:column>
                         </p:row>
                         <p:row>
                             <p:column><h:outputText value="Album Title:" /></p:column>
-                            <p:column><h:outputText value="#{albumSearchBean.test.getName()}" /></p:column>
+                            <p:column><h:outputText value="#{profileBean.test.getName()}" /></p:column>
                         </p:row>
 
                         <p:row>
                             <p:column><h:outputText value="Artist:" /></p:column>
-                            <p:column><h:outputText value="#{albumSearchBean.test.getArtists().get(0).getName()}" /></p:column>
+                            <p:column><h:outputText value="#{profileBean.test.getArtists().get(0).getName()}" /></p:column>
                         </p:row>
                         <p:row>
                             <p:column><h:outputText value="Popularity:" /></p:column>
-                            <p:column><h:outputText value="#{albumSearchBean.test.getPopularity()}" /></p:column>
+                            <p:column><h:outputText value="#{profileBean.test.getPopularity()}" /></p:column>
                         </p:row>
                         <p:row>
                             <p:column><h:outputText value="Released:" /></p:column>
-                            <p:column><h:outputText value="#{albumSearchBean.test.getReleaseDate()}" /></p:column>
+                            <p:column><h:outputText value="#{profileBean.test.getReleaseDate()}" /></p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="2">
-                                <p:dataTable id="albumTrackList" value="#{albumSearchBean.selectedTracks}" 
+                                <p:dataTable id="albumTrackList" value="#{profileBean.selectedTracks}" 
                                              var="track" resizableColumns="true" rows="10" 
                                              scrollable="true" draggableColumns="true" scrollHeight="300" >
 

@@ -1,6 +1,12 @@
 package JavaObjects;
 
+import com.wrapper.spotify.Api;
+import com.wrapper.spotify.exceptions.WebApiException;
+import com.wrapper.spotify.methods.AlbumRequest;
+import com.wrapper.spotify.models.Album;
+import com.wrapper.spotify.models.Page;
 import com.wrapper.spotify.models.SimpleAlbum;
+import com.wrapper.spotify.models.SimpleTrack;
 import java.io.IOException;
 import java.io.Serializable;
 import java.security.Principal;
@@ -33,6 +39,10 @@ public class ProfileBean implements Serializable {
     @Resource(name = "jdbc/ds_wsp")
     private DataSource ds;
 
+    Api api = Api.DEFAULT_API;
+    String spotifyEndPoint = "https://api.spotify.com/v1/search";
+    Album test;
+    List<SimpleTrack> selectedTracks;
     private List<Collection> collections;
     private int numberOfCollections;
     private Collection selectedCollection;
@@ -186,7 +196,20 @@ public class ProfileBean implements Serializable {
             conn.close();
         }
     }
+//Use for getting tracks. //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Album object has reference to list of tracks//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void albumSearchById(String idToFind) {
+        //String albumId = "6fRqzJT070Kp9RWlSXmKcY";
+        AlbumRequest request = api.getAlbum(idToFind).build();
+        try {
+            test = request.get();
+            Page<SimpleTrack> trackList = test.getTracks();
+            selectedTracks = trackList.getItems();
+        } catch (IOException | WebApiException ex) {
+            Logger.getLogger(AlbumSearchBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
+    }
     public void onCollectionSelect(SelectEvent event) {
         Collection collect = (Collection) event.getObject();
         //albumSearchById(record.getId());
@@ -196,9 +219,25 @@ public class ProfileBean implements Serializable {
 
     public void onRecordSelect(SelectEvent event) {
         Record currentRecord = (Record) event.getObject();
-        //albumSearchById(record.getId());
+        albumSearchById(currentRecord.getSpotifyId());
         FacesMessage msg = new FacesMessage("Record Selected", currentRecord.getTitle());
         FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public Album getTest() {
+        return test;
+    }
+
+    public void setTest(Album test) {
+        this.test = test;
+    }
+
+    public List<SimpleTrack> getSelectedTracks() {
+        return selectedTracks;
+    }
+
+    public void setSelectedTracks(List<SimpleTrack> selectedTracks) {
+        this.selectedTracks = selectedTracks;
     }
 
     public List<Collection> getCollections() {
