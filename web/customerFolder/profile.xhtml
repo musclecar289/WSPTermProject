@@ -12,12 +12,15 @@
             Welcome #{facesContext.externalContext.userPrincipal.name}</h1>
         <br />
 
-
+<image src="ProfileBean?fileid=#{file.id}&amp;inline=true"
+                       height="100" width="100" />
         <h:form enctype="multipart/form-data">
-            <h:graphicImage value="/pictures/pic13.jpg" /><br    />     
-      <h:inputFile id="file" value="#{profileBean.file}"/>
-  <h:commandButton value="Upload"
-      action="#{profileBean.upload}"/>
+           <h:inputFile id="file" label="file" value="#{fileBean.part}"
+                             validator="#{fileBean.validateFile}" />
+                <h:message for="file" errorStyle="color: red" infoStyle="color: blue"/>
+                Click to upload:
+                <h:commandButton id="upload" action="#{fileBean.uploadFile}"
+                                 value="upload file" />
        </h:form>
         
         
@@ -48,10 +51,10 @@
                 
                 
                 <p:dataTable id="collectionTable2" var="collection" value="#{profileBean.collections}"
-                             selectionMode="single" editable="true" editMode="cell" selection="#{profileBean.selectedCollection}" 
+                              editable="true" editMode="cell"  
                              rowKey="#{collection.collectionName}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
                  paginator="true" rows="10" style="margin-bottom:20px">
-                    <p:ajax event="cellEdit" oncomplete ="updateCollect(collection);" listener="#{profileBean.updateCollect}" />
+<!--                    <p:ajax event="cellEdit" oncomplete ="updateCollect(collection);" listener="#{profileBean.updateCollect}" />-->
                     
                     
                     <f:facet name="{Exporters}">

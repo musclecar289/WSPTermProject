@@ -2,8 +2,10 @@ package JavaObjects;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.security.Principal;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,13 +26,17 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
 import javax.mail.MessagingException;
 import javax.mail.Part;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import org.primefaces.model.UploadedFile;
 
 
 @Named(value = "profileBean")
 @SessionScoped
-public class ProfileBean implements Serializable {
+public class ProfileBean extends HttpServlet implements Serializable {
 
     //resource injection
     @Resource(name = "jdbc/ds_wsp")
@@ -41,9 +47,11 @@ public class ProfileBean implements Serializable {
     private Collection selectedCollection;
     private Album selectedRecord;
     private String username;
+    private String oldCollectionName;
     private UploadedFile file;
     boolean editable;
     private Part part;
+    
     
      private Part file2;
   private String fileContent;
@@ -225,26 +233,30 @@ public class ProfileBean implements Serializable {
        if (conn == null) {
            throw new SQLException("conn is null; Can't get db connection");
        }
-
+      
        PreparedStatement ps = conn.prepareStatement(
-           "Update collection Set COLLECTION_NAME= ? Where OWNER=?"
-       );
-       PreparedStatement ps2 = conn.prepareStatement(
-           "Update collection_items set COLLECTION_NAME= ? Where OWNER = ?"
+               "insert into COLLECTION (COLLECTION_NAME, OWNER) " +
+               "values ('"+selectedCollection.getCollectionName()+"','"+username+"')" 
        );
        
-       PreparedStatement ps3 = conn.prepareStatement("SET foreign_key_checks = 0");
-       PreparedStatement ps4 = conn.prepareStatement("SET foreign_key_checks = 1");
+       
+       PreparedStatement ps2 = conn.prepareStatement(
+               "Update COLLECTION_ITEMS set COLLECTION_NAME='"+selectedCollection.getCollectionName()+"'"
+               +" WHERE COLLECTION_NAME='"+oldCollectionName+"' AND OWNER='"+username+"'"
+       );
+           
+        PreparedStatement ps3 = conn.prepareStatement(
+                "DELETE FROM collection WHERE COLLECTION_NAME='"+oldCollectionName+"' AND OWNER='"+username+"'"
+        );
+       
+      
        // retrieve book data from database
        try {
-           ps2.setString(1, c.getCollectionName());
-            ps2.setString(2, username);
-             ps.setString(1, c.getCollectionName());
-            ps.setString(2, username);
-           ps3.executeUpdate();
-            ps2.executeUpdate();
+           
            ps.executeUpdate();
-           ps4.executeUpdate();
+            ps2.executeUpdate();
+           ps3.executeUpdate();
+           //ps4.executeUpdate();
        } finally {
            conn.close();
            
@@ -276,9 +288,9 @@ public class ProfileBean implements Serializable {
   
     
     
-     public String saveAction() {
+     public String saveAction() throws SQLException {
     //get all existing value but set "editable" to false 
-    for (Collection book : collections){
+    for (Collection book : loadCollections()){
       book.setEditable(false);
     }
     //return to current page
@@ -294,6 +306,8 @@ public class ProfileBean implements Serializable {
             existing.setEditable(false);
         }
         todo.setEditable(true);
+        oldCollectionName = todo.getCollectionName();
+        selectedCollection= todo;
     }
 
     public void cancelEdit(Collection todo){
@@ -389,5 +403,60 @@ public class ProfileBean implements Serializable {
         this.part = part;
     }
 
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        int fileID = Integer.parseInt(request.getParameter("fileid"));
+        String inLineParam = request.getParameter("inline");
+        boolean inLine = false;
+        if (inLineParam != null && inLineParam.equals("true")) {
+            inLine = true;
+        }
+
+        try {
+            Connection conn = ds.getConnection();
+            PreparedStatement selectQuery = conn.prepareStatement(
+                    "SELECT * FROM FILESTORAGE WHERE FILE_ID=?");
+            selectQuery.setInt(1, fileID);
+
+            ResultSet result = selectQuery.executeQuery();
+            if (!result.next()) {
+                System.out.println("***** SELECT query failed for ImageServlet");
+            }
+
+            String fileType = result.getString("FILE_TYPE");
+            String fileName = result.getString("FILE_NAME");
+            long fileSize = result.getLong("FILE_SIZE");
+            Blob fileBlob = result.getBlob("FILE_CONTENTS");
+
+            response.setContentType(fileType);
+            if (inLine) {
+                response.setHeader("Content-Disposition", "inline; filename=\""
+                        + fileName + "\"");
+            } else {
+                response.setHeader("Content-Disposition", "attachment; filename=\""
+                        + fileName + "\"");
+            }
+
+            final int BYTES = 1024;
+            int length = 0;
+            InputStream in = fileBlob.getBinaryStream();
+            OutputStream out = response.getOutputStream();
+            byte[] bbuf = new byte[BYTES];
+
+            while ((in != null) && ((length = in.read(bbuf)) != -1)) {
+                out.write(bbuf, 0, length);
+            }
+
+            out.flush();
+            out.close();
+            conn.close();
+
+        } catch (SQLException e) {
+
+        }
+    }
 
 }
