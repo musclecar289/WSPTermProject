@@ -8,102 +8,171 @@
         <title>User Home</title>
     </h:head> 
     <h:body>
-        <h1 style=" background-color: grey; color: white; text-align: center; padding: 10px">
-            Welcome #{facesContext.externalContext.userPrincipal.name}</h1>
-        <br />
-
-        <h:form id="form1">            
-            <p:toolbar>
-                <f:facet name="right">
-                    <h:link value="User Login" outcome="/customerFolder/profile" />
-                    <span class="ui-separator">
-                        <span class="ui-icon ui-icon-grip-dotted-vertical" />
-                    </span>
-                    <h:link value="Reset Password" outcome="/resetPassword" />
-                </f:facet>
-            </p:toolbar>
-            <p:fieldset style="margin-bottom:20px" id="collectionField" >
-                <h3 style=" background-color: white; color: black; text-align: center; padding: 10px"  >
-                    Here Are All Your Collections !!!!!
-                </h3>
-
-                <p:dataTable id="collectionTable2" var="collection" value="#{profileBean.collections}"
-                             selectionMode="single" selection="#{profileBean.selectedCollection}" 
-                             rowKey="#{collection.collectionName}" >
-                    <f:facet name="header">
-                        My Collections
-                    </f:facet>
-
-                    <p:column headerText="Collection Name">
-                        <p:inplace id="ajax2" editor="true">
-                            <p:inputText value="#{collection.collectionName}" required="true" label="text">
-                            </p:inputText>
-
-                            <p:ajax event="save" listener="#{profileBean.updateCollect(collection)}"></p:ajax>
-                        </p:inplace>
-                    </p:column>
-
-                    <p:column headerText="Number of Records">
-                        <h:outputText value="#{collection.numberOfRecords}" />
-                    </p:column>
-
-                    <p:column colspan="2">
-                        <p:commandButton process="collectionTable2" update=":form1:collectionTable2" value="View"
-                                         icon="ui-icon-search"  oncomplete="PF('collectionDialog').show()" />
-                    </p:column>
-                    <p:column colspan="2">
-                        <h:commandButton value ="delete" action="#{profileBean.deleteCollect(collection)}">
-                            <f:ajax render="collectionTable2"/>
-                        </h:commandButton>
-                    </p:column>
-                    <f:facet name="footer">
-                        In total there are #{profileBean.collections.size()} collections!
-                    </f:facet>
-                </p:dataTable>
-            </p:fieldset>
-            <p:dialog header="Collection Info" widgetVar="collectionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                <p:outputPanel id="collectionDetail" style="text-align:center;">
-                    <p:panelGrid  columns="2" rendered="#{not empty profileBean.selectedCollection}" >
-
-                        <p:column>
-
-                            <img src="pictures/default.png"/>
-                        </p:column>
-
-                        <p:column>
-                            <p:dataTable var="record" value="#{profileBean.selectedCollection.records}">
-                                <f:facet name="header">
-                                    Records in #{profileBean.selectedCollection.collectionName}
-                                </f:facet>
-                                <p:column>
-                                    #{record.title}
-                                </p:column>
-                                <p:column>
-                                    #{record.artist}
-                                </p:column>
-                                <p:column>
-                                    #{record.genre}
-                                </p:column>
-                                <p:column>
-                                    #{record.numberOfTracks}
-                                </p:column>
-                                <p:column>
-                                    #{record.releaseYear}
-                                </p:column>
-                            </p:dataTable>
-                        </p:column>
-
-                    </p:panelGrid>
-                </p:outputPanel>
-            </p:dialog>           
+        <center>
+            <h1 style=" background-color: grey; color: white; text-align: center; padding: 10px">
+                Welcome #{facesContext.externalContext.userPrincipal.name}</h1>
             <br />
 
-        </h:form>
+            <h:form id="form1">  
+                <p:growl id="form1msgs" showDetail="true" />
+                <p:toolbar>
+                    <f:facet name="right">
+                        <h:link  value="Vircoms" outcome="/index" />
+                        <span class="ui-separator">
+                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                        </span>
+                        <h:link value="Logout" outcome="/logout" />
+                        <span class="ui-separator">
+                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                        </span>
+<!--                        <h:link value="User Login" outcome="/customerFolder/profile" />
+                        <span class="ui-separator">
+                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                        </span>-->
+                        <h:link value="Reset Password" outcome="/resetPassword" />
+                    </f:facet>
+                </p:toolbar>
+                <p:fieldset style="margin-top:20px;margin-bottom:20px;width:75%" id="collectionField" >
+                    <p:dataTable id="collectionTable2" var="collection" value="#{profileBean.collections}" 
+                                 selectionMode="single" selection="#{profileBean.selectedCollection}" 
+                                 rowKey="#{collection.collectionName}" >
+                        //need to update records
+                        <p:ajax event="rowSelect" process="collectionTable2" listener="#{profileBean.onCollectionSelect}" update=":form1:form1msgs :collectionRecordsViewer:collectionRecordsList" />
+                        <f:facet name="header">
+                            My Collections
+                        </f:facet>
+
+                        <p:column headerText="Collection Name">
+                            <p:inplace id="ajax2" editor="true">
+                                <p:inputText value="#{collection.collectionName}" required="true" label="text">
+                                </p:inputText>
+
+                                <p:ajax event="save" listener="#{profileBean.updateCollect(collection)}"></p:ajax>
+                            </p:inplace>
+                        </p:column>
+
+                        <p:column headerText="Number of Records">
+                            <h:outputText value="#{collection.numberOfRecords}" />
+                        </p:column>
+
+                        <p:column colspan="2">
+                            <p:commandButton process="collectionTable2" update=":form1:collectionTable2" value="View"
+                                             icon="ui-icon-search"  oncomplete="PF('collectionDialog').show()" />
+                        </p:column>
+                        <p:column colspan="2">
+                            <h:commandButton value ="delete" action="#{profileBean.deleteCollect(collection)}">
+                                <f:ajax render="collectionTable2"/>
+                            </h:commandButton>
+                        </p:column>
+                        <f:facet name="footer">
+                            In total there are #{profileBean.collections.size()} collections!
+                        </f:facet>
+                    </p:dataTable>
+                </p:fieldset>
+            </h:form>
+            <h:form id="collectionRecordsViewer">
+                <p:fieldset id="collectionRecordsField" style="margin-top:20px;margin-bottom:20px;width:75%"  >
+
+                    <p:dataTable id="collectionRecordsList" value="#{profileBean.selectedCollection.records}" 
+                                 var="record" resizableColumns="true" rows="10" 
+                                 scrollable="true" scrollHeight="400" draggableColumns="true" 
+                                 selectionMode="single" selection="#{profileBean.selectedRecord}" 
+                                 rowKey="#{record.title}">
+
+                        <p:ajax event="rowSelect" listener="#{profileBean.onRecordSelect}" update=":form1:form1msgs" />
+
+                        <!--                        <p:column headerText="Name" >
+                                                    <f:facet name="header">Cover Art:</f:facet>                                        
+                                                    <img style="width:25%"  src="#{album.images.get(0).getUrl()}" />
+                                                </p:column>-->
+                        <p:column headerText="Name" >
+                            <f:facet name="header">Title</f:facet>                                        
+                            <h:outputText value="#{record.title}" />
+                        </p:column>
 
 
-        <center>
-            <h:link value="Logout" outcome="/logout" /> <br />
-            <h:link value="Home Page" outcome="/index" />
+
+                    </p:dataTable>
+                </p:fieldset>
+            </h:form>
+            <h:form id="albumSearcherById">
+                <p:fieldset id="recordsDetailFieldset" style="margin-top:20px;margin-bottom:20px;width:75%" >
+                    <p:panelGrid >
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column colspan="2">
+                                    Album Detail View
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <img style="width:50%"  src="#{albumSearchBean.test.images.get(0).getUrl()}" />
+                                </p:column>
+                            </p:row>
+                        </f:facet>
+                        <p:row>
+                            <p:column><h:outputText value="Album Id:" /></p:column>
+                            <p:column><h:outputText value="#{albumSearchBean.test.getId()}" /></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="Album Title:" /></p:column>
+                            <p:column><h:outputText value="#{albumSearchBean.test.getName()}" /></p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column><h:outputText value="Artist:" /></p:column>
+                            <p:column><h:outputText value="#{albumSearchBean.test.getArtists().get(0).getName()}" /></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="Popularity:" /></p:column>
+                            <p:column><h:outputText value="#{albumSearchBean.test.getPopularity()}" /></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="Released:" /></p:column>
+                            <p:column><h:outputText value="#{albumSearchBean.test.getReleaseDate()}" /></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:dataTable id="albumTrackList" value="#{albumSearchBean.selectedTracks}" 
+                                             var="track" resizableColumns="true" rows="10" 
+                                             scrollable="true" draggableColumns="true" scrollHeight="300" >
+
+                                    <p:column headerText="Track Number" >
+                                        <f:facet name="header">Track Number</f:facet>                                        
+                                        <h:outputText value="#{track.getTrackNumber()}" />
+                                    </p:column>
+                                    <p:column headerText="Title" >
+                                        <f:facet name="header">Track Name</f:facet>                                        
+                                        <h:outputText value="#{track.getName()}" />
+                                    </p:column>
+                                    <p:column headerText="Length" >
+                                        <f:facet name="header">Length</f:facet>                                        
+                                        <h:outputText value="#{track.getDuration()}" />
+                                    </p:column>
+                                    <p:column headerText="Disc" >
+                                        <f:facet name="header">Disc</f:facet>                                        
+                                        <h:outputText value="#{track.getDiscNumber()}" />
+                                    </p:column>
+                                    <p:column headerText="Preview" >
+                                        <f:facet name="header">Preview</f:facet>  
+                                        <a href="#{track.getPreviewUrl()}">Sample</a>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+
+                    <!--                    <h:commandButton id="addAlbum" value="Add Album" action=""/>
+                                        <h:message for="addAlbum" 
+                                                   errorStyle="color: red" infoStyle="color: green" />-->
+                </p:fieldset>
+            </h:form>
+
+
+
+<!--            <h:link value="Logout" outcome="/logout" /> <br />
+            <h:link value="Home Page" outcome="/index" />-->
+
         </center>
     </h:body>
 </html>
