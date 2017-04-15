@@ -17,19 +17,20 @@ import javax.mail.*;
 @RequestScoped
 public class Email {
 
-    public void send() {
-        System.out.println("Before try");
-
+    public static void send(String regEmail, int num) {
+        //System.out.println("Before try");
+        
         try{
-            System.out.println("IN Try");
+            //System.out.println("IN TRY ");
+            
             
             String host ="smtp.gmail.com" ;
             String user = "Vircoms1@gmail.com";
             String pass = "VircomsOne";
-            String to = "showell2121@gmail.com";
+            String to = regEmail;
             String from = "Vircoms1@gmail.com";
             String subject = "This is confirmation number for your expertprogramming account. Please insert this number to activate your account.";
-            String messageText = "Your Is Test Email :";
+            String messageText = "Enter the following code on the webste : " + num;
             boolean sessionDebug = false;
 
             Properties props = System.getProperties();
@@ -65,7 +66,8 @@ public class Email {
 
     
 
-        System.out.println("End of Send");
+       // System.out.println("End of Send");
+       
     }
 
     @PostConstruct

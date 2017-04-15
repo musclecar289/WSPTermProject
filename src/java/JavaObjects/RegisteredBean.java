@@ -40,6 +40,8 @@ public class RegisteredBean implements Serializable {
     private String email;
     private String groupname;
     private List<Customer> customers;
+    private int custEmailNum;
+    private static int randomNumber;
     Customer c1;
 
     @Size(min = 3, message = "Greater than 2 Characters")
@@ -59,8 +61,8 @@ public class RegisteredBean implements Serializable {
         this.password = password;
     }
 
-    @Pattern(regexp = "[a-zA-Z0-9]+@[uco]+\\.[edu]+", message = "Please enter an UCO email")
-    @Size(min = 10, message = "Adleast 2 Chars before @uco.edu")
+    @Pattern(regexp = "[a-zA-Z0-9]+@[gmail]+\\.[com]+", message = "Please enter a gmail email")
+    @Size(min = 10, message = "Adleast 2 Chars before @gmail.com")
     public String getEmail() {
         return email;
     }
@@ -85,6 +87,43 @@ public class RegisteredBean implements Serializable {
         this.customers = customers;
     }
 
+    public int getCustEmailNum() {
+        return custEmailNum;
+    }
+
+    public void setCustEmailNum(int custEmailNum) {
+        this.custEmailNum = custEmailNum;
+    }
+
+    public static int getRandomNumber() {
+        return randomNumber;
+    }
+
+    public static void setRandomNumber(int randomNumber) {
+        RegisteredBean.randomNumber = randomNumber;
+    }
+    
+    public String sendEmail(){
+        //System.out.println("Email = "+ getEmail());
+        
+    setRandomNumber((int)(Math.random()* 51234));
+    JavaObjects.Email.send(getEmail(),randomNumber);
+    return "VerifyEmail";    
+    }
+    
+    public String verifyNum() throws IOException, SQLException{
+        //System.out.println("username = new username test = " + username);
+        
+        if(getRandomNumber() == getCustEmailNum()){
+        newMessage();
+        //System.out.println("Complete enroll");
+        return "createAccountSucces";        
+        }else{//System.out.println("Wrong code didnt work");
+        return "failedAccount";
+        }
+        
+    
+    }
     public void newMessage() throws IOException, SQLException {
         //String hitMessage = null;
         Customer c2 = new Customer();
@@ -609,6 +648,8 @@ public class RegisteredBean implements Serializable {
         username = null;
         password = null;
         email = null;
+        custEmailNum = 0;
+        randomNumber = 0;
         try {
             customers = loadCustomers();
         } catch (SQLException ex) {

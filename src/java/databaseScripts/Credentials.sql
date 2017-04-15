@@ -25,18 +25,18 @@ create table GROUPTABLE (
 insert into USERTABLE (username, password, email)
     values ('root',
         'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc7',
-        'root@uco.edu');
+        'root@gmail.com');
 insert into GROUPTABLE (groupname, username) values ('admingroup', 'root');
 insert into GROUPTABLE (groupname, username) values ('customergroup', 'root');
 
 insert into USERTABLE (username, password, email)
     values ('admin',
         'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc7',
-        'admin@uco.edu');
+        'admin@gmail.com');
 insert into GROUPTABLE (groupname, username) values ('admingroup', 'admin');
 
 insert into USERTABLE (username, password, email)
     values ('john',
         'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc7',
-        'john@uco.edu');
+        'john@gmail.com');
 insert into GROUPTABLE (groupname, username) values ('customergroup', 'john');
