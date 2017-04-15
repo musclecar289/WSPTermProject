@@ -48,10 +48,10 @@
 
                         <p:ajax event="rowSelect" listener="#{albumSearchBean.onRowSelect}" update=":albumSearch:msgs :albumSearchById" />
                         <p:ajax event="rowUnselect" listener="#{albumSearchBean.onRowUnselect}" update=":albumSearch:msgs" />
-                        <p:column headerText="Id" >
+                        <!--<p:column headerText="Id" >
                             <f:facet name="header">Album ID</f:facet>                                        
                             <h:outputText value="#{album.getId()}" />
-                        </p:column>
+                        </p:column>-->
                         <p:column headerText="Name" >
                             <f:facet name="header">Cover Art:</f:facet>                                        
                             <img style="width:25%"  src="#{album.images.get(0).getUrl()}" />
@@ -89,10 +89,10 @@
                                 </p:column>
                             </p:row>
                         </f:facet>
-                        <p:row>
+                        <!--<p:row>
                             <p:column><h:outputText value="Album Id:" /></p:column>
                             <p:column><h:outputText value="#{albumSearchBean.test.getId()}" /></p:column>
-                        </p:row>
+                        </p:row>-->
                         <p:row>
                             <p:column><h:outputText value="Album Title:" /></p:column>
                             <p:column><h:outputText value="#{albumSearchBean.test.getName()}" /></p:column>
@@ -134,7 +134,7 @@
                                     </p:column>
                                     <p:column headerText="Preview" >
                                         <f:facet name="header">Preview</f:facet>  
-                                        <a href="#{track.getPreviewUrl()}">Preview</a>
+                                        <a href="#{track.getPreviewUrl()}">Sample</a>
                                     </p:column>
                                 </p:dataTable>
                             </p:column>
