@@ -59,6 +59,7 @@ public class RegisteredBean implements Serializable {
         this.password = password;
     }
 
+
     @Pattern(regexp = "[a-zA-Z0-9]+@[uco]+\\.[edu]+", message = "Please enter an UCO email")
     @Size(min = 10, message = "Adleast 2 Chars before @uco.edu")
     public String getEmail() {

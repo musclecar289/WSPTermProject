@@ -42,7 +42,9 @@
                     <p:dataTable id="albumSearchList" value="#{albumSearchBean.albums}" 
                                  var="album" resizableColumns="true" rows="10" 
                                  style="margin-bottom:20px;width:75%" scrollable="true" 
-                                 draggableColumns="true" scrollHeight="600" selectionMode="single" selection="#{albumSearchBean.selectedAlbum}" rowKey="#{album.name}">
+                                 scrollHeight="600" draggableColumns="true" 
+                                 selectionMode="single" selection="#{albumSearchBean.selectedAlbum}" 
+                                 rowKey="#{album.name}">
 
                         <p:ajax event="rowSelect" listener="#{albumSearchBean.onRowSelect}" update=":albumSearch:msgs :albumSearchById" />
                         <p:ajax event="rowUnselect" listener="#{albumSearchBean.onRowUnselect}" update=":albumSearch:msgs" />
@@ -73,65 +75,78 @@
             </h:form>
 
             <h:form id="albumSearchById">
-                <h3>Album Detail View</h3>
-                <p:panelGrid columns="2"> 
-                    <f:facet name="header">
-                        <img style="width:50%"  src="#{albumSearchBean.test.images.get(0).getUrl()}" />
-                    </f:facet>
+                <center>
+                    <p:panelGrid style="margin-bottom:20px;width:75%">
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column colspan="2">
+                                    Album Detail View
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <img style="width:50%"  src="#{albumSearchBean.test.images.get(0).getUrl()}" />
+                                </p:column>
+                            </p:row>
+                        </f:facet>
+                        <!--<p:row>
+                            <p:column><h:outputText value="Album Id:" /></p:column>
+                            <p:column><h:outputText value="#{albumSearchBean.test.getId()}" /></p:column>
+                        </p:row>-->
+                        <p:row>
+                            <p:column><h:outputText value="Album Title:" /></p:column>
+                            <p:column><h:outputText value="#{albumSearchBean.test.getName()}" /></p:column>
+                        </p:row>
 
-                    <h:outputText value="Album Title:" />
-                    <h:outputText value="#{albumSearchBean.test.getName()}" />
-                    
-                    <h:outputText value="Artist:" />
-                    <h:outputText value="#{albumSearchBean.test.getArtists().get(0).getName()}" />
-                    
-                    
-                    <h:outputText value="Popularity:" />
-                    <h:outputText value="#{albumSearchBean.test.getPopularity()}" />
-                    
-                    
-                    <h:outputText value="Released:" />
-                    <h:outputText value="#{albumSearchBean.test.getReleaseDate()}" />
-                    
-                    <p:dataTable id="albumTrackList" value="#{albumSearchBean.selectedTracks}" 
-                                 var="track" resizableColumns="true" rows="10" 
-                                 style="width:50%" scrollable="true" 
-                                 draggableColumns="true" scrollHeight="600" >
+                        <p:row>
+                            <p:column><h:outputText value="Artist:" /></p:column>
+                            <p:column><h:outputText value="#{albumSearchBean.test.getArtists().get(0).getName()}" /></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="Popularity:" /></p:column>
+                            <p:column><h:outputText value="#{albumSearchBean.test.getPopularity()}" /></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="Released:" /></p:column>
+                            <p:column><h:outputText value="#{albumSearchBean.test.getReleaseDate()}" /></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:dataTable id="albumTrackList" value="#{albumSearchBean.selectedTracks}" 
+                                             var="track" resizableColumns="true" rows="10" 
+                                             scrollable="true" draggableColumns="true" scrollHeight="300" >
 
-                        <p:column headerText="Track Number" >
-                            <f:facet name="header">Track Number</f:facet>                                        
-                            <h:outputText value="#{track.getTrackNumber()}" />
-                        </p:column>
-                        <p:column headerText="Title" >
-                            <f:facet name="header">Track Name</f:facet>                                        
-                            <h:outputText value="#{track.getName()}" />
-                        </p:column>
-                        <p:column headerText="Length" >
-                            <f:facet name="header">Length</f:facet>                                        
-                            <h:outputText value="#{track.getDuration()}" />
-                        </p:column>
-                        <p:column headerText="Disc" >
-                            <f:facet name="header">Disc</f:facet>                                        
-                            <h:outputText value="#{track.getDiscNumber()}" />
-                        </p:column>
-                        <p:column headerText="Preview" >
-                            <f:facet name="header">Preview</f:facet>                                        
-                            <h:link value="#{track.getPreviewUrl()}" />
-                        </p:column>
-                        
-                        
-
-                    </p:dataTable>
-                    <!--<h:outputText value="#{albumSearchBean.test.getReleaseDatePrecision()}" />-->
-                    
-                    <!--<h:commandButton id="addAlbum" value="Add Album" action=""/>
-                    <h:message for="addAlbum" 
-                               errorStyle="color: red" infoStyle="color: green" />-->
-                </p:panelGrid>
+                                    <p:column headerText="Track Number" >
+                                        <f:facet name="header">Track Number</f:facet>                                        
+                                        <h:outputText value="#{track.getTrackNumber()}" />
+                                    </p:column>
+                                    <p:column headerText="Title" >
+                                        <f:facet name="header">Track Name</f:facet>                                        
+                                        <h:outputText value="#{track.getName()}" />
+                                    </p:column>
+                                    <p:column headerText="Length" >
+                                        <f:facet name="header">Length</f:facet>                                        
+                                        <h:outputText value="#{track.getDuration()}" />
+                                    </p:column>
+                                    <p:column headerText="Disc" >
+                                        <f:facet name="header">Disc</f:facet>                                        
+                                        <h:outputText value="#{track.getDiscNumber()}" />
+                                    </p:column>
+                                    <p:column headerText="Preview" >
+                                        <f:facet name="header">Preview</f:facet>  
+                                        <a href="#{track.getPreviewUrl()}">Sample</a>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </center>
+                <!--<h:commandButton id="addAlbum" value="Add Album" action=""/>
+                <h:message for="addAlbum" 
+                           errorStyle="color: red" infoStyle="color: green" />-->
 
             </h:form>
         </p:fieldset>
-
     </h:body>
 </html>
 

@@ -2,11 +2,10 @@
 package JavaObjects;
 
 import java.util.List;
+import javax.inject.Named;
 
-/**
- *
- * @author user Nicholas Clemmons
- */
+@Named(value = "collection2")
+
 
 public class Collection {
     private String collectionName;

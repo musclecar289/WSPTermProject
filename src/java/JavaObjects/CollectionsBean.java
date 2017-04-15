@@ -20,6 +20,7 @@ import javax.sql.DataSource;
  *
  * @author Nicholas Clemmons
  */
+
 @Named(value = "collectionsBean")
 @SessionScoped
 public class CollectionsBean implements Serializable {
@@ -32,7 +33,7 @@ public class CollectionsBean implements Serializable {
     private int numberOfCollections;
     private Collection selectedCollection;
     private Record selectedRecord;
-
+  
     @PostConstruct
     public void init() {
         try {
@@ -42,11 +43,7 @@ public class CollectionsBean implements Serializable {
             Logger.getLogger(ViewCollectionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    public List<Collection> getCollections() {
-        return collections;
-    }
-
+    
     public List<Record> loadAlbums(String collection_name) throws SQLException {
 
         if (ds == null) {
@@ -63,7 +60,7 @@ public class CollectionsBean implements Serializable {
 
         try {
             PreparedStatement ps = conn.prepareStatement(
-                "SELECT a.* FROM collection_items AS c JOIN albumtable AS a WHERE a.ALBUM_ID=c.ALBUM_ID and collection_name='"+collection_name+"'"
+                    "SELECT a.* FROM collection_items AS c JOIN albumtable AS a WHERE a.ALBUM_ID=c.ALBUM_ID and collection_name='" + collection_name + "'"
             );
 
             // retrieve book data from database
@@ -71,6 +68,7 @@ public class CollectionsBean implements Serializable {
 
             while (result.next()) {
                 Record a = new Record();
+                a.setSpotifyId(result.getString("SPOTIFYID"));
                 a.setAlbumID(result.getInt("ALBUM_ID"));
                 a.setTitle(result.getString("TITLE"));
                 a.setArtist(result.getString("ARTIST"));
@@ -89,32 +87,6 @@ public class CollectionsBean implements Serializable {
         return list;
     }
 
-    public int getNumberOfCollections() {
-        return numberOfCollections;
-    }
-
-    public void setNumberOfCollections(int numberOfCollections) {
-        this.numberOfCollections = numberOfCollections;
-    }
-
-    public Collection getSelectedCollection() {
-        return selectedCollection;
-    }
-
-    public void setSelectedCollection(Collection selectedCollection) {
-        this.selectedCollection = selectedCollection;
-    }
-
-    public Record getSelectedRecord() {
-        return selectedRecord;
-    }
-
-    public void setSelectedRecord(Record selectedRecord) {
-        this.selectedRecord = selectedRecord;
-    }
-
-    
-    
     private List<Collection> loadCollections() throws SQLException {
         if (ds == null) {
             throw new SQLException("ds is null; Can't get data source");
@@ -130,11 +102,11 @@ public class CollectionsBean implements Serializable {
 
         try {
             PreparedStatement ps = conn.prepareStatement(
-                "SELECT collection_name, COUNT(*) FROM collection_items GROUP BY collection_name;"
+                    "SELECT collection_name, COUNT(*) FROM collection_items GROUP BY collection_name;"
             );
             // retrieve book data from database
             ResultSet result = ps.executeQuery();
-            
+
             while (result.next()) {
                 Collection c = new Collection();
                 c.setCollectionName(result.getString("collection_name"));
@@ -213,4 +185,31 @@ public class CollectionsBean implements Serializable {
 
      
 
+    public List<Collection> getCollections() {
+        return collections;
+    }
+
+    public int getNumberOfCollections() {
+        return numberOfCollections;
+    }
+
+    public void setNumberOfCollections(int numberOfCollections) {
+        this.numberOfCollections = numberOfCollections;
+    }
+
+    public Collection getSelectedCollection() {
+        return selectedCollection;
+    }
+
+    public void setSelectedCollection(Collection selectedCollection) {
+        this.selectedCollection = selectedCollection;
+    }
+
+    public Record getSelectedRecord() {
+        return selectedRecord;
+    }
+
+    public void setSelectedRecord(Record selectedRecord) {
+        this.selectedRecord = selectedRecord;
+    }
 }

@@ -9,11 +9,11 @@ public class Record {
     private String title;
     private String artist;
     private String genre;
-    private String spotifyAlbumID;
     private int releaseYear;
     private int numberOfTracks;
     private int numberOfDiscs;
     private int albumID;
+    private String spotifyId;
     private int albumCount;
     private boolean editable;
 
@@ -39,14 +39,6 @@ public class Record {
 
     public void setGenre(String genre) {
         this.genre = genre;
-    }
-
-    public String getSpotifyAlbumID() {
-        return spotifyAlbumID;
-    }
-
-    public void setSpotifyAlbumID(String spotifyAlbumID) {
-        this.spotifyAlbumID = spotifyAlbumID;
     }
 
     public int getReleaseYear() {
@@ -81,6 +73,14 @@ public class Record {
         this.albumID = albumID;
     }
 
+    public String getSpotifyId() {
+        return spotifyId;
+    }
+
+    public void setSpotifyId(String spotifyId) {
+        this.spotifyId = spotifyId;
+    }
+
     public int getAlbumCount() {
         return albumCount;
     }
@@ -100,5 +100,4 @@ public class Record {
     public void setEditable(boolean editable) {
         this.editable = editable;
     }
-    
 }
