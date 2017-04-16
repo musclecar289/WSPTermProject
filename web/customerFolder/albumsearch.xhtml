@@ -89,10 +89,10 @@
                                 </p:column>
                             </p:row>
                         </f:facet>
-                        <!--<p:row>
+                        <p:row>
                             <p:column><h:outputText value="Album Id:" /></p:column>
                             <p:column><h:outputText value="#{albumSearchBean.test.getId()}" /></p:column>
-                        </p:row>-->
+                        </p:row>
                         <p:row>
                             <p:column><h:outputText value="Album Title:" /></p:column>
                             <p:column><h:outputText value="#{albumSearchBean.test.getName()}" /></p:column>
@@ -141,7 +141,7 @@
                         </p:row>
                     </p:panelGrid>
                 </center>
-                <h:commandButton id="addAlbum" value="Add Album"/>
+                <h:commandButton id="addAlbum" value="Add Album" action="#{albumSearchBean.addAlbumToCollection(profileBean.selectedCollection)}"/>
                 <h:message for="addAlbum" 
                            errorStyle="color: red" infoStyle="color: green" />
 
