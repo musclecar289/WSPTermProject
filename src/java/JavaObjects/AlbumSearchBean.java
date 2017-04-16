@@ -126,5 +126,4 @@ public class AlbumSearchBean implements Serializable {
         this.selectedTracks = selectedTracks;
     }
     
-    
 }

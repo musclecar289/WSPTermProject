@@ -5,7 +5,6 @@ import com.wrapper.spotify.exceptions.WebApiException;
 import com.wrapper.spotify.methods.AlbumRequest;
 import com.wrapper.spotify.models.Album;
 import com.wrapper.spotify.models.Page;
-import com.wrapper.spotify.models.SimpleAlbum;
 import com.wrapper.spotify.models.SimpleTrack;
 import java.io.IOException;
 import java.io.Serializable;
