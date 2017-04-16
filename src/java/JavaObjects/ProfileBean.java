@@ -7,7 +7,9 @@ import com.wrapper.spotify.models.Album;
 import com.wrapper.spotify.models.Page;
 import com.wrapper.spotify.models.SimpleAlbum;
 import com.wrapper.spotify.models.SimpleTrack;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.security.Principal;
 import java.sql.Connection;
@@ -24,8 +26,12 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.http.Part;
 import javax.sql.DataSource;
+import org.apache.commons.io.FileUtils;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -48,7 +54,8 @@ public class ProfileBean implements Serializable {
     private Collection selectedCollection;
     private Record selectedRecord;
     private String username;
-
+    private Part part;
+    
     @PostConstruct
     public void init() {
         try {
@@ -61,7 +68,7 @@ public class ProfileBean implements Serializable {
             Logger.getLogger(ViewCollectionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public List<Record> loadAlbums(String collection_name) throws SQLException {
 
         if (ds == null) {
@@ -223,7 +230,89 @@ public class ProfileBean implements Serializable {
         FacesMessage msg = new FacesMessage("Record Selected", currentRecord.getTitle());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
+    
+    public void handleFileUpload(FileUploadEvent event) throws IOException, SQLException {
+        FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+        
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        
+        Connection conn = ds.getConnection();
 
+        InputStream inputStream;
+        inputStream = null;
+        try {
+            inputStream = part.getInputStream();
+            PreparedStatement insertQuery = conn.prepareStatement(
+                    "UPDATE USERTABLE SET PICTURE=? WHERE USERNAME=? "
+                            + "VALUES (?,?)");
+            insertQuery.setBinaryStream(1, inputStream);
+            insertQuery.setString(2, username);
+            
+            int result = insertQuery.executeUpdate();
+            if (result == 1) {
+                facesContext.addMessage("uploadForm:upload",
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Upload successful!!", null));
+            } else {
+                // if not 1, it must be an error.
+                facesContext.addMessage("uploadForm:upload",
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                                result + " file uploaded", null));
+            }
+        } catch (IOException e) {
+            facesContext.addMessage("uploadForm:upload",
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "File upload failed !!", null));
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
+    
+    public void uploadFile() throws IOException, SQLException {
+
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        
+        Connection conn = ds.getConnection();
+
+        InputStream inputStream;
+        inputStream = null;
+        try {
+            inputStream = part.getInputStream();
+            PreparedStatement insertQuery = conn.prepareStatement(
+                    "UPDATE USERTABLE SET PICTURE=? WHERE USERNAME=? "
+                            + "VALUES (?,?)");
+            insertQuery.setBinaryStream(1, inputStream);
+            insertQuery.setString(2, username);
+            
+            int result = insertQuery.executeUpdate();
+            if (result == 1) {
+                facesContext.addMessage("uploadForm:upload",
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Upload successful!!", null));
+            } else {
+                // if not 1, it must be an error.
+                facesContext.addMessage("uploadForm:upload",
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                                result + " file uploaded", null));
+            }
+        } catch (IOException e) {
+            facesContext.addMessage("uploadForm:upload",
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "File upload failed !!", null));
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
+    
     public Album getTest() {
         return test;
     }
@@ -274,5 +363,13 @@ public class ProfileBean implements Serializable {
 
     public void setSelectedRecord(Record selectedRecord) {
         this.selectedRecord = selectedRecord;
+    }
+    
+    public Part getPart() {
+        return part;
+    }
+
+    public void setPart(Part part) {
+        this.part = part;
     }
 }
