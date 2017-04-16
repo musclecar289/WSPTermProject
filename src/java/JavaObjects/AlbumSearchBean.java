@@ -104,10 +104,13 @@ public class AlbumSearchBean implements Serializable {
         if (conn == null) {
             throw new SQLException("conn is null; Can't get db connection");
         }
-
+//        PreparedStatement insertQuery = conn.prepareStatement(
+//                "INSERT INTO ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE, GENRE) "
+//                + "VALUES(?,?,?,?,?)"
+//        );
         PreparedStatement insertQuery = conn.prepareStatement(
-                "INSERT INTO ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE, GENRE) "
-                + "VALUES(?,?,?,?,?)"
+                "INSERT INTO ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE) "
+                + "VALUES(?,?,?,?)"
         );
 
         //insertQuery.setInt(5, numberOfTracks);
@@ -115,18 +118,18 @@ public class AlbumSearchBean implements Serializable {
         //insertQuery.setInt(8, albumCount);
 
         PreparedStatement insertQuery2 = conn.prepareStatement(
-                "INSERT INTO COLLECTION_ITEMS (ALBUMID, COLLECTION_NAME, OWNER) "
+                "INSERT INTO COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER) "
                 + "VALUES(?,?,?)"
         );
 
         try {
-            insertQuery.setString(1, test.getId());
-            insertQuery.setString(2, test.getName());
-            insertQuery.setString(3, test.getArtists().get(0).getName());
-            insertQuery.setString(4, test.getReleaseDate());
-            insertQuery.setString(5, test.getGenres().get(0));
+            insertQuery.setString(1, this.test.getId());
+            insertQuery.setString(2, this.test.getName());
+            insertQuery.setString(3, this.test.getArtists().get(0).getName());
+            insertQuery.setString(4, this.test.getReleaseDate());
+            //insertQuery.setString(5, this.test.getGenres().get(0));
             
-            insertQuery2.setString(1, test.getId());
+            insertQuery2.setString(1, this.test.getId());
             insertQuery2.setString(2, c.getCollectionName());
             insertQuery2.setString(3, c.getOwnerName());
             
