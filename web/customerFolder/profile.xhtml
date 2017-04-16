@@ -12,7 +12,6 @@
             <h1 style=" background-color: grey; color: white; text-align: center; padding: 10px">
                 Welcome #{facesContext.externalContext.userPrincipal.name}</h1>
             <br />
-
             <h:form id="form1">  
                 <p:growl id="form1msgs" showDetail="true" />
                 <p:toolbar>
@@ -25,36 +24,26 @@
                         <span class="ui-separator">
                             <span class="ui-icon ui-icon-grip-dotted-vertical" />
                         </span>
-                        <!--                        <h:link value="User Login" outcome="/customerFolder/profile" />
-                                                <span class="ui-separator">
-                                                    <span class="ui-icon ui-icon-grip-dotted-vertical" />
-                                                </span>-->
                         <h:link value="Reset Password" outcome="/resetPassword" />
                     </f:facet>
                 </p:toolbar>
                 <p:fieldset style="margin-top:20px;margin-bottom:20px;width:75%" id="collectionField" >
                     <p:dataTable id="collectionTable2" var="collection" value="#{profileBean.collections}" 
                                  selectionMode="single" selection="#{profileBean.selectedCollection}" 
-                                 rowKey="#{collection.collectionName}" >
-                        
+                                 rowKey="#{collection.collectionName}" >                        
                         <p:ajax event="rowSelect" process="collectionTable2" listener="#{profileBean.onCollectionSelect}" update=":form1:form1msgs :collectionRecordsViewer:collectionRecordsList" />
                         <f:facet name="header">
                             My Collections
                         </f:facet>
-
                         <p:column headerText="Collection Name">
                             <p:inplace id="ajax2" editor="true">
-                                <p:inputText value="#{collection.collectionName}" required="true" label="text">
-                                </p:inputText>
-
+                                <p:inputText value="#{collection.collectionName}" required="true" label="text"/>
                                 <p:ajax event="save" listener="#{profileBean.updateCollect(collection)}"></p:ajax>
                             </p:inplace>
                         </p:column>
-
                         <p:column headerText="Number of Records">
                             <h:outputText value="#{collection.numberOfRecords}" />
                         </p:column>
-
                         <p:column>
                             <p:commandButton process="collectionTable2" update=":form1:collectionTable2" value="View"
                                              icon="ui-icon-search"  oncomplete="PF('collectionDialog').show()" />
@@ -86,10 +75,7 @@
                                  scrollable="true" scrollHeight="400" draggableColumns="true" 
                                  selectionMode="single" selection="#{profileBean.selectedRecord}" 
                                  rowKey="#{record.title}">
-
                         <p:ajax event="rowSelect" listener="#{profileBean.onRecordSelect}" update=":form1:form1msgs :albumSearcherById" />
-
-                        
                         <f:facet name="header">Title</f:facet>
                         <p:column>                                                                    
                             <h:outputText value="#{record.title}" />
@@ -120,7 +106,6 @@
                             <p:column><h:outputText value="Album Title:" /></p:column>
                             <p:column><h:outputText value="#{profileBean.test.getName()}" /></p:column>
                         </p:row>
-
                         <p:row>
                             <p:column><h:outputText value="Artist:" /></p:column>
                             <p:column><h:outputText value="#{profileBean.test.getArtists().get(0).getName()}" /></p:column>
@@ -138,7 +123,6 @@
                                 <p:dataTable id="albumTrackList" value="#{profileBean.selectedTracks}" 
                                              var="track" resizableColumns="true" rows="10" 
                                              scrollable="true" draggableColumns="true" scrollHeight="300" >
-
                                     <p:column headerText="Track Number" >
                                         <f:facet name="header">Track Number</f:facet>                                        
                                         <h:outputText value="#{track.getTrackNumber()}" />
@@ -156,20 +140,15 @@
                                         <h:outputText value="#{track.getDiscNumber()}" />
                                     </p:column>
                                     <p:column headerText="Preview" >
-                                        <f:facet name="header">Preview</f:facet>  
+                                        <f:facet name="header">30 Sec. Sample</f:facet>  
                                         <a href="#{track.getPreviewUrl()}">Sample</a>
                                     </p:column>
                                 </p:dataTable>
                             </p:column>
                         </p:row>
                     </p:panelGrid>
-
-                    <!--                    <h:commandButton id="addAlbum" value="Add Album" action=""/>
-                                        <h:message for="addAlbum" 
-                                                   errorStyle="color: red" infoStyle="color: green" />-->
                 </p:fieldset>
             </h:form>
         </center>
     </h:body>
 </html>
-
