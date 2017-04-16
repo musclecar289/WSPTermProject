@@ -9,7 +9,7 @@ public class Record {
     private String title;
     private String artist;
     private String genre;
-    private int releaseYear;
+    private String releaseDate;
     private int numberOfTracks;
     private int numberOfDiscs;
     private String albumID;
@@ -40,12 +40,12 @@ public class Record {
         this.genre = genre;
     }
 
-    public int getReleaseYear() {
-        return releaseYear;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setReleaseYear(int releaseYear) {
-        this.releaseYear = releaseYear;
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public int getNumberOfTracks() {

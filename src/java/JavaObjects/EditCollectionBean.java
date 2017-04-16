@@ -36,7 +36,7 @@ public class EditCollectionBean implements Serializable {
     private String title;
     private String artist;
 
-    private int releaseYear;
+    private String releaseDate;
     private int numberOfTracks;
     private int numberOfDiscs;
     private String genre;
@@ -83,7 +83,7 @@ public class EditCollectionBean implements Serializable {
                 a.setAlbumID(result.getString("ALBUM_ID"));
                 a.setTitle(result.getString("TITLE"));
                 a.setArtist(result.getString("ARTIST"));
-                a.setReleaseYear(result.getInt("YEAR"));
+                a.setReleaseDate(result.getString("RELEASE_DATE"));
                 a.setNumberOfTracks(result.getInt("NUMBER_OF_TRACKS"));
                 a.setNumberOfDiscs(result.getInt("NUMBER_OF_DISCS"));
                 a.setGenre(result.getString("GENRE"));
@@ -127,7 +127,7 @@ public class EditCollectionBean implements Serializable {
 
             insertQuery.setString(1, getTitle());
             insertQuery.setString(2, getArtist());
-            insertQuery.setInt(3, getReleaseYear());
+            insertQuery.setString(3, getReleaseDate());
             insertQuery.setInt(4, getNumberOfTracks());
             insertQuery.setInt(5, getNumberOfDiscs());
             insertQuery.setString(6, getGenre());
@@ -170,7 +170,7 @@ public class EditCollectionBean implements Serializable {
             
             updateQuery.setString(1, a.getTitle());
             updateQuery.setString(2, a.getArtist());
-            updateQuery.setInt(3, a.getReleaseYear());
+            updateQuery.setString(3, a.getReleaseDate());
             updateQuery.setInt(4, a.getNumberOfTracks());
             updateQuery.setInt(5, a.getNumberOfDiscs());
             updateQuery.setString(6, a.getGenre());
@@ -238,7 +238,7 @@ public class EditCollectionBean implements Serializable {
         this.albumID = album.getAlbumID();
         this.title = album.getTitle();
         this.artist = album.getArtist();
-        this.releaseYear = album.getReleaseYear();
+        this.releaseDate = album.getReleaseDate();
         this.numberOfTracks = album.getNumberOfTracks();
         this.numberOfDiscs = album.getNumberOfDiscs();
         this.albumCount = album.getAlbumCount();
@@ -278,12 +278,12 @@ public class EditCollectionBean implements Serializable {
         this.genre = genre;
     }
 
-    public int getReleaseYear() {
-        return releaseYear;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setReleaseYear(int releaseYear) {
-        this.releaseYear = releaseYear;
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public int getNumberOfTracks() {

@@ -9,6 +9,7 @@ import javax.inject.Named;
 
 public class Collection {
     private String collectionName;
+    private String ownerName;
     private List<Record> records;
     private int numberOfRecords;
     private int collectionID;
@@ -19,6 +20,14 @@ public class Collection {
 
     public void setCollectionName(String collectionName) {
         this.collectionName = collectionName;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 
     public List<Record> getRecords() {

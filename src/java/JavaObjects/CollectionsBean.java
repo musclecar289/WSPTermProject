@@ -70,7 +70,7 @@ public class CollectionsBean implements Serializable {
                 a.setAlbumID(result.getString("ALBUM_ID"));
                 a.setTitle(result.getString("TITLE"));
                 a.setArtist(result.getString("ARTIST"));
-                a.setReleaseYear(result.getInt("YEAR"));
+                a.setReleaseDate(result.getString("RELEASE_DATE"));
                 a.setNumberOfTracks(result.getInt("NUMBER_OF_TRACKS"));
                 a.setNumberOfDiscs(result.getInt("NUMBER_OF_DISCS"));
                 a.setGenre(result.getString("GENRE"));

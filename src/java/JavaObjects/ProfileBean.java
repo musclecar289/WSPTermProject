@@ -88,7 +88,7 @@ public class ProfileBean implements Serializable {
                 a.setAlbumID(result.getString("ALBUM_ID"));
                 a.setTitle(result.getString("TITLE"));
                 a.setArtist(result.getString("ARTIST"));
-                a.setReleaseYear(result.getInt("YEAR"));
+                a.setReleaseDate(result.getString("RELEASE_DATE"));
                 a.setNumberOfTracks(result.getInt("NUMBER_OF_TRACKS"));
                 a.setNumberOfDiscs(result.getInt("NUMBER_OF_DISCS"));
                 a.setGenre(result.getString("GENRE"));
@@ -129,6 +129,7 @@ public class ProfileBean implements Serializable {
                 //Different from collectionsBean line 110-111
                 //UserBean s = new UserBean();
                 c.setCollectionName(result.getString("collection_name"));
+                c.setOwnerName(username);
                 c.setNumberOfRecords(result.getInt("COUNT(*)"));
                 c.setRecords(this.loadAlbums(c.getCollectionName()));
                 list.add(c);

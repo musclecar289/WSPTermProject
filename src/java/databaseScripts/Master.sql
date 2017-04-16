@@ -60,7 +60,7 @@ create table ALBUMTABLE (
    ALBUM_ID varchar(255) NOT NULL,
    TITLE varchar(255),
    ARTIST varchar(255),
-   YEAR INT,
+   RELEASE_DATE varchar(255),
    NUMBER_OF_TRACKS INT,
    NUMBER_OF_DISCS INT,
    GENRE varchar(255),
@@ -68,38 +68,38 @@ create table ALBUMTABLE (
    primary key (ALBUM_ID)
 );
 
-insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT) 
-    values ('6r7LZXAVueS5DqdrvXJJK7','Paranoid', 'Black Sabbath', 1970, 8, 1, 'Heavy metal', 2);
-insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-    values ('3uIT4I4Dy7Pq1j0aSjzPW9','Rising', 'Rainbow', 1976, 6, 1, 'Heavy metal', 1);
-insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-    values ('3ycjBixZf7S3WpC5WZhhUK','Led Zeppelin', 'Led Zeppelin', 1969, 9, 1, 'Hard rock', 3);
-insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-    values ('00BBpx0gG4KfQtxSJBPKUZ','Obscured by Clouds', 'Pink Floyd', 1972, 10, 1, 'Progressive Rock', 1);
-insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-    values ('4LH4d3cOWNNsVw41Gqt2kv','The Dark Side of the Moon', 'Pink Floyd', 1973, 10, 1, 'Progressive Rock', 2);
-insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-    values ('0bCAjiUamIFqKJsekOYuRw','Wish You Were Here', 'Pink Floyd', 1975, 5, 1, 'Progressive Rock', 1);
-insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-    values ('3b4E89rxzZQ9zkhgKpj8N4','Animals', 'Pink Floyd', 1976, 5, 1, 'Progressive Rock', 1);
-insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-    values ('5Dbax7G8SWrP9xyzkOvy2F','The Wall', 'Pink Floyd', 1979, 26, 2, 'Heavy metal', 1);
-insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-   values ('1nTvIQEXvygqSIqc2vuwAz','Ride the Lightning', 'Metallica', 1984, 8, 1, 'Thrash metal', 1);
-insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-   values ('41bTjcSaiEe4G40RVVHbux','Master of Puppets', 'Metallica', 1986, 8, 1, 'Thrash metal', 2);
-insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-   values ('69oeRoYEpSsNPGVuYRxfoB','...And Justice for All', 'Metallica', 1988, 9, 1, 'Thrash metal', 1);
-insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-   values ('37lWyRxkf3wQHCOlXM5WfX','Metallica', 'Metallica', 1991, 12, 1, 'Thrash metal', 1);
-insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-   values ('2MD9zkmkFbrVyWy23nnAZQ','Load', 'Metallica', 1996, 14, 1, 'Heavy metal', 1);
-insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-   values ('73E6u02YIL3dK6UConUUv4','Reload', 'Metallica', 1997, 13, 1, 'Heavy metal', 1);
-insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-   values ('4qDiQwJ7UEuJsGLWL078nQ','Garage Inc.', 'Metallica', 1998, 11, 1, 'Heavy metal', 1);
-insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
-   values ('4kwN2OnnrwY2ZBcm379Ahn','St. Anger', 'Metallica', 2003, 11, 1, 'Heavy metal', 1);
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT) 
+    values ('6r7LZXAVueS5DqdrvXJJK7','Paranoid', 'Black Sabbath', '1970', 8, 1, 'Heavy metal', 2);
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+    values ('3uIT4I4Dy7Pq1j0aSjzPW9','Rising', 'Rainbow', '1976', 6, 1, 'Heavy metal', 1);
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+    values ('3ycjBixZf7S3WpC5WZhhUK','Led Zeppelin', 'Led Zeppelin', '1969', 9, 1, 'Hard rock', 3);
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+    values ('00BBpx0gG4KfQtxSJBPKUZ','Obscured by Clouds', 'Pink Floyd', '1972', 10, 1, 'Progressive Rock', 1);
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+    values ('4LH4d3cOWNNsVw41Gqt2kv','The Dark Side of the Moon', 'Pink Floyd', '1973', 10, 1, 'Progressive Rock', 2);
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+    values ('0bCAjiUamIFqKJsekOYuRw','Wish You Were Here', 'Pink Floyd', '1975', 5, 1, 'Progressive Rock', 1);
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+    values ('3b4E89rxzZQ9zkhgKpj8N4','Animals', 'Pink Floyd', '1976', 5, 1, 'Progressive Rock', 1);
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+    values ('5Dbax7G8SWrP9xyzkOvy2F','The Wall', 'Pink Floyd', '1979', 26, 2, 'Heavy metal', 1);
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+   values ('1nTvIQEXvygqSIqc2vuwAz','Ride the Lightning', 'Metallica', '1984', 8, 1, 'Thrash metal', 1);
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+   values ('41bTjcSaiEe4G40RVVHbux','Master of Puppets', 'Metallica', '1986', 8, 1, 'Thrash metal', 2);
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+   values ('69oeRoYEpSsNPGVuYRxfoB','...And Justice for All', 'Metallica', '1988', 9, 1, 'Thrash metal', 1);
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+   values ('37lWyRxkf3wQHCOlXM5WfX','Metallica', 'Metallica', '1991', 12, 1, 'Thrash metal', 1);
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+   values ('2MD9zkmkFbrVyWy23nnAZQ','Load', 'Metallica', '1996', 14, 1, 'Heavy metal', 1);
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+   values ('73E6u02YIL3dK6UConUUv4','Reload', 'Metallica', '1997', 13, 1, 'Heavy metal', 1);
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+   values ('4qDiQwJ7UEuJsGLWL078nQ','Garage Inc.', 'Metallica', '1998', 11, 1, 'Heavy metal', 1);
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+   values ('4kwN2OnnrwY2ZBcm379Ahn','St. Anger', 'Metallica', '2003', 11, 1, 'Heavy metal', 1);
 
 
 
