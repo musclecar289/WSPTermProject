@@ -20,7 +20,6 @@ import javax.sql.DataSource;
  *
  * @author Nicholas Clemmons
  */
-
 @Named(value = "collectionsBean")
 @SessionScoped
 public class CollectionsBean implements Serializable {
@@ -33,7 +32,7 @@ public class CollectionsBean implements Serializable {
     private int numberOfCollections;
     private Collection selectedCollection;
     private Record selectedRecord;
-  
+
     @PostConstruct
     public void init() {
         try {
@@ -43,7 +42,7 @@ public class CollectionsBean implements Serializable {
             Logger.getLogger(ViewCollectionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public List<Record> loadAlbums(String collection_name) throws SQLException {
 
         if (ds == null) {
@@ -119,71 +118,58 @@ public class CollectionsBean implements Serializable {
         }
         return list;
     }
-    
 
-     public void deleteCollect(Collection c) throws IOException, SQLException {
+    public void deleteCollect(Collection c) throws IOException, SQLException {
 
-       if (ds == null) {
-           throw new SQLException("ds is null; Can't get data source");
-       }
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
 
-       Connection conn = ds.getConnection();
+        Connection conn = ds.getConnection();
 
-       if (conn == null) {
-           throw new SQLException("conn is null; Can't get db connection");
-       }
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
 
-       PreparedStatement ps = conn.prepareStatement(
-           "DELETE FROM collection WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='john';"
-       );
-       PreparedStatement ps2 = conn.prepareStatement(
-           "DELETE FROM collection_items WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='john';"
-       );
-       
-       // retrieve book data from database
-       try {
-           ps2.executeQuery();
-           ps.executeQuery();
-       } finally {
-           conn.close();
-       }
-   }
+        PreparedStatement ps = conn.prepareStatement(
+                "DELETE FROM collection WHERE COLLECTION_NAME='" + c.getCollectionName() + "' AND OWNER='john';"
+        );
+        PreparedStatement ps2 = conn.prepareStatement(
+                "DELETE FROM collection_items WHERE COLLECTION_NAME='" + c.getCollectionName() + "' AND OWNER='john';"
+        );
 
+        // retrieve book data from database
+        try {
+            ps2.executeQuery();
+            ps.executeQuery();
+        } finally {
+            conn.close();
+        }
+    }
 
-     
-     public void updateCollect(Collection c) throws IOException, SQLException {
+    public void updateCollect(Collection c) throws IOException, SQLException {
 
-       if (ds == null) {
-           throw new SQLException("ds is null; Can't get data source");
-       }
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
 
-       Connection conn = ds.getConnection();
+        Connection conn = ds.getConnection();
 
-       if (conn == null) {
-           throw new SQLException("conn is null; Can't get db connection");
-       }
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
 
-       PreparedStatement ps = conn.prepareStatement(
-           "UPDATE COLLECTION SET COLLECTION_NAME = ? WHERE OWNER='john';"
-       );
+        PreparedStatement ps = conn.prepareStatement(
+                "UPDATE COLLECTION SET COLLECTION_NAME = ? WHERE OWNER='john';"
+        );
+
         try {
             ps.setString(1, c.getCollectionName());
-           
             ps.executeUpdate();
-        
-
-      
-       
-      
-         
-          
-       } finally {
-           conn.close();
-       }
-   }
-
-
-     
+        } finally {
+            conn.close();
+        }
+    }
 
     public List<Collection> getCollections() {
         return collections;
@@ -212,4 +198,5 @@ public class CollectionsBean implements Serializable {
     public void setSelectedRecord(Record selectedRecord) {
         this.selectedRecord = selectedRecord;
     }
+    
 }

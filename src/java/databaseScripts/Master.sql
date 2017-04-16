@@ -57,49 +57,48 @@ insert into GROUPTABLE (groupname, username) values ('customergroup', 'seth');
 
 -----------------------------------Album.sql------------------------------------
 create table ALBUMTABLE (
-    ALBUM_ID INT NOT NULL AUTO_INCREMENT,
-    SPOTIFYID varchar(255),
-    TITLE varchar(255),
-    ARTIST varchar(255),
-    YEAR INT,
-    NUMBER_OF_TRACKS INT,
-    NUMBER_OF_DISCS INT,
-    GENRE varchar(255),
-    ALBUMCOUNT INT,
-    primary key (ALBUM_ID)
+   ALBUM_ID varchar(255) NOT NULL,
+   TITLE varchar(255),
+   ARTIST varchar(255),
+   YEAR INT,
+   NUMBER_OF_TRACKS INT,
+   NUMBER_OF_DISCS INT,
+   GENRE varchar(255),
+   ALBUMCOUNT INT,
+   primary key (ALBUM_ID)
 );
 
-insert into ALBUMTABLE (SPOTIFYID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT) 
     values ('6r7LZXAVueS5DqdrvXJJK7','Paranoid', 'Black Sabbath', 1970, 8, 1, 'Heavy metal', 2);
-insert into ALBUMTABLE (SPOTIFYID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
     values ('3uIT4I4Dy7Pq1j0aSjzPW9','Rising', 'Rainbow', 1976, 6, 1, 'Heavy metal', 1);
-insert into ALBUMTABLE (SPOTIFYID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
     values ('3ycjBixZf7S3WpC5WZhhUK','Led Zeppelin', 'Led Zeppelin', 1969, 9, 1, 'Hard rock', 3);
-insert into ALBUMTABLE (SPOTIFYID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
     values ('00BBpx0gG4KfQtxSJBPKUZ','Obscured by Clouds', 'Pink Floyd', 1972, 10, 1, 'Progressive Rock', 1);
-insert into ALBUMTABLE (SPOTIFYID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
     values ('4LH4d3cOWNNsVw41Gqt2kv','The Dark Side of the Moon', 'Pink Floyd', 1973, 10, 1, 'Progressive Rock', 2);
-insert into ALBUMTABLE (SPOTIFYID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
     values ('0bCAjiUamIFqKJsekOYuRw','Wish You Were Here', 'Pink Floyd', 1975, 5, 1, 'Progressive Rock', 1);
-insert into ALBUMTABLE (SPOTIFYID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
     values ('3b4E89rxzZQ9zkhgKpj8N4','Animals', 'Pink Floyd', 1976, 5, 1, 'Progressive Rock', 1);
-insert into ALBUMTABLE (SPOTIFYID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
     values ('5Dbax7G8SWrP9xyzkOvy2F','The Wall', 'Pink Floyd', 1979, 26, 2, 'Heavy metal', 1);
-insert into ALBUMTABLE (SPOTIFYID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
    values ('1nTvIQEXvygqSIqc2vuwAz','Ride the Lightning', 'Metallica', 1984, 8, 1, 'Thrash metal', 1);
-insert into ALBUMTABLE (SPOTIFYID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
    values ('41bTjcSaiEe4G40RVVHbux','Master of Puppets', 'Metallica', 1986, 8, 1, 'Thrash metal', 2);
-insert into ALBUMTABLE (SPOTIFYID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
    values ('69oeRoYEpSsNPGVuYRxfoB','...And Justice for All', 'Metallica', 1988, 9, 1, 'Thrash metal', 1);
-insert into ALBUMTABLE (SPOTIFYID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
    values ('37lWyRxkf3wQHCOlXM5WfX','Metallica', 'Metallica', 1991, 12, 1, 'Thrash metal', 1);
-insert into ALBUMTABLE (SPOTIFYID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
    values ('2MD9zkmkFbrVyWy23nnAZQ','Load', 'Metallica', 1996, 14, 1, 'Heavy metal', 1);
-insert into ALBUMTABLE (SPOTIFYID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
    values ('73E6u02YIL3dK6UConUUv4','Reload', 'Metallica', 1997, 13, 1, 'Heavy metal', 1);
-insert into ALBUMTABLE (SPOTIFYID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
    values ('4qDiQwJ7UEuJsGLWL078nQ','Garage Inc.', 'Metallica', 1998, 11, 1, 'Heavy metal', 1);
-insert into ALBUMTABLE (SPOTIFYID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
+insert into ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, YEAR, NUMBER_OF_TRACKS, NUMBER_OF_DISCS, GENRE, ALBUMCOUNT)
    values ('4kwN2OnnrwY2ZBcm379Ahn','St. Anger', 'Metallica', 2003, 11, 1, 'Heavy metal', 1);
 
 
@@ -160,7 +159,7 @@ insert into ALBUM_TRACKS (TRACKNUMBER, NAME, ALBUM, SIDE, TRACKLENGTH)
 
 ------------------------------CollectionItems.sql-------------------------------
 create table COLLECTION_ITEMS(
-	ALBUM_ID INT,
+	ALBUM_ID varchar(255),
 	COLLECTION_NAME VARCHAR(50),
         OWNER VARCHAR(255),
 	primary key (album_ID, collection_name, owner),
@@ -170,96 +169,96 @@ create table COLLECTION_ITEMS(
 );
 
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (1, 'My First Collection', 'john');
+    values ('6r7LZXAVueS5DqdrvXJJK7', 'My First Collection', 'john');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (3, 'My First Collection', 'john');
+    values ('3ycjBixZf7S3WpC5WZhhUK', 'My First Collection', 'john');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (5, 'My First Collection', 'john');
+    values ('4LH4d3cOWNNsVw41Gqt2kv', 'My First Collection', 'john');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (7, 'My First Collection', 'john');
+    values ('3b4E89rxzZQ9zkhgKpj8N4', 'My First Collection', 'john');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (1, 'My Second Collection', 'john');
+    values ('6r7LZXAVueS5DqdrvXJJK7', 'My Second Collection', 'john');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (2, 'My Second Collection', 'john');
+    values ('3uIT4I4Dy7Pq1j0aSjzPW9', 'My Second Collection', 'john');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (4, 'My Second Collection', 'john');
+    values ('00BBpx0gG4KfQtxSJBPKUZ', 'My Second Collection', 'john');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (6, 'My Second Collection', 'john');
+    values ('0bCAjiUamIFqKJsekOYuRw', 'My Second Collection', 'john');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (8, 'My Second Collection', 'john');
+    values ('5Dbax7G8SWrP9xyzkOvy2F', 'My Second Collection', 'john');
 
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (1, 'Nicks First Collection', 'nick');
+    values ('6r7LZXAVueS5DqdrvXJJK7', 'Nicks First Collection', 'nick');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (3, 'Nicks First Collection', 'nick');
+    values ('3ycjBixZf7S3WpC5WZhhUK', 'Nicks First Collection', 'nick');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (5, 'Nicks First Collection', 'nick');
+    values ('4LH4d3cOWNNsVw41Gqt2kv', 'Nicks First Collection', 'nick');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (7, 'Nicks First Collection', 'nick');
+    values ('3b4E89rxzZQ9zkhgKpj8N4', 'Nicks First Collection', 'nick');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (1, 'Nicks Second Collection', 'nick');
+    values ('6r7LZXAVueS5DqdrvXJJK7', 'Nicks Second Collection', 'nick');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (2, 'Nicks Second Collection', 'nick');
+    values ('3uIT4I4Dy7Pq1j0aSjzPW9', 'Nicks Second Collection', 'nick');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (4, 'Nicks Second Collection', 'nick');
+    values ('00BBpx0gG4KfQtxSJBPKUZ', 'Nicks Second Collection', 'nick');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (6, 'Nicks Second Collection', 'nick');
+    values ('0bCAjiUamIFqKJsekOYuRw', 'Nicks Second Collection', 'nick');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (8, 'Nicks Second Collection', 'nick');
+    values ('5Dbax7G8SWrP9xyzkOvy2F', 'Nicks Second Collection', 'nick');
 
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (1, 'Calebs First Collection', 'caleb');
+    values ('6r7LZXAVueS5DqdrvXJJK7', 'Calebs First Collection', 'caleb');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (3, 'Calebs First Collection', 'caleb');
+    values ('3ycjBixZf7S3WpC5WZhhUK', 'Calebs First Collection', 'caleb');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (5, 'Calebs First Collection', 'caleb');
+    values ('4LH4d3cOWNNsVw41Gqt2kv', 'Calebs First Collection', 'caleb');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (7, 'Calebs First Collection', 'caleb');
+    values ('3b4E89rxzZQ9zkhgKpj8N4', 'Calebs First Collection', 'caleb');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (1, 'Calebs Second Collection', 'caleb');
+    values ('6r7LZXAVueS5DqdrvXJJK7', 'Calebs Second Collection', 'caleb');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (2, 'Calebs Second Collection', 'caleb');
+    values ('3uIT4I4Dy7Pq1j0aSjzPW9', 'Calebs Second Collection', 'caleb');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (4, 'Calebs Second Collection', 'caleb');
+    values ('00BBpx0gG4KfQtxSJBPKUZ', 'Calebs Second Collection', 'caleb');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (6, 'Calebs Second Collection', 'caleb');
+    values ('0bCAjiUamIFqKJsekOYuRw', 'Calebs Second Collection', 'caleb');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (8, 'Calebs Second Collection', 'caleb');
+    values ('5Dbax7G8SWrP9xyzkOvy2F', 'Calebs Second Collection', 'caleb');
 
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (1, 'Juans First Collection', 'juan');
+    values ('6r7LZXAVueS5DqdrvXJJK7', 'Juans First Collection', 'juan');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (3, 'Juans First Collection', 'juan');
+    values ('3ycjBixZf7S3WpC5WZhhUK', 'Juans First Collection', 'juan');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (5, 'Juans First Collection', 'juan');
+    values ('4LH4d3cOWNNsVw41Gqt2kv', 'Juans First Collection', 'juan');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (7, 'Juans First Collection', 'juan');
+    values ('3b4E89rxzZQ9zkhgKpj8N4', 'Juans First Collection', 'juan');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (1, 'Juans Second Collection', 'juan');
+    values ('6r7LZXAVueS5DqdrvXJJK7', 'Juans Second Collection', 'juan');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (2, 'Juans Second Collection', 'juan');
+    values ('3uIT4I4Dy7Pq1j0aSjzPW9', 'Juans Second Collection', 'juan');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (4, 'Juans Second Collection', 'juan');
+    values ('00BBpx0gG4KfQtxSJBPKUZ', 'Juans Second Collection', 'juan');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (6, 'Juans Second Collection', 'juan');
+    values ('0bCAjiUamIFqKJsekOYuRw', 'Juans Second Collection', 'juan');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (8, 'Juans Second Collection', 'juan');
+    values ('5Dbax7G8SWrP9xyzkOvy2F', 'Juans Second Collection', 'juan');
 
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (1, 'Seths First Collection', 'seth');
+    values ('6r7LZXAVueS5DqdrvXJJK7', 'Seths First Collection', 'seth');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (3, 'Seths First Collection', 'seth');
+    values ('3ycjBixZf7S3WpC5WZhhUK', 'Seths First Collection', 'seth');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (5, 'Seths First Collection', 'seth');
+    values ('4LH4d3cOWNNsVw41Gqt2kv', 'Seths First Collection', 'seth');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (7, 'Seths First Collection', 'seth');
+    values ('3b4E89rxzZQ9zkhgKpj8N4', 'Seths First Collection', 'seth');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (1, 'Seths Second Collection', 'seth');
+    values ('6r7LZXAVueS5DqdrvXJJK7', 'Seths Second Collection', 'seth');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (2, 'Seths Second Collection', 'seth');
+    values ('3uIT4I4Dy7Pq1j0aSjzPW9', 'Seths Second Collection', 'seth');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (4, 'Seths Second Collection', 'seth');
+    values ('00BBpx0gG4KfQtxSJBPKUZ', 'Seths Second Collection', 'seth');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (6, 'Seths Second Collection', 'seth');
+    values ('0bCAjiUamIFqKJsekOYuRw', 'Seths Second Collection', 'seth');
 insert into COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER)
-    values (8, 'Seths Second Collection', 'seth');
+    values ('5Dbax7G8SWrP9xyzkOvy2F', 'Seths Second Collection', 'seth');

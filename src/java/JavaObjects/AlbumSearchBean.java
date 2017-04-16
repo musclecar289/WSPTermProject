@@ -64,7 +64,8 @@ public class AlbumSearchBean implements Serializable {
             Logger.getLogger(AlbumSearchBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+//Use for getting tracks. //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Album object has reference to list of tracks//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void albumSearchById(String idToFind) {
         //String albumId = "6fRqzJT070Kp9RWlSXmKcY";
         AlbumRequest request = api.getAlbum(idToFind).build();
