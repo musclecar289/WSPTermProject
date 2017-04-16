@@ -12,8 +12,7 @@ public class Record {
     private int releaseYear;
     private int numberOfTracks;
     private int numberOfDiscs;
-    private int albumID;
-    private String spotifyId;
+    private String albumID;
     private int albumCount;
     private boolean editable;
 
@@ -65,20 +64,12 @@ public class Record {
         this.numberOfDiscs = numberOfDiscs;
     }
 
-    public int getAlbumID() {
+    public String getAlbumID() {
         return albumID;
     }
 
-    public void setAlbumID(int albumID) {
+    public void setAlbumID(String albumID) {
         this.albumID = albumID;
-    }
-
-    public String getSpotifyId() {
-        return spotifyId;
-    }
-
-    public void setSpotifyId(String spotifyId) {
-        this.spotifyId = spotifyId;
     }
 
     public int getAlbumCount() {

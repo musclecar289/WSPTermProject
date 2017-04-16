@@ -86,8 +86,7 @@ public class ProfileBean implements Serializable {
 
             while (result.next()) {
                 Record a = new Record();
-                a.setSpotifyId(result.getString("SPOTIFYID"));
-                a.setAlbumID(result.getInt("ALBUM_ID"));
+                a.setAlbumID(result.getString("ALBUM_ID"));
                 a.setTitle(result.getString("TITLE"));
                 a.setArtist(result.getString("ARTIST"));
                 a.setReleaseYear(result.getInt("YEAR"));
@@ -219,7 +218,7 @@ public class ProfileBean implements Serializable {
 
     public void onRecordSelect(SelectEvent event) {
         Record currentRecord = (Record) event.getObject();
-        albumSearchById(currentRecord.getSpotifyId());
+        albumSearchById(currentRecord.getAlbumID());
         FacesMessage msg = new FacesMessage("Record Selected", currentRecord.getTitle());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }

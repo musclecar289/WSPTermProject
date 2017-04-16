@@ -16,8 +16,6 @@ import javax.annotation.Resource;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.sql.DataSource;
-import org.primefaces.event.CellEditEvent;
-import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -34,7 +32,7 @@ public class EditCollectionBean implements Serializable {
     private List<Record> albums;
     private int numberOfAlbums;
 
-    private long albumID;
+    private String albumID;
     private String title;
     private String artist;
 
@@ -82,7 +80,7 @@ public class EditCollectionBean implements Serializable {
 
             while (result.next()) {
                 Record a = new Record();
-                a.setAlbumID(result.getInt("ALBUM_ID"));
+                a.setAlbumID(result.getString("ALBUM_ID"));
                 a.setTitle(result.getString("TITLE"));
                 a.setArtist(result.getString("ARTIST"));
                 a.setReleaseYear(result.getInt("YEAR"));
@@ -177,7 +175,7 @@ public class EditCollectionBean implements Serializable {
             updateQuery.setInt(5, a.getNumberOfDiscs());
             updateQuery.setString(6, a.getGenre());
             updateQuery.setInt(7, a.getAlbumCount());
-            updateQuery.setInt(8, a.getAlbumID());
+            updateQuery.setString(8, a.getAlbumID());
 
             int result = updateQuery.executeUpdate();
             if (result == 1) {
@@ -247,29 +245,6 @@ public class EditCollectionBean implements Serializable {
         this.genre = album.getGenre();
         album.toggleEditable();
     }
-
-//    public void onRowEdit(RowEditEvent event) throws SQLException {
-//        Album albumToEdit = (Album) event.getObject();
-//        this.updateAlbum(albumToEdit);
-//        
-//        FacesMessage msg = new FacesMessage("Album Edited", ((Album) event.getObject()).getTitle());
-//        FacesContext.getCurrentInstance().addMessage(null, msg);
-//    }
-//     
-//    public void onRowCancel(RowEditEvent event) {
-//        FacesMessage msg = new FacesMessage("Edit Cancelled", ((Album) event.getObject()).getTitle());
-//        FacesContext.getCurrentInstance().addMessage(null, msg);
-//    }
-//    
-//    public void onCellEdit(CellEditEvent event) {
-//        Object oldValue = event.getOldValue();
-//        Object newValue = event.getNewValue();
-//         
-//        if(newValue != null && !newValue.equals(oldValue)) {
-//            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
-//            FacesContext.getCurrentInstance().addMessage(null, msg);
-//        }
-//    }
     
     public int getNumberOfAlbums() {
         return numberOfAlbums;
@@ -327,11 +302,11 @@ public class EditCollectionBean implements Serializable {
         this.numberOfDiscs = numberOfDiscs;
     }
 
-    public long getAlbumID() {
+    public String getAlbumID() {
         return albumID;
     }
 
-    public void setAlbumID(long albumID) {
+    public void setAlbumID(String albumID) {
         this.albumID = albumID;
     }
 

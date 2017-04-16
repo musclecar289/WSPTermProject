@@ -67,8 +67,7 @@ public class CollectionsBean implements Serializable {
 
             while (result.next()) {
                 Record a = new Record();
-                a.setSpotifyId(result.getString("SPOTIFYID"));
-                a.setAlbumID(result.getInt("ALBUM_ID"));
+                a.setAlbumID(result.getString("ALBUM_ID"));
                 a.setTitle(result.getString("TITLE"));
                 a.setArtist(result.getString("ARTIST"));
                 a.setReleaseYear(result.getInt("YEAR"));

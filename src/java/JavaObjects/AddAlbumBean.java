@@ -32,7 +32,7 @@ public class AddAlbumBean implements Serializable {
     private List<Record> albums;
     private int numberOfAlbums;
 
-    private long albumID;
+    private String albumID;
     private String title;
     private String artist;
 
@@ -80,7 +80,7 @@ public class AddAlbumBean implements Serializable {
 
             while (result.next()) {
                 Record a = new Record();
-                a.setAlbumID(result.getInt("ALBUM_ID"));
+                a.setAlbumID(result.getString("ALBUM_ID"));
                 a.setTitle(result.getString("TITLE"));
                 a.setArtist(result.getString("ARTIST"));
                 a.setReleaseYear(result.getInt("YEAR"));
@@ -301,11 +301,11 @@ public class AddAlbumBean implements Serializable {
         this.numberOfDiscs = numberOfDiscs;
     }
 
-    public long getAlbumID() {
+    public String getAlbumID() {
         return albumID;
     }
 
-    public void setAlbumID(long albumID) {
+    public void setAlbumID(String albumID) {
         this.albumID = albumID;
     }
 
