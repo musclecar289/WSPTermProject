@@ -79,7 +79,7 @@
                                  selectionMode="single" selection="#{profileBean.selectedRecord}" 
                                  rowKey="#{record.title}">
 
-                        <p:ajax event="rowSelect" listener="#{profileBean.onRecordSelect}" update=":form1:form1msgs" />
+                        <p:ajax event="rowSelect" listener="#{profileBean.onRecordSelect}" update=":form1:form1msgs :albumSearcherById" />
 
                         <!--                        <p:column headerText="Name" >
                                                     <f:facet name="header">Cover Art:</f:facet>                                        
