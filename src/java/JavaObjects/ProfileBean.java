@@ -55,7 +55,8 @@ public class ProfileBean implements Serializable {
     private Record selectedRecord;
     private String username;
     private Part part;
-    
+    private String oldCollectionName;
+
     @PostConstruct
     public void init() {
         try {
@@ -68,7 +69,7 @@ public class ProfileBean implements Serializable {
             Logger.getLogger(ViewCollectionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public List<Record> loadAlbums(String collection_name) throws SQLException {
 
         if (ds == null) {
@@ -93,7 +94,6 @@ public class ProfileBean implements Serializable {
 
             while (result.next()) {
                 Record a = new Record();
-                a.setSpotifyId(result.getString("SPOTIFYID"));
                 a.setAlbumID(result.getInt("ALBUM_ID"));
                 a.setTitle(result.getString("TITLE"));
                 a.setArtist(result.getString("ARTIST"));
@@ -161,22 +161,21 @@ public class ProfileBean implements Serializable {
         }
 
         PreparedStatement ps = conn.prepareStatement(
-                "DELETE FROM collection WHERE COLLECTION_NAME= ? AND OWNER= ? ;"
+                "DELETE FROM collection WHERE COLLECTION_NAME='" + c.getCollectionName() + "' AND OWNER='" + username + "'"
         );
         PreparedStatement ps2 = conn.prepareStatement(
-                "DELETE FROM collection_items WHERE COLLECTION_NAME= ? AND OWNER= ? ;"
+                "DELETE FROM collection_items WHERE COLLECTION_NAME='" + c.getCollectionName() + "' AND OWNER='" + username + "'"
         );
 
+        // retrieve book data from database
         try {
-            ps2.setString(1, c.getCollectionName());
-            ps2.setString(2, this.getUsername());
-            ps.setString(1, c.getCollectionName());
-            ps.setString(2, this.getUsername());
             ps2.executeUpdate();
             ps.executeUpdate();
         } finally {
             conn.close();
         }
+
+        collections = loadCollections();
     }
 
     public void updateCollect(Collection c) throws IOException, SQLException {
@@ -192,17 +191,60 @@ public class ProfileBean implements Serializable {
         }
 
         PreparedStatement ps = conn.prepareStatement(
-                "UPDATE COLLECTION SET COLLECTION_NAME = ? WHERE OWNER= ? ;"
+                "insert into COLLECTION (COLLECTION_NAME, OWNER) "
+                + "values ('" + selectedCollection.getCollectionName() + "','" + username + "')"
+        );
+
+        PreparedStatement ps2 = conn.prepareStatement(
+                "Update COLLECTION_ITEMS set COLLECTION_NAME='" + selectedCollection.getCollectionName() + "'"
+                + " WHERE COLLECTION_NAME='" + oldCollectionName + "' AND OWNER='" + username + "'"
+        );
+
+        PreparedStatement ps3 = conn.prepareStatement(
+                "DELETE FROM collection WHERE COLLECTION_NAME='" + oldCollectionName + "' AND OWNER='" + username + "'"
+        );
+
+        // retrieve book data from database
+        try {
+
+            ps.executeUpdate();
+            ps2.executeUpdate();
+            ps3.executeUpdate();
+            //ps4.executeUpdate();
+        } finally {
+            conn.close();
+
+        }
+    }
+    
+
+    public void addCollect() throws IOException, SQLException {
+
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
+
+        Connection conn = ds.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
+
+        PreparedStatement ps = conn.prepareStatement(
+                "INSERT INTO COLLECTION (COLLECTION_NAME, OWNER) VALUES (?, ?)"
         );
 
         try {
-            ps.setString(1, c.getCollectionName());
+            ps.setString(1, "[Click to change name]");
             ps.setString(2, this.getUsername());
             ps.executeUpdate();
+            
         } finally {
             conn.close();
         }
+        collections = loadCollections();
     }
+
 //Use for getting tracks. //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Album object has reference to list of tracks//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void albumSearchById(String idToFind) {
@@ -217,11 +259,13 @@ public class ProfileBean implements Serializable {
         }
 
     }
+
     public void onCollectionSelect(SelectEvent event) {
         Collection collect = (Collection) event.getObject();
         //albumSearchById(record.getId());
         FacesMessage msg = new FacesMessage("Collection Selected", collect.getCollectionName());
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        edit(collect);
     }
 
     public void onRecordSelect(SelectEvent event) {
@@ -230,13 +274,13 @@ public class ProfileBean implements Serializable {
         FacesMessage msg = new FacesMessage("Record Selected", currentRecord.getTitle());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    
+
     public void handleFileUpload(FileUploadEvent event) throws IOException, SQLException {
         FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
         FacesContext.getCurrentInstance().addMessage(null, message);
-        
+
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        
+
         Connection conn = ds.getConnection();
 
         InputStream inputStream;
@@ -245,10 +289,10 @@ public class ProfileBean implements Serializable {
             inputStream = part.getInputStream();
             PreparedStatement insertQuery = conn.prepareStatement(
                     "UPDATE USERTABLE SET PICTURE=? WHERE USERNAME=? "
-                            + "VALUES (?,?)");
+                    + "VALUES (?,?)");
             insertQuery.setBinaryStream(1, inputStream);
             insertQuery.setString(2, username);
-            
+
             int result = insertQuery.executeUpdate();
             if (result == 1) {
                 facesContext.addMessage("uploadForm:upload",
@@ -256,12 +300,12 @@ public class ProfileBean implements Serializable {
             } else {
                 // if not 1, it must be an error.
                 facesContext.addMessage("uploadForm:upload",
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,
                                 result + " file uploaded", null));
             }
         } catch (IOException e) {
             facesContext.addMessage("uploadForm:upload",
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
                             "File upload failed !!", null));
         } finally {
             if (inputStream != null) {
@@ -272,11 +316,11 @@ public class ProfileBean implements Serializable {
             }
         }
     }
-    
+
     public void uploadFile() throws IOException, SQLException {
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        
+
         Connection conn = ds.getConnection();
 
         InputStream inputStream;
@@ -285,10 +329,10 @@ public class ProfileBean implements Serializable {
             inputStream = part.getInputStream();
             PreparedStatement insertQuery = conn.prepareStatement(
                     "UPDATE USERTABLE SET PICTURE=? WHERE USERNAME=? "
-                            + "VALUES (?,?)");
+                    + "VALUES (?,?)");
             insertQuery.setBinaryStream(1, inputStream);
             insertQuery.setString(2, username);
-            
+
             int result = insertQuery.executeUpdate();
             if (result == 1) {
                 facesContext.addMessage("uploadForm:upload",
@@ -296,12 +340,12 @@ public class ProfileBean implements Serializable {
             } else {
                 // if not 1, it must be an error.
                 facesContext.addMessage("uploadForm:upload",
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,
                                 result + " file uploaded", null));
             }
         } catch (IOException e) {
             facesContext.addMessage("uploadForm:upload",
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
                             "File upload failed !!", null));
         } finally {
             if (inputStream != null) {
@@ -312,7 +356,7 @@ public class ProfileBean implements Serializable {
             }
         }
     }
-    
+
     public Album getTest() {
         return test;
     }
@@ -364,6 +408,15 @@ public class ProfileBean implements Serializable {
     public void setSelectedRecord(Record selectedRecord) {
         this.selectedRecord = selectedRecord;
     }
+
+    public void edit(Collection todo){
+       for (Collection existing : getCollections()){
+           existing.setEditable(false);
+       }
+       todo.setEditable(true);
+       oldCollectionName = todo.getCollectionName();
+       selectedCollection= todo;
+   }
     
     public Part getPart() {
         return part;

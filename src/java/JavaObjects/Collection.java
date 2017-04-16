@@ -12,6 +12,7 @@ public class Collection {
     private List<Record> records;
     private int numberOfRecords;
     private int collectionID;
+    private boolean editable;
 
     public String getCollectionName() {
         return collectionName;
@@ -35,6 +36,10 @@ public class Collection {
 
     public void setNumberOfRecords(int numberOfRecords) {
         this.numberOfRecords = numberOfRecords;
+    }
+
+    void setEditable(boolean b) {
+        editable = b;
     }
     
     

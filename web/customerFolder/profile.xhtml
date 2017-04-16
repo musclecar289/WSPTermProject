@@ -33,6 +33,11 @@
                     </f:facet>
                 </p:toolbar>
                 <p:fieldset style="margin-top:20px;margin-bottom:20px;width:75%" id="collectionField" >
+                    <p:toolbar>
+                        <f:facet name="right">
+                            <h:commandButton  value="Add New Collection" action="#{profileBean.addCollect()}" />
+                        </f:facet>
+                    </p:toolbar>
                     <p:dataTable id="collectionTable2" var="collection" value="#{profileBean.collections}" 
                                  selectionMode="single" selection="#{profileBean.selectedCollection}" 
                                  rowKey="#{collection.collectionName}" >
