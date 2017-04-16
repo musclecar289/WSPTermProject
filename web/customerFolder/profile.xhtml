@@ -25,10 +25,10 @@
                         <span class="ui-separator">
                             <span class="ui-icon ui-icon-grip-dotted-vertical" />
                         </span>
-<!--                        <h:link value="User Login" outcome="/customerFolder/profile" />
-                        <span class="ui-separator">
-                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
-                        </span>-->
+                        <!--                        <h:link value="User Login" outcome="/customerFolder/profile" />
+                                                <span class="ui-separator">
+                                                    <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                                                </span>-->
                         <h:link value="Reset Password" outcome="/resetPassword" />
                     </f:facet>
                 </p:toolbar>
@@ -36,7 +36,7 @@
                     <p:dataTable id="collectionTable2" var="collection" value="#{profileBean.collections}" 
                                  selectionMode="single" selection="#{profileBean.selectedCollection}" 
                                  rowKey="#{collection.collectionName}" >
-                        //need to update records
+                        
                         <p:ajax event="rowSelect" process="collectionTable2" listener="#{profileBean.onCollectionSelect}" update=":form1:form1msgs :collectionRecordsViewer:collectionRecordsList" />
                         <f:facet name="header">
                             My Collections
@@ -55,11 +55,11 @@
                             <h:outputText value="#{collection.numberOfRecords}" />
                         </p:column>
 
-                        <p:column colspan="2">
+                        <p:column>
                             <p:commandButton process="collectionTable2" update=":form1:collectionTable2" value="View"
                                              icon="ui-icon-search"  oncomplete="PF('collectionDialog').show()" />
                         </p:column>
-                        <p:column colspan="2">
+                        <p:column >
                             <h:commandButton value ="delete" action="#{profileBean.deleteCollect(collection)}">
                                 <f:ajax render="collectionTable2"/>
                             </h:commandButton>
@@ -72,7 +72,15 @@
             </h:form>
             <h:form id="collectionRecordsViewer">
                 <p:fieldset id="collectionRecordsField" style="margin-top:20px;margin-bottom:20px;width:75%"  >
-
+                    <p:toolbar>
+                        <f:facet name="right">
+                            <h:link  value="Add New Record" outcome="/customerFolder/albumsearch" />
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                            <h:link  value="Delete" outcome="/index" />
+                        </f:facet>
+                    </p:toolbar>
                     <p:dataTable id="collectionRecordsList" value="#{profileBean.selectedCollection.records}" 
                                  var="record" resizableColumns="true" rows="10" 
                                  scrollable="true" scrollHeight="400" draggableColumns="true" 
@@ -81,17 +89,11 @@
 
                         <p:ajax event="rowSelect" listener="#{profileBean.onRecordSelect}" update=":form1:form1msgs :albumSearcherById" />
 
-                        <!--                        <p:column headerText="Name" >
-                                                    <f:facet name="header">Cover Art:</f:facet>                                        
-                                                    <img style="width:25%"  src="#{album.images.get(0).getUrl()}" />
-                                                </p:column>-->
-                        <p:column headerText="Name" >
-                            <f:facet name="header">Title</f:facet>                                        
+                        
+                        <f:facet name="header">Title</f:facet>
+                        <p:column>                                                                    
                             <h:outputText value="#{record.title}" />
                         </p:column>
-
-
-
                     </p:dataTable>
                 </p:fieldset>
             </h:form>
@@ -167,12 +169,6 @@
                                                    errorStyle="color: red" infoStyle="color: green" />-->
                 </p:fieldset>
             </h:form>
-
-
-
-<!--            <h:link value="Logout" outcome="/logout" /> <br />
-            <h:link value="Home Page" outcome="/index" />-->
-
         </center>
     </h:body>
 </html>
