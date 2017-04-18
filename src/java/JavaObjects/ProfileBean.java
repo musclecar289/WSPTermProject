@@ -263,7 +263,7 @@ public class ProfileBean extends HttpServlet implements Serializable {
            
        }
        
-       
+        c.setEditable(false);
    }
 
 
