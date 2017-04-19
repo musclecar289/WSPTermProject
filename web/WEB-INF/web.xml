@@ -73,9 +73,9 @@
         <error-code>403</error-code>
         <location>/faces/403.xhtml</location>
     </error-page>
-<!--    <context-param>
+    <context-param>
         <param-name>primefaces.THEME</param-name>
         <param-value>bootstrap</param-value>
-    </context-param>-->
+    </context-param>
 
 </web-app>
