@@ -12,6 +12,16 @@
             <h1 style=" background-color: grey; color: white; text-align: center; padding: 10px">
                 Welcome #{facesContext.externalContext.userPrincipal.name}</h1>
             <br />
+            <image src="ProfileBean?fileid=#{file.id}&amp;inline=true"
+                   height="100" width="100" />
+            <h:form enctype="multipart/form-data">
+                <h:inputFile id="file" label="file" value="#{fileBean.part}"
+                             validator="#{fileBean.validateFile}" />
+                <h:message for="file" errorStyle="color: red" infoStyle="color: blue"/>
+                Click to upload:
+                <h:commandButton id="upload" action="#{fileBean.uploadFile}"
+                                 value="upload file" />
+            </h:form>
             <h:form id="form1">  
                 <p:growl id="form1msgs" showDetail="true" />
                 <p:toolbar>
@@ -152,3 +162,4 @@
         </center>
     </h:body>
 </html>
+

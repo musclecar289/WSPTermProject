@@ -274,4 +274,195 @@ public class ProfileBean implements Serializable {
     public void setSelectedRecord(Record selectedRecord) {
         this.selectedRecord = selectedRecord;
     }
+    
+       ////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////// 
+    /////////////////////////////////////////////////////////////////////////
+    
+//  public void upload2() throws MessagingException {
+//    try {
+//      fileContent = new Scanner(file2.getInputStream())
+//          .useDelimiter("\\A").next();
+//    } catch (IOException e) {
+//      // Error handling
+//    }
+//  }
+// 
+//  
+//    
+//    
+//     public String saveAction() throws SQLException {
+//    //get all existing value but set "editable" to false 
+//    for (Collection book : loadCollections()){
+//      book.setEditable(false);
+//    }
+//    //return to current page
+//    return null;
+//  }
+//  public String editAction(Collection book) {
+//    book.setEditable(true);
+//    return null;
+//  }
+//    
+//    public void edit(Collection todo){
+//        for (Collection existing : getCollections()){
+//            existing.setEditable(false);
+//        }
+//        todo.setEditable(true);
+//        oldCollectionName = todo.getCollectionName();
+//        selectedCollection= todo;
+//    }
+//
+//    public void cancelEdit(Collection todo){
+//        todo.setEditable(false);
+//        
+//    }
+//    
+//    public void save(Collection todo){
+//        collections.set(collections.indexOf(todo), todo);
+//        cancelEdit(todo);
+//    }
+//    
+//    
+//    
+//     
+//     private List<Collection> loadFileList() throws SQLException {
+//        
+//        List<Collection> files = new ArrayList<>();
+//        Connection conn = ds.getConnection();
+//
+//        try {
+//            Statement stmt = conn.createStatement();
+//            ResultSet result = stmt.executeQuery(
+//                    "SELECT FILE_ID, FILE_NAME, FILE_TYPE, FILE_SIZE FROM FILESTORAGE"
+//            );
+//            while (result.next()) {
+//                Collection file = new Collection();
+//                
+//            }
+//        } finally {
+//            conn.close();
+//        }
+//        return files;
+//    }
+//
+//    public void uploadFile() throws IOException, SQLException, MessagingException {
+//
+//        FacesContext facesContext = FacesContext.getCurrentInstance();
+//
+//        Connection conn = ds.getConnection();
+//
+//        InputStream inputStream;
+//        inputStream = null;
+//        try {
+//            inputStream = part.getInputStream();
+//            PreparedStatement insertQuery = conn.prepareStatement(
+//                    "INSERT INTO FILESTORAGE (FILE_NAME, FILE_TYPE, FILE_SIZE, FILE_CONTENTS) "
+//                    + "VALUES (?,?,?,?)");
+//           
+//            insertQuery.setString(2, part.getContentType());
+//            insertQuery.setLong(3, part.getSize());
+//            insertQuery.setBinaryStream(4, inputStream);
+//
+//            int result = insertQuery.executeUpdate();
+//            
+//            
+//        
+//        } finally {
+//            if (inputStream != null) {
+//                inputStream.close();
+//            }
+//            if (conn != null) {
+//                conn.close();
+//            }
+//        }
+//    }
+//
+//    public void validateFile(FacesContext ctx, UIComponent comp, Object value) {
+//        if (value == null) {
+//            throw new ValidatorException(
+//                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+//                            "Select a file to upload", null));
+//        }
+//        javax.servlet.http.Part file = (javax.servlet.http.Part) value;
+//        long size = file.getSize();
+//        if (size <= 0) {
+//            throw new ValidatorException(
+//                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+//                            "the file is empty", null));
+//        }
+//        if (size > 1024 * 1024 * 10) { // 10 MB limit
+//            throw new ValidatorException(
+//                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+//                            size + "bytes: file too big (limit 10MB)", null));
+//        }
+//    }
+//
+//    public Part getPart() {
+//        return part;
+//    }
+//
+//    public void setPart(Part part) {
+//        this.part = part;
+//    }
+//
+//    
+//    @Override
+//    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//
+//        int fileID = Integer.parseInt(request.getParameter("fileid"));
+//        String inLineParam = request.getParameter("inline");
+//        boolean inLine = false;
+//        if (inLineParam != null && inLineParam.equals("true")) {
+//            inLine = true;
+//        }
+//
+//        try {
+//            Connection conn = ds.getConnection();
+//            PreparedStatement selectQuery = conn.prepareStatement(
+//                    "SELECT * FROM FILESTORAGE WHERE FILE_ID=?");
+//            selectQuery.setInt(1, fileID);
+//
+//            ResultSet result = selectQuery.executeQuery();
+//            if (!result.next()) {
+//                System.out.println("***** SELECT query failed for ImageServlet");
+//            }
+//
+//            String fileType = result.getString("FILE_TYPE");
+//            String fileName = result.getString("FILE_NAME");
+//            long fileSize = result.getLong("FILE_SIZE");
+//            Blob fileBlob = result.getBlob("FILE_CONTENTS");
+//
+//            response.setContentType(fileType);
+//            if (inLine) {
+//                response.setHeader("Content-Disposition", "inline; filename=\""
+//                        + fileName + "\"");
+//            } else {
+//                response.setHeader("Content-Disposition", "attachment; filename=\""
+//                        + fileName + "\"");
+//            }
+//
+//            final int BYTES = 1024;
+//            int length = 0;
+//            InputStream in = fileBlob.getBinaryStream();
+//            OutputStream out = response.getOutputStream();
+//            byte[] bbuf = new byte[BYTES];
+//
+//            while ((in != null) && ((length = in.read(bbuf)) != -1)) {
+//                out.write(bbuf, 0, length);
+//            }
+//
+//            out.flush();
+//            out.close();
+//            conn.close();
+//
+//        } catch (SQLException e) {
+//
+//        }
+//    }
 }
