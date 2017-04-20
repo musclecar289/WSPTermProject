@@ -16,17 +16,17 @@
     </h:head>
     <h:body>
         <h:form id="form">
-            
+
             <p:toolbar>
                 <f:facet name="right">
                     <h:link  value="Vircoms" outcome="/index" />
                     <span class="ui-separator">
                         <span class="ui-icon ui-icon-grip-dotted-vertical" />
                     </span>
-<!--                    <h:link  value="Album Search" outcome="/albumsearch" />
-                    <span class="ui-separator">
-                        <span class="ui-icon ui-icon-grip-dotted-vertical" />
-                    </span>-->
+                    <!--                    <h:link  value="Album Search" outcome="/albumsearch" />
+                                        <span class="ui-separator">
+                                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                                        </span>-->
                     <h:link value="User Login" outcome="/customerFolder/profile" />
                     <span class="ui-separator">
                         <span class="ui-icon ui-icon-grip-dotted-vertical" />
@@ -34,7 +34,7 @@
                     <h:link value="Reset Password" outcome="/resetPassword" />
                 </f:facet>
             </p:toolbar>
-            
+
             <p:fieldset style="margin-bottom:20px" id="collectionField" >
                 <h3 style=" background-color: white; color: black; text-align: center; padding: 10px"  >
                     Vircoms offers collectors the flexibility and reliability of database management software with the convenience of a browser.
@@ -42,9 +42,9 @@
                     Right now, only our registered users can create and manage a collection, so you should sign up now for free! Takes mere seconds!
                 </h3>
                 <center>
-                        <h:link value="Sign Up Now!" outcome="/regForm" style="text-decoration:underline;color:blue;" /><br /><br /><br />
+                    <h:link value="Sign Up Now!" outcome="/regForm" style="text-decoration:underline;color:blue;" /><br /><br /><br />
                 </center>
-            
+
                 <p:dataTable id="collectionTable" var="collection" value="#{collectionsBean.collections}"
                              selectionMode="single" selection="#{collectionsBean.selectedCollection}" 
                              rowKey="#{collection.collectionName}" >
@@ -68,15 +68,15 @@
 
                 </p:dataTable>
             </p:fieldset>
-            
+
             <p:dialog header="Collection Info" widgetVar="collectionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="collectionDetail" style="text-align:center;">
                     <p:panelGrid  columns="2" rendered="#{not empty collectionsBean.selectedCollection}" >
-                        
+
                         <p:column>
                             <img src="pictures/default.png"/>
                         </p:column>
-                        
+
                         <p:column>
                             <p:dataTable var="record" value="#{collectionsBean.selectedCollection.records}">
                                 <f:facet name="header">
@@ -99,7 +99,7 @@
                                 </p:column>
                             </p:dataTable>
                         </p:column>
-                        
+
                     </p:panelGrid>
                 </p:outputPanel>
             </p:dialog>
