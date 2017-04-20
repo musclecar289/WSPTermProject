@@ -40,7 +40,7 @@ public class ProfileBean implements Serializable {
 
     Api api = Api.DEFAULT_API;
     String spotifyEndPoint = "https://api.spotify.com/v1/search";
-    Album test;
+    Album currentlyLoadedAlbum;
     List<SimpleTrack> selectedTracks;
     private List<Collection> collections;
     private int numberOfCollections;
@@ -201,8 +201,8 @@ public class ProfileBean implements Serializable {
         //String albumId = "6fRqzJT070Kp9RWlSXmKcY";
         AlbumRequest request = api.getAlbum(idToFind).build();
         try {
-            test = request.get();
-            Page<SimpleTrack> trackList = test.getTracks();
+            currentlyLoadedAlbum = request.get();
+            Page<SimpleTrack> trackList = currentlyLoadedAlbum.getTracks();
             selectedTracks = trackList.getItems();
         } catch (IOException | WebApiException ex) {
             Logger.getLogger(AlbumSearchBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -222,13 +222,60 @@ public class ProfileBean implements Serializable {
         FacesMessage msg = new FacesMessage("Record Selected", currentRecord.getTitle());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
+    
+    public void addAlbumToCollection(Collection c) throws IOException, SQLException {
 
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
+
+        Connection conn = ds.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
+//        PreparedStatement insertQuery = conn.prepareStatement(
+//                "INSERT INTO ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE, GENRE) "
+//                + "VALUES(?,?,?,?,?)"
+//        );
+        PreparedStatement insertQuery = conn.prepareStatement(
+                "INSERT INTO ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE) "
+                + "VALUES(?,?,?,?)"
+        );
+
+        //insertQuery.setInt(5, numberOfTracks);
+        //insertQuery.setInt(6, numberOfDiscs);
+        //insertQuery.setInt(8, albumCount);
+
+        PreparedStatement insertQuery2 = conn.prepareStatement(
+                "INSERT INTO COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER) "
+                + "VALUES(?,?,?)"
+        );
+
+        try {
+            insertQuery.setString(1, this.currentlyLoadedAlbum.getId());
+            insertQuery.setString(2, this.currentlyLoadedAlbum.getName());
+            insertQuery.setString(3, this.currentlyLoadedAlbum.getArtists().get(0).getName());
+            insertQuery.setString(4, this.currentlyLoadedAlbum.getReleaseDate());
+            //insertQuery.setString(5, this.currentlyLoadedAlbum.getGenres().get(0));
+            
+            insertQuery2.setString(1, this.currentlyLoadedAlbum.getId());
+            insertQuery2.setString(2, c.getCollectionName());
+            insertQuery2.setString(3, c.getOwnerName());
+            
+            insertQuery.execute();                      
+            insertQuery2.execute();
+        } finally {
+            conn.close();
+        }
+    }
+    
     public Album getTest() {
-        return test;
+        return currentlyLoadedAlbum;
     }
 
-    public void setTest(Album test) {
-        this.test = test;
+    public void setTest(Album currentlyLoadedAlbum) {
+        this.currentlyLoadedAlbum = currentlyLoadedAlbum;
     }
 
     public List<SimpleTrack> getSelectedTracks() {
