@@ -141,7 +141,7 @@
                         </p:row>
                     </p:panelGrid>
                 </center>
-                <h:commandButton id="addAlbum" value="Add Album" action="#{albumSearchBean.addAlbumToCollection(profileBean.selectedCollection)}"/>
+                <h:commandButton id="addAlbum" value="Add Album" action="#{albumSearchBean.addAlbumToCollection(profileBean.selectedCollection)}" onclick="#{profileBean.init()}"/>
                 <h:message for="addAlbum" 
                            errorStyle="color: red" infoStyle="color: green" />
 
