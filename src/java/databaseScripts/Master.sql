@@ -26,32 +26,32 @@ create table GROUPTABLE (
 );
 
 insert into USERTABLE (username, email, password)
-    values ('root', 'root@uco.edu',
+    values ('root', 'root@gmail.com',
         'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc7');
 insert into GROUPTABLE (groupname, username) values ('admingroup', 'root');
 insert into GROUPTABLE (groupname, username) values ('customergroup', 'root');
 insert into USERTABLE (username, email, password)
-    values ('admin', 'admin@uco.edu',
+    values ('admin', 'admin@gmail.com',
         'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc7');
 insert into GROUPTABLE (groupname, username) values ('admingroup', 'admin');
 insert into USERTABLE (username, email, password)
-    values ('john','john@uco.edu',
+    values ('john','john@gmail.com',
         'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc7');
 insert into GROUPTABLE (groupname, username) values ('customergroup', 'john');
 insert into USERTABLE (username, email, password)
-    values ('nick','nick@uco.edu',
+    values ('nick','nick@gmail.com',
         'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc7');
 insert into GROUPTABLE (groupname, username) values ('customergroup', 'nick');
 insert into USERTABLE (username, email, password)
-    values ('caleb','caleb@uco.edu',
+    values ('caleb','caleb@gmail.com',
         'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc7');
 insert into GROUPTABLE (groupname, username) values ('customergroup', 'caleb');
 insert into USERTABLE (username, email, password)
-    values ('juan','juan@uco.edu',
+    values ('juan','juan@gmail.com',
         'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc7');
 insert into GROUPTABLE (groupname, username) values ('customergroup', 'juan');
 insert into USERTABLE (username, email, password)
-    values ('seth','seth@uco.edu',
+    values ('seth','seth@gmail.com',
         'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc7');
 insert into GROUPTABLE (groupname, username) values ('customergroup', 'seth');
 

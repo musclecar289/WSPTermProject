@@ -40,6 +40,8 @@ public class RegisteredBean implements Serializable {
     private String email;
     private String groupname;
     private List<Customer> customers;
+    private int custEmailNum;
+    private static int randomNumber;
     Customer c1;
 
     @Size(min = 3, message = "Greater than 2 Characters")
@@ -59,9 +61,8 @@ public class RegisteredBean implements Serializable {
         this.password = password;
     }
 
-
-    @Pattern(regexp = "[a-zA-Z0-9]+@[uco]+\\.[edu]+", message = "Please enter an UCO email")
-    @Size(min = 10, message = "Adleast 2 Chars before @uco.edu")
+    @Pattern(regexp = "[a-zA-Z0-9]+@[gmail]+\\.[com]+", message = "Please enter a gmail email")
+    @Size(min = 10, message = "Adleast 2 Chars before @gmail.com")
     public String getEmail() {
         return email;
     }
@@ -86,6 +87,43 @@ public class RegisteredBean implements Serializable {
         this.customers = customers;
     }
 
+    public int getCustEmailNum() {
+        return custEmailNum;
+    }
+
+    public void setCustEmailNum(int custEmailNum) {
+        this.custEmailNum = custEmailNum;
+    }
+
+    public static int getRandomNumber() {
+        return randomNumber;
+    }
+
+    public static void setRandomNumber(int randomNumber) {
+        RegisteredBean.randomNumber = randomNumber;
+    }
+    
+    public String sendEmail(){
+        //System.out.println("Email = "+ getEmail());
+        
+    setRandomNumber((int)(Math.random()* 51234));
+    JavaObjects.Email.send(getEmail(),randomNumber);
+    return "VerifyEmail";    
+    }
+    
+    public String verifyNum() throws IOException, SQLException{
+        //System.out.println("username = new username test = " + username);
+        
+        if(getRandomNumber() == getCustEmailNum()){
+        newMessage();
+        //System.out.println("Complete enroll");
+        return "createAccountSucces";        
+        }else{//System.out.println("Wrong code didnt work");
+        return "failedAccount";
+        }
+        
+    
+    }
     public void newMessage() throws IOException, SQLException {
         //String hitMessage = null;
         Customer c2 = new Customer();
@@ -521,6 +559,16 @@ public class RegisteredBean implements Serializable {
             ps.setString(2, player.username);
 
             ps.executeUpdate();
+            
+            PreparedStatement ps2 = conn.prepareStatement(
+                    "UPDATE grouptable set Email=? where USERNAME = ?"
+            );
+
+            ps2.setString(1, player.email);
+            ps2.setString(2, player.username);
+
+            ps2.executeUpdate();
+            
             player.setEdited(false);
 
             conn.close();
@@ -550,47 +598,63 @@ public class RegisteredBean implements Serializable {
 
         try {
             PreparedStatement ps = conn.prepareStatement(
+                    "delete from collection_items where OWNER = ?"
+            );
+
+            ps.setString(1,player.username);
+            ps.executeUpdate();
+            conn.commit();
+            
+            PreparedStatement ps2 = conn.prepareStatement(
+                    "delete from collection where OWNER = ?"
+            );
+
+            ps2.setString(1,player.username);
+            ps2.executeUpdate();
+            conn.commit();
+            
+            PreparedStatement ps3 = conn.prepareStatement(
                     "delete from usertable where USERNAME = ? and EMAIL= ?"
             );
 
-            ps.setString(1, player.username);
-            ps.setString(2, player.email);
+            ps3.setString(1, player.username);
+            ps3.setString(2, player.email);
 
-            ps.executeUpdate();
+            ps3.executeUpdate();
 
             conn.commit();
 
             if (!player.group.equals("customergroup, admingroup")) {
 
-                PreparedStatement ps2 = conn.prepareStatement(
+                PreparedStatement ps4 = conn.prepareStatement(
                         "delete from grouptable where USERNAME = ? and GROUPNAME= ?"
                 );
 
-                ps2.setString(1, player.username);
-                ps2.setString(2, player.group);
+                ps4.setString(1, player.username);
+                ps4.setString(2, player.group);
 
-                ps2.executeUpdate();
+                ps4.executeUpdate();
 
                 conn.commit();
 
             } else {
-                PreparedStatement ps2 = conn.prepareStatement(
+                PreparedStatement ps5 = conn.prepareStatement(
                         "delete from grouptable where USERNAME = ? and GROUPNAME= ?"
                 );
 
-                ps2.setString(1, player.username);
-                ps2.setString(2, "customergroup");
+                ps5.setString(1, player.username);
+                ps5.setString(2, "customergroup");
 
-                ps2.executeUpdate();
+                ps5.executeUpdate();
 
                 conn.commit();
 
-                PreparedStatement ps3 = conn.prepareStatement(
+                PreparedStatement ps6 = conn.prepareStatement(
                         "delete from grouptable where USERNAME = ? and GROUPNAME= ?"
                 );
 
-                ps3.setString(1, player.username);
-                ps3.setString(2, "admingroup");
+                ps6.setString(1, player.username);
+                ps6.setString(2, "admingroup");
 
                 ps3.executeUpdate();
 
@@ -610,6 +674,8 @@ public class RegisteredBean implements Serializable {
         username = null;
         password = null;
         email = null;
+        custEmailNum = 0;
+        randomNumber = 0;
         try {
             customers = loadCustomers();
         } catch (SQLException ex) {
