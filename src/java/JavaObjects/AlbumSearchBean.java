@@ -116,7 +116,6 @@ public class AlbumSearchBean implements Serializable {
         //insertQuery.setInt(5, numberOfTracks);
         //insertQuery.setInt(6, numberOfDiscs);
         //insertQuery.setInt(8, albumCount);
-
         PreparedStatement insertQuery2 = conn.prepareStatement(
                 "INSERT INTO COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER) "
                 + "VALUES(?,?,?)"
@@ -128,13 +127,18 @@ public class AlbumSearchBean implements Serializable {
             insertQuery.setString(3, this.test.getArtists().get(0).getName());
             insertQuery.setString(4, this.test.getReleaseDate());
             //insertQuery.setString(5, this.test.getGenres().get(0));
-            
+
             insertQuery2.setString(1, this.test.getId());
             insertQuery2.setString(2, c.getCollectionName());
             insertQuery2.setString(3, c.getOwnerName());
             
-            insertQuery.execute();                      
-            insertQuery2.execute();
+            int result = insertQuery.executeUpdate();
+            result = insertQuery2.executeUpdate();
+            if (result==1) {
+                FacesMessage msg = new FacesMessage("Record Added", this.test.getName());
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            }
+
         } finally {
             conn.close();
         }
