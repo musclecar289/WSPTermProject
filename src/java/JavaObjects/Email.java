@@ -18,10 +18,10 @@ import javax.mail.*;
 public class Email {
 
     public static void send(String regEmail, int num) {
-        //System.out.println("Before try");
+        System.out.println("Before try");
         
         try{
-            //System.out.println("IN TRY ");
+            System.out.println("IN TRY ");
             
             
             String host ="smtp.gmail.com" ;
@@ -30,7 +30,7 @@ public class Email {
             String to = regEmail;
             String from = "Vircoms1@gmail.com";
             String subject = "This is confirmation number for your expertprogramming account. Please insert this number to activate your account.";
-            String messageText = "Enter the following code on the webste : " + num;
+            String messageText = "Enter the following code on the website : " + num;
             boolean sessionDebug = false;
 
             Properties props = System.getProperties();
@@ -66,7 +66,7 @@ public class Email {
 
     
 
-       // System.out.println("End of Send");
+       System.out.println("End of Send");
        
     }
 
