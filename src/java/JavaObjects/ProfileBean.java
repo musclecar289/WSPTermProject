@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.net.URL;
 import java.security.Principal;
 import java.sql.Blob;
 import java.sql.Connection;
@@ -21,18 +22,21 @@ import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
 import javax.mail.MessagingException;
 import javax.mail.Part;
 import javax.servlet.ServletException;
+import static javax.servlet.SessionTrackingMode.URL;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import org.primefaces.model.UploadedFile;
-
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
 @Named(value = "profileBean")
 @SessionScoped
@@ -51,10 +55,9 @@ public class ProfileBean extends HttpServlet implements Serializable {
     private UploadedFile file;
     boolean editable;
     private Part part;
-    
-    
-     private Part file2;
-  private String fileContent;
+
+    private Part file2;
+    private String fileContent;
 
     @PostConstruct
     public void init() {
@@ -81,11 +84,6 @@ public class ProfileBean extends HttpServlet implements Serializable {
         this.username = username;
     }
 
-    
-     
-
-    
-    
     public List<Album> loadAlbums(String collection_name) throws SQLException {
 
         if (ds == null) {
@@ -102,7 +100,7 @@ public class ProfileBean extends HttpServlet implements Serializable {
 
         try {
             PreparedStatement ps = conn.prepareStatement(
-                "SELECT a.* FROM collection_items AS c JOIN albumtable AS a WHERE a.ALBUM_ID=c.ALBUM_ID and collection_name='"+collection_name+"'"
+                    "SELECT a.* FROM collection_items AS c JOIN albumtable AS a WHERE a.ALBUM_ID=c.ALBUM_ID and collection_name='" + collection_name + "'"
             );
 
             // retrieve book data from database
@@ -152,8 +150,6 @@ public class ProfileBean extends HttpServlet implements Serializable {
         this.selectedRecord = selectedRecord;
     }
 
-    
-    
     private List<Collection> loadCollections() throws SQLException {
         if (ds == null) {
             throw new SQLException("ds is null; Can't get data source");
@@ -169,18 +165,18 @@ public class ProfileBean extends HttpServlet implements Serializable {
 
         try {
             PreparedStatement ps = conn.prepareStatement(
-                "SELECT collection_name, COUNT(*) FROM collection_items WHERE OWNER = '"+username+"' GROUP BY collection_name "
+                    "SELECT collection_name, COUNT(*) FROM collection_items WHERE OWNER = '" + username + "' GROUP BY collection_name "
             );
             // retrieve book data from database
             ResultSet result = ps.executeQuery();
-            
+
             while (result.next()) {
                 Collection c = new Collection();
                 UserBean s = new UserBean();
                 c.setCollectionName(result.getString("collection_name"));
                 c.setNumberOfRecords(result.getInt("COUNT(*)"));
                 c.setRecords(this.loadAlbums(c.getCollectionName()));
-               
+
                 list.add(c);
             }
         } finally {
@@ -188,143 +184,122 @@ public class ProfileBean extends HttpServlet implements Serializable {
         }
         return list;
     }
-    
 
-     public void deleteCollect(Collection c) throws IOException, SQLException {
+    public void deleteCollect(Collection c) throws IOException, SQLException {
 
-       if (ds == null) {
-           throw new SQLException("ds is null; Can't get data source");
-       }
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
 
-       Connection conn = ds.getConnection();
+        Connection conn = ds.getConnection();
 
-       if (conn == null) {
-           throw new SQLException("conn is null; Can't get db connection");
-       }
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
 
-       PreparedStatement ps = conn.prepareStatement(
-           "DELETE FROM collection WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='"+username+"'"
-       );
-       PreparedStatement ps2 = conn.prepareStatement(
-           "DELETE FROM collection_items WHERE COLLECTION_NAME='"+c.getCollectionName()+"' AND OWNER='"+username+"'"
-       );
-       
-       // retrieve book data from database
-       try {
-           ps2.executeUpdate();
-           ps.executeUpdate();
-       } finally {
-           conn.close();
-       }
-       
-       collections = loadCollections();
-   }
-
-
-     
-      public void updateCollect(Collection c) throws IOException, SQLException {
-
-       if (ds == null) {
-           throw new SQLException("ds is null; Can't get data source");
-       }
-
-       Connection conn = ds.getConnection();
-
-       if (conn == null) {
-           throw new SQLException("conn is null; Can't get db connection");
-       }
-      
-       PreparedStatement ps = conn.prepareStatement(
-               "insert into COLLECTION (COLLECTION_NAME, OWNER) " +
-               "values ('"+selectedCollection.getCollectionName()+"','"+username+"')" 
-       );
-       
-       
-       PreparedStatement ps2 = conn.prepareStatement(
-               "Update COLLECTION_ITEMS set COLLECTION_NAME='"+selectedCollection.getCollectionName()+"'"
-               +" WHERE COLLECTION_NAME='"+oldCollectionName+"' AND OWNER='"+username+"'"
-       );
-           
-        PreparedStatement ps3 = conn.prepareStatement(
-                "DELETE FROM collection WHERE COLLECTION_NAME='"+oldCollectionName+"' AND OWNER='"+username+"'"
+        PreparedStatement ps = conn.prepareStatement(
+                "DELETE FROM collection WHERE COLLECTION_NAME='" + c.getCollectionName() + "' AND OWNER='" + username + "'"
         );
-       
-      
-       // retrieve book data from database
-       try {
-           
-           ps.executeUpdate();
+        PreparedStatement ps2 = conn.prepareStatement(
+                "DELETE FROM collection_items WHERE COLLECTION_NAME='" + c.getCollectionName() + "' AND OWNER='" + username + "'"
+        );
+
+        // retrieve book data from database
+        try {
             ps2.executeUpdate();
-           ps3.executeUpdate();
-           //ps4.executeUpdate();
-       } finally {
-           conn.close();
-           
-           
-       }
-       
+            ps.executeUpdate();
+        } finally {
+            conn.close();
+        }
+
+        collections = loadCollections();
+    }
+
+    public void updateCollect(Collection c) throws IOException, SQLException {
+
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
+
+        Connection conn = ds.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
+
+        PreparedStatement ps = conn.prepareStatement(
+                "insert into COLLECTION (COLLECTION_NAME, OWNER) "
+                + "values ('" + selectedCollection.getCollectionName() + "','" + username + "')"
+        );
+
+        PreparedStatement ps2 = conn.prepareStatement(
+                "Update COLLECTION_ITEMS set COLLECTION_NAME='" + selectedCollection.getCollectionName() + "'"
+                + " WHERE COLLECTION_NAME='" + oldCollectionName + "' AND OWNER='" + username + "'"
+        );
+
+        PreparedStatement ps3 = conn.prepareStatement(
+                "DELETE FROM collection WHERE COLLECTION_NAME='" + oldCollectionName + "' AND OWNER='" + username + "'"
+        );
+
+        // retrieve book data from database
+        try {
+
+            ps.executeUpdate();
+            ps2.executeUpdate();
+            ps3.executeUpdate();
+            //ps4.executeUpdate();
+        } finally {
+            conn.close();
+
+        }
+
         c.setEditable(false);
-   }
-
-
- 
-   
-   
-     
-    
-     
-
-   
- 
-  public void upload2() throws MessagingException {
-    try {
-      fileContent = new Scanner(file2.getInputStream())
-          .useDelimiter("\\A").next();
-    } catch (IOException e) {
-      // Error handling
     }
-  }
- 
-  
-    
-    
-     public String saveAction() throws SQLException {
-    //get all existing value but set "editable" to false 
-    for (Collection book : loadCollections()){
-      book.setEditable(false);
+
+    public void upload2() throws MessagingException {
+        try {
+            fileContent = new Scanner(file2.getInputStream())
+                    .useDelimiter("\\A").next();
+        } catch (IOException e) {
+            // Error handling
+        }
     }
-    //return to current page
-    return null;
-  }
-  public String editAction(Collection book) {
-    book.setEditable(true);
-    return null;
-  }
-    
-    public void edit(Collection todo){
-        for (Collection existing : getCollections()){
+
+    public String saveAction() throws SQLException {
+        //get all existing value but set "editable" to false 
+        for (Collection book : loadCollections()) {
+            book.setEditable(false);
+        }
+        //return to current page
+        return null;
+    }
+
+    public String editAction(Collection book) {
+        book.setEditable(true);
+        return null;
+    }
+
+    public void edit(Collection todo) {
+        for (Collection existing : getCollections()) {
             existing.setEditable(false);
         }
         todo.setEditable(true);
         oldCollectionName = todo.getCollectionName();
-        selectedCollection= todo;
+        selectedCollection = todo;
     }
 
-    public void cancelEdit(Collection todo){
+    public void cancelEdit(Collection todo) {
         todo.setEditable(false);
-        
+
     }
-    
-    public void save(Collection todo){
+
+    public void save(Collection todo) {
         collections.set(collections.indexOf(todo), todo);
         cancelEdit(todo);
     }
-    
-    
-    
-     
-     private List<Collection> loadFileList() throws SQLException {
-        
+
+    private List<Collection> loadFileList() throws SQLException {
+
         List<Collection> files = new ArrayList<>();
         Connection conn = ds.getConnection();
 
@@ -335,7 +310,7 @@ public class ProfileBean extends HttpServlet implements Serializable {
             );
             while (result.next()) {
                 Collection file = new Collection();
-                
+
             }
         } finally {
             conn.close();
@@ -356,15 +331,13 @@ public class ProfileBean extends HttpServlet implements Serializable {
             PreparedStatement insertQuery = conn.prepareStatement(
                     "INSERT INTO FILESTORAGE (FILE_NAME, FILE_TYPE, FILE_SIZE, FILE_CONTENTS) "
                     + "VALUES (?,?,?,?)");
-           
+
             insertQuery.setString(2, part.getContentType());
             insertQuery.setLong(3, part.getSize());
             insertQuery.setBinaryStream(4, inputStream);
 
             int result = insertQuery.executeUpdate();
-            
-            
-        
+
         } finally {
             if (inputStream != null) {
                 inputStream.close();
@@ -403,7 +376,6 @@ public class ProfileBean extends HttpServlet implements Serializable {
         this.part = part;
     }
 
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -457,6 +429,31 @@ public class ProfileBean extends HttpServlet implements Serializable {
         } catch (SQLException e) {
 
         }
+    }
+
+    public void exportPdf() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = facesContext.getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(true);
+        String url = "http://localhost:8080/WSPTermProject/faces/customerFolder/profile.xhtml;jsessionid="+session.getId();
+            
+        try {
+            ITextRenderer renderer = new ITextRenderer();
+            renderer.setDocument(new URL(url).toString());
+            renderer.layout();
+            HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
+            response.reset();
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition", "inline: filename=\"print-file.pdf\"");
+            OutputStream outputStream = response.getOutputStream();
+            renderer.createPDF(outputStream);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+
+        }
+        facesContext.responseComplete();
+
     }
 
 }
