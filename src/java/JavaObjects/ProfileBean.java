@@ -7,7 +7,9 @@ import com.wrapper.spotify.models.Album;
 import com.wrapper.spotify.models.Page;
 import com.wrapper.spotify.models.SimpleTrack;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
+import java.net.URL;
 import java.security.Principal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,10 +23,14 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import org.primefaces.event.SelectEvent;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
 /**
  *
@@ -47,6 +53,7 @@ public class ProfileBean implements Serializable {
     private Collection selectedCollection;
     private Record selectedRecord;
     private String username;
+    private String oldCollectionName;
 
     @PostConstruct
     public void init() {
@@ -154,7 +161,7 @@ public class ProfileBean implements Serializable {
         return list;
     }
 
-    public void deleteCollect(Collection c) throws IOException, SQLException {
+   public void deleteCollect(Collection c) throws IOException, SQLException {
 
         if (ds == null) {
             throw new SQLException("ds is null; Can't get data source");
@@ -167,23 +174,23 @@ public class ProfileBean implements Serializable {
         }
 
         PreparedStatement ps = conn.prepareStatement(
-                "DELETE FROM collection WHERE COLLECTION_NAME= ? AND OWNER= ? ;"
+                "DELETE FROM collection WHERE COLLECTION_NAME='" + c.getCollectionName() + "' AND OWNER='" + username + "'"
         );
         PreparedStatement ps2 = conn.prepareStatement(
-                "DELETE FROM collection_items WHERE COLLECTION_NAME= ? AND OWNER= ? ;"
+                "DELETE FROM collection_items WHERE COLLECTION_NAME='" + c.getCollectionName() + "' AND OWNER='" + username + "'"
         );
 
+        // retrieve book data from database
         try {
-            ps2.setString(1, c.getCollectionName());
-            ps2.setString(2, this.getUsername());
-            ps.setString(1, c.getCollectionName());
-            ps.setString(2, this.getUsername());
             ps2.executeUpdate();
             ps.executeUpdate();
         } finally {
             conn.close();
         }
+
+        collections = loadCollections();
     }
+
 
     public void deleteSelectedRecordFromCollection() throws IOException, SQLException {
         
@@ -233,16 +240,32 @@ public class ProfileBean implements Serializable {
         }
 
         PreparedStatement ps = conn.prepareStatement(
-                "UPDATE COLLECTION SET COLLECTION_NAME = ? WHERE OWNER= ? ;"
+                "insert into COLLECTION (COLLECTION_NAME, OWNER) "
+                + "values ('" + selectedCollection.getCollectionName() + "','" + username + "')"
         );
 
+        PreparedStatement ps2 = conn.prepareStatement(
+                "Update COLLECTION_ITEMS set COLLECTION_NAME='" + selectedCollection.getCollectionName() + "'"
+                + " WHERE COLLECTION_NAME='" + oldCollectionName + "' AND OWNER='" + username + "'"
+        );
+
+        PreparedStatement ps3 = conn.prepareStatement(
+                "DELETE FROM collection WHERE COLLECTION_NAME='" + oldCollectionName + "' AND OWNER='" + username + "'"
+        );
+
+        // retrieve book data from database
         try {
-            ps.setString(1, c.getCollectionName());
-            ps.setString(2, this.getUsername());
+
             ps.executeUpdate();
+            ps2.executeUpdate();
+            ps3.executeUpdate();
+            //ps4.executeUpdate();
         } finally {
             conn.close();
+
         }
+
+        c.setEditable(false);
     }
 //Use for getting tracks. //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Album object has reference to list of tracks//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -396,37 +419,65 @@ public class ProfileBean implements Serializable {
 //  
 //    
 //    
-//     public String saveAction() throws SQLException {
-//    //get all existing value but set "editable" to false 
-//    for (Collection book : loadCollections()){
-//      book.setEditable(false);
-//    }
-//    //return to current page
-//    return null;
-//  }
-//  public String editAction(Collection book) {
-//    book.setEditable(true);
-//    return null;
-//  }
+public String saveAction() throws SQLException {
+    //get all existing value but set "editable" to false 
+   for (Collection book : loadCollections()){
+     book.setEditable(false);
+    }
+  
+   return null;
+ }
+public String editAction(Collection book) {
+    book.setEditable(true);
+    return null;
+  }
+
+
+public void exportPdf() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = facesContext.getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(true);
+        String url = "http://localhost:8080/WSPTermProject/faces/customerFolder/profile.xhtml;jsessionid="+session.getId()+"?pdf=true";
+            
+        try {
+            ITextRenderer renderer = new ITextRenderer();
+            renderer.setDocument(new URL(url).toString());
+            renderer.layout();
+            HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
+            response.reset();
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition", "inline; filename=\"print-file.pdf\"");
+            OutputStream outputStream = response.getOutputStream();
+            renderer.createPDF(outputStream);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+
+        }
+        facesContext.responseComplete();
+
+    }
+
+
 //    
-//    public void edit(Collection todo){
-//        for (Collection existing : getCollections()){
-//            existing.setEditable(false);
-//        }
-//        todo.setEditable(true);
-//        oldCollectionName = todo.getCollectionName();
-//        selectedCollection= todo;
-//    }
+    public void edit(Collection todo){
+        for (Collection existing : getCollections()){
+            existing.setEditable(false);
+        }
+        todo.setEditable(true);
+        oldCollectionName = todo.getCollectionName();
+       selectedCollection= todo;
+   }
 //
-//    public void cancelEdit(Collection todo){
-//        todo.setEditable(false);
-//        
-//    }
-//    
-//    public void save(Collection todo){
-//        collections.set(collections.indexOf(todo), todo);
-//        cancelEdit(todo);
-//    }
+    public void cancelEdit(Collection todo){
+        todo.setEditable(false);
+      
+   }
+    
+    public void save(Collection todo){
+       collections.set(collections.indexOf(todo), todo);
+       cancelEdit(todo);
+   }
 //    
 //    
 //    

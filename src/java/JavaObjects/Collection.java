@@ -13,6 +13,15 @@ public class Collection {
     private List<Record> records;
     private int numberOfRecords;
     private int collectionID;
+    boolean editable;
+    
+    
+    public boolean isEditable() {
+		return editable;
+	}
+    public void setEditable(boolean editable) {
+    this.editable = editable;
+	}
 
     public String getCollectionName() {
         return collectionName;
