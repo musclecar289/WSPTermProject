@@ -133,7 +133,7 @@
                                         <h:outputText value="#{track.getDiscNumber()}" />
                                     </p:column>
                                     <p:column headerText="Preview" >
-                                        <f:facet name="header">Preview</f:facet>  
+                                        <f:facet name="header">30 Sec. Sample</f:facet>  
                                         <a href="#{track.getPreviewUrl()}">Sample</a>
                                     </p:column>
                                 </p:dataTable>
@@ -141,10 +141,8 @@
                         </p:row>
                     </p:panelGrid>
                 </center>
-                <h:commandButton id="addAlbum" value="Add Album" action="#{albumSearchBean.addAlbumToCollection(profileBean.selectedCollection)}" onclick="#{profileBean.init()}"/>
-                <h:message for="addAlbum" 
-                           errorStyle="color: red" infoStyle="color: green" />
-
+                <p:commandButton id="addAlbum" value="Add Album" action="#{albumSearchBean.addAlbumToCollection(profileBean.selectedCollection)}" onclick="#{profileBean.init()}" update=":albumSearch:msgs"/>
+                
             </h:form>
         </p:fieldset>
     </h:body>

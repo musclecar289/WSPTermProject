@@ -35,11 +35,6 @@
                             <span class="ui-icon ui-icon-grip-dotted-vertical" />
                         </span>
                         <h:link value="Reset Password" outcome="/resetPassword" />
-                        <span class="ui-separator">
-                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
-                        </span>
-                        <h:commandButton id="deleteAccount" action="#{regBean.customerDelete(facesContext.externalContext.userPrincipal.name)}"
-                                value="Delete Account" style="align-content: center"/>
                     </f:facet>
                 </p:toolbar>
                 <p:fieldset style="margin-top:20px;margin-bottom:20px;width:75%" id="collectionField" >
@@ -167,4 +162,3 @@
         </center>
     </h:body>
 </html>
-
