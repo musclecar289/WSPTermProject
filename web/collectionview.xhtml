@@ -2,65 +2,155 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Collection View</title>
-    </h:head>
+        <title>User Home</title>
+    </h:head> 
     <h:body>
-        <h:form >
-            <h3>Album List</h3>
-            <h:message for="form" errorStyle="color:red"/>
-            <p:dataTable id="albumList" value="#{viewCollectionBean.albums}" 
-                         var="album" resizableColumns="true" rows="10" 
-                         paginator="true" style="margin-bottom:20px" 
-                         draggableColumns="true" paginatorPosition="bottom"
-                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
-                         {PageLinks} {NextPageLink} {LastPageLink} 
-                         {RowsPerPageDropdown}" rowsPerPageTemplate="10,25,50,100">
+        <center>
+            <h1 style=" background-color: grey; color: white; text-align: center; padding: 10px">
+                Welcome #{facesContext.externalContext.userPrincipal.name}</h1>
+            <br />
 
-                <p:column headerText="Id" sortBy="#{album.albumID}">
-                    <f:facet name="header">Album ID</f:facet>                                        
-                    <h:outputText value="#{album.albumID}" />
-                </p:column>
-                <p:column headerText="Title" sortBy="#{album.title}">
-                    <f:facet name="header">Title</f:facet>                                        
-                    <h:outputText value="#{album.title}" />
-                </p:column>
-                <p:column headerText="Artist" sortBy="#{album.artist}">
-                    <f:facet name="header">Artist</f:facet>                                        
-                    <h:outputText value="#{album.artist}" />
-                </p:column>
-                <p:column headerText="Year" sortBy="#{album.releaseYear}">
-                    <f:facet name="header">Year</f:facet>                                        
-                    <h:outputText value="#{album.releaseYear}" />
-                </p:column>
-                <p:column headerText="Tracks" sortBy="#{album.numberOfTracks}">
-                    <f:facet name="header">Tracks</f:facet>                                        
-                    <h:outputText value="#{album.numberOfTracks}" />
-                </p:column>
-                <p:column headerText="Discs" sortBy="#{album.numberOfDiscs}">
-                    <f:facet name="header">Discs</f:facet>                                        
-                    <h:outputText value="#{album.numberOfDiscs}" />
-                </p:column>
-                <p:column headerText="Genre" sortBy="#{album.genre}">
-                    <f:facet name="header">Genre</f:facet>                                        
-                    <h:outputText value="#{album.genre}" />
-                </p:column>
-                <p:column headerText="Copies" sortBy="#{album.albumCount}">
-                    <f:facet name="header">Copies </f:facet>                                        
-                    <h:outputText value="#{album.albumCount}" />
-                </p:column>
+            <h:form id="form1">  
+                <p:growl id="form1msgs" showDetail="true" />
+                <p:toolbar>
+                    <f:facet name="right">
+                        <h:link  value="Vircoms" outcome="/index" />
+                        <span class="ui-separator">
+                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                        </span>
+                        <h:link value="User Login" outcome="/customerFolder/profile" />
+                        <span class="ui-separator">
+                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                        </span>
+                        <h:link value="Reset Password" outcome="/resetPassword" />
+                    </f:facet>
+                    <f:facet name="left">
+                        <p:commandButton value="Print Page" action="#{profileBean.exportPdf()}" ajax="false" onclick ="this.form.target = '_blank'" />
+                    </f:facet>
 
-            </p:dataTable>
-            <p:commandButton value="Refresh" action="#{viewCollectionBean.refresh}" icon="ui-icon-refresh">
-                <f:ajax execute="@form" render="@form"/>
-            </p:commandButton>
-        </h:form>
+                </p:toolbar>
 
-        <p:link value = "Edit Collection" outcome="/customerFolder/editcollection" /><br />
-        <p:link value="Go Home" outcome="/index" /><br />
-        <p:link value="Logout" outcome="/logout" />
+
+
+                <p:fieldset style="margin-top:20px;margin-bottom:20px;width:75%" id="collectionField" >
+                    <p:dataTable id="collectionTable2" var="collection" value="#{profileBean.collections}" 
+                                 selectionMode="single" selection="#{profileBean.selectedCollection}" 
+                                 rowKey="#{collection.collectionName}" >                        
+                        <p:ajax event="rowSelect" process="collectionTable2" listener="#{profileBean.onCollectionSelect}" update=":form1:form1msgs :collectionRecordsViewer:collectionRecordsList" />
+                        <f:facet name="header">
+                            My Collections
+                        </f:facet>
+                        <p:column headerText="Collection Name">
+
+                            <f:facet name="header">Collection Name</f:facet>           
+                            
+                            <h:outputText value="#{collection.collectionName}" />
+
+                        </p:column>
+                        <p:column headerText="Number of Records">
+                            <h:outputText value="#{collection.numberOfRecords}" />
+                        </p:column>
+                        
+                        <f:facet name="footer">
+                            In total there are #{profileBean.collections.size()} collections!
+                        </f:facet>
+                    </p:dataTable>
+                </p:fieldset>
+            </h:form>
+            <h:form id="collectionRecordsViewer">
+                <p:fieldset id="collectionRecordsField" style="margin-top:20px;margin-bottom:20px;width:75%"  >
+                    
+                    <p:dataTable id="collectionRecordsList" value="#{profileBean.selectedCollection.records}" 
+                                 var="record" resizableColumns="true" rows="10" 
+                                 scrollable="true" scrollHeight="400" draggableColumns="true" 
+                                 selectionMode="single" selection="#{profileBean.selectedRecord}" 
+                                 rowKey="#{record.title}">
+                        <p:ajax event="rowSelect" listener="#{profileBean.onRecordSelect}" update=":form1:form1msgs :albumSearcherById" />
+                        <f:facet name="header">Albums in #{profileBean.selectedCollection.collectionName}</f:facet>
+                        <p:column headerText="Title" sortBy="#{record.title}">                                                                    
+                            <h:outputText value="#{record.title}" />
+                        </p:column>
+                        <p:column headerText="Artist" sortBy="#{record.artist}">
+                            <f:facet name="header">Artist</f:facet>                                        
+                            <h:outputText value="#{record.artist}" />
+                        </p:column>
+                        <p:column headerText="Released" sortBy="#{record.releaseDate}">
+                            <f:facet name="header">Released</f:facet>                                        
+                            <h:outputText value="#{record.releaseDate}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:fieldset>
+            </h:form>
+            <h:form id="albumSearcherById">
+                <p:fieldset id="recordsDetailFieldset" style="margin-top:20px;margin-bottom:20px;width:75%" >
+                    <p:panelGrid >
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column colspan="2">
+                                    Album Detail View
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <img style="width:50%"  src="#{profileBean.test.images.get(0).getUrl()}" />
+                                </p:column>
+                            </p:row>
+                        </f:facet>
+                        <p:row>
+                            <p:column><h:outputText value="Album Id:" /></p:column>
+                            <p:column><h:outputText value="#{profileBean.test.getId()}" /></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="Album Title:" /></p:column>
+                            <p:column><h:outputText value="#{profileBean.test.getName()}" /></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="Artist:" /></p:column>
+                            <p:column><h:outputText value="#{profileBean.test.getArtists().get(0).getName()}" /></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="Popularity:" /></p:column>
+                            <p:column><h:outputText value="#{profileBean.test.getPopularity()}" /></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="Released:" /></p:column>
+                            <p:column><h:outputText value="#{profileBean.test.getReleaseDate()}" /></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:dataTable id="albumTrackList" value="#{profileBean.selectedTracks}" 
+                                             var="track" resizableColumns="true" rows="10" 
+                                             scrollable="true" draggableColumns="true" scrollHeight="300" >
+                                    <p:column headerText="Track Number" >
+                                        <f:facet name="header">Track Number</f:facet>                                        
+                                        <h:outputText value="#{track.getTrackNumber()}" />
+                                    </p:column>
+                                    <p:column headerText="Title" >
+                                        <f:facet name="header">Track Name</f:facet>                                        
+                                        <h:outputText value="#{track.getName()}" />
+                                    </p:column>
+                                    <p:column headerText="Length" >
+                                        <f:facet name="header">Length</f:facet>                                        
+                                        <h:outputText value="#{profileBean.convertTrackLength(track.getDuration())}" />
+                                    </p:column>
+                                    <p:column headerText="Disc" >
+                                        <f:facet name="header">Disc</f:facet>                                        
+                                        <h:outputText value="#{track.getDiscNumber()}" />
+                                    </p:column>
+                                    <p:column headerText="Preview" >
+                                        <f:facet name="header">30 Sec. Sample</f:facet>  
+                                        <a href="#{track.getPreviewUrl()}">Sample</a>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:fieldset>
+            </h:form>
+        </center>
     </h:body>
 </html>
 

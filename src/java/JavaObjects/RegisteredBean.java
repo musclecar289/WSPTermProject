@@ -560,15 +560,7 @@ public class RegisteredBean implements Serializable {
 
             ps.executeUpdate();
             
-            PreparedStatement ps2 = conn.prepareStatement(
-                    "UPDATE grouptable set Email=? where USERNAME = ?"
-            );
 
-            ps2.setString(1, player.email);
-            ps2.setString(2, player.username);
-
-            ps2.executeUpdate();
-            
             player.setEdited(false);
 
             conn.close();
