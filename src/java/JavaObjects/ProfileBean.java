@@ -435,7 +435,7 @@ public class ProfileBean extends HttpServlet implements Serializable {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(true);
-        String url = "http://localhost:8080/WSPTermProject/faces/customerFolder/profile.xhtml;jsessionid="+session.getId();
+        String url = "http://localhost:8080/WSPTermProject/faces/customerFolder/profile.xhtml;jsessionid="+session.getId()+"?pdf=true";
             
         try {
             ITextRenderer renderer = new ITextRenderer();
@@ -444,7 +444,7 @@ public class ProfileBean extends HttpServlet implements Serializable {
             HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
             response.reset();
             response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "inline: filename=\"print-file.pdf\"");
+            response.setHeader("Content-Disposition", "inline; filename=\"print-file.pdf\"");
             OutputStream outputStream = response.getOutputStream();
             renderer.createPDF(outputStream);
 

@@ -12,7 +12,7 @@
             Welcome #{facesContext.externalContext.userPrincipal.name}</h1>
         <br />
 
-        <image src="ProfileBean?fileid=#{file.id}&amp;inline=true"
+        <image src="/../images/pic13.jpg"
                height="100" width="100" />
         <h:form enctype="multipart/form-data">
             <h:inputFile id="file" label="file" value="#{fileBean.part}"
@@ -41,6 +41,16 @@
                     </span>
                     <h:link value="Home" outcome="/index" /> <br />
                 </f:facet>
+                <f:facet name="left">
+                    <p:commandButton value="Print Page" action="#{profileBean.exportPdf()}" ajax="false" onclick ="this.form.target = '_blank'" />
+                </f:facet>
+
+
+
+
+
+
+
             </p:toolbar>
 
             <p:fieldset style="margin-bottom:20px" id="collectionField" >
@@ -52,21 +62,11 @@
 
                 <p:dataTable id="collectionTable2" var="collection" value="#{profileBean.collections}"
                              editable="true" editMode="cell"  
-                             rowKey="#{collection.collectionName}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                             rowKey="#{collection.collectionName}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                              paginator="true" rows="10" style="margin-bottom:20px">
-            <!--                    <p:ajax event="cellEdit" oncomplete ="updateCollect(collection);" listener="#{profileBean.updateCollect}" />-->
 
 
-                    <f:facet name="{Exporters}">
 
-
-                        <h:commandLink>
-                            <p:graphicImage name="/../customerFolder/pictures/pdf.jpg" width="12"/>
-                            <p:dataExporter type="pdf" target="collectionTable2" fileName="cars" />
-                        </h:commandLink>
-
-
-                    </f:facet>
 
 
                     <f:facet name="header">
@@ -122,6 +122,8 @@
                     </f:facet>
                 </p:dataTable>
             </p:fieldset>
+             
+        
             <p:dialog header="Collection Info" widgetVar="collectionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="collectionDetail" style="text-align:center;">
                     <p:panelGrid  columns="2" rendered="#{not empty profileBean.selectedCollection}" >
@@ -157,15 +159,12 @@
 
                     </p:panelGrid>
                 </p:outputPanel>
+               
             </p:dialog>           
             <br />
 
         </h:form>
-        <h:form>
-            <p:commandButton value="Print Page" action="#{profileBean.exportPdf()}" ajax="false" onclick ="this.form.target = '_blank'" />
-            
 
-        </h:form>
     </h:body>
 </html>
 
