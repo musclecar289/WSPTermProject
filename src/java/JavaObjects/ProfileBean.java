@@ -56,11 +56,25 @@ public class ProfileBean implements Serializable {
             username = p.getName();
             collections = loadCollections();
             numberOfCollections = collections.size();
+            //selectedCollection = collections.get(0);
+            //selectedRecord = selectedCollection.getRecords().get(0);
         } catch (SQLException ex) {
-            Logger.getLogger(ViewCollectionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProfileBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+//    public void refresh(){
+//        try {
+//            collections = loadCollections();
+//            numberOfCollections = collections.size();
+//            selectedCollection = collections.get(0);
+//            selectedRecord = selectedCollection.getRecords().get(0);
+//        } catch (SQLException ex) {
+//            Logger.getLogger(ProfileBean.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//            
+//    }
+    
     public List<Record> loadAlbums(String collection_name) throws SQLException {
 
         if (ds == null) {
@@ -171,6 +185,41 @@ public class ProfileBean implements Serializable {
         }
     }
 
+    public void deleteSelectedRecordFromCollection() throws IOException, SQLException {
+        
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
+
+        Connection conn = ds.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
+
+        PreparedStatement deleteQuery = conn.prepareStatement(
+                "DELETE FROM collection_items WHERE COLLECTION_NAME= ? AND OWNER= ? AND ALBUM_ID= ?;"
+        );
+
+        try {
+            deleteQuery.setString(1, selectedCollection.getCollectionName());
+            deleteQuery.setString(2, this.getUsername());
+            deleteQuery.setString(3, selectedRecord.getAlbumID());
+            int result = deleteQuery.executeUpdate();
+            if (result == 0) {
+                FacesMessage msg = new FacesMessage("Record Deleted", this.selectedRecord.getTitle());
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            } else {
+                FacesMessage msg = new FacesMessage("Record Deletion Failed", this.selectedRecord.getTitle());
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            }
+
+        } finally {
+            conn.close();
+        }
+
+    }
+
     public void updateCollect(Collection c) throws IOException, SQLException {
 
         if (ds == null) {
@@ -197,6 +246,7 @@ public class ProfileBean implements Serializable {
     }
 //Use for getting tracks. //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Album object has reference to list of tracks//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public void albumSearchById(String idToFind) {
         //String albumId = "6fRqzJT070Kp9RWlSXmKcY";
         AlbumRequest request = api.getAlbum(idToFind).build();
@@ -209,6 +259,7 @@ public class ProfileBean implements Serializable {
         }
 
     }
+
     public void onCollectionSelect(SelectEvent event) {
         Collection collect = (Collection) event.getObject();
         //albumSearchById(record.getId());
@@ -222,7 +273,7 @@ public class ProfileBean implements Serializable {
         FacesMessage msg = new FacesMessage("Record Selected", currentRecord.getTitle());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    
+
     public void addAlbumToCollection(Collection c) throws IOException, SQLException {
 
         if (ds == null) {
@@ -246,7 +297,6 @@ public class ProfileBean implements Serializable {
         //insertQuery.setInt(5, numberOfTracks);
         //insertQuery.setInt(6, numberOfDiscs);
         //insertQuery.setInt(8, albumCount);
-
         PreparedStatement insertQuery2 = conn.prepareStatement(
                 "INSERT INTO COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER) "
                 + "VALUES(?,?,?)"
@@ -258,18 +308,23 @@ public class ProfileBean implements Serializable {
             insertQuery.setString(3, this.currentlyLoadedAlbum.getArtists().get(0).getName());
             insertQuery.setString(4, this.currentlyLoadedAlbum.getReleaseDate());
             //insertQuery.setString(5, this.currentlyLoadedAlbum.getGenres().get(0));
-            
+
             insertQuery2.setString(1, this.currentlyLoadedAlbum.getId());
             insertQuery2.setString(2, c.getCollectionName());
             insertQuery2.setString(3, c.getOwnerName());
-            
-            insertQuery.execute();                      
-            insertQuery2.execute();
+
+            int result = insertQuery.executeUpdate();
+            result = insertQuery2.executeUpdate();
+            if (result == 1) {
+                FacesMessage msg = new FacesMessage("Record Added", this.currentlyLoadedAlbum.getName());
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            }
+
         } finally {
             conn.close();
         }
     }
-    
+
     public Album getTest() {
         return currentlyLoadedAlbum;
     }
@@ -321,15 +376,14 @@ public class ProfileBean implements Serializable {
     public void setSelectedRecord(Record selectedRecord) {
         this.selectedRecord = selectedRecord;
     }
-    
-       ////////////////////////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////// 
+
+    ////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
-    
+    /////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////// 
+    /////////////////////////////////////////////////////////////////////////
 //  public void upload2() throws MessagingException {
 //    try {
 //      fileContent = new Scanner(file2.getInputStream())
