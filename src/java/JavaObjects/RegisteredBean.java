@@ -669,6 +669,69 @@ public class RegisteredBean implements Serializable {
         }
     }
 
+    public String customerDelete(String cust) throws SQLException {
+
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
+
+        Connection conn = ds.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
+
+        List<Customer> list = new ArrayList<>();
+
+        conn.setAutoCommit(false);
+        boolean committed = false;
+
+        try {
+            
+            PreparedStatement ps = conn.prepareStatement(
+                    "delete from collection_items where OWNER = ?"
+            );
+
+            ps.setString(1,cust);
+            ps.executeUpdate();
+            conn.commit();
+            
+            PreparedStatement ps2 = conn.prepareStatement(
+                    "delete from collection where OWNER = ?"
+            );
+
+            ps2.setString(1,cust);
+            ps2.executeUpdate();
+            conn.commit();
+
+            PreparedStatement ps3 = conn.prepareStatement(
+                    "delete from grouptable where USERNAME = ? and GROUPNAME= ?"
+            );
+
+            ps3.setString(1, cust);
+            ps3.setString(2, "customergroup");
+            ps3.executeUpdate();
+
+            conn.commit();
+            
+            PreparedStatement ps4 = conn.prepareStatement(
+                    "delete from usertable where USERNAME = ?"
+            );
+
+            ps4.setString(1, cust);            
+            ps4.executeUpdate();
+
+            conn.commit();
+
+        } finally {
+            conn.close();
+        }
+        
+        customers.remove(customers.contains(cust));
+        
+        return "/faces/logout.xhtml";
+    }
+    
     @PostConstruct
     public void init() {
         username = null;
