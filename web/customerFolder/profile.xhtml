@@ -54,39 +54,39 @@
                         </f:facet>
                         <p:column headerText="Collection Name">
 
-                        <f:facet name="header">Collection Name</f:facet>           
-                        <h:inputText value="#{collection.collectionName}" size="15" rendered="#{collection.editable}"></h:inputText>
+                            <f:facet name="header">Collection Name</f:facet>           
+                            <h:inputText value="#{collection.collectionName}" size="15" rendered="#{collection.editable}"></h:inputText>
 
 
 
 
-                        <h:outputText value="#{collection.collectionName}" rendered="#{not collection.editable}">
+                            <h:outputText value="#{collection.collectionName}" rendered="#{not collection.editable}">
 
-                        </h:outputText>
+                            </h:outputText>
 
-                    </p:column>
+                        </p:column>
                         <p:column headerText="Number of Records">
                             <h:outputText value="#{collection.numberOfRecords}" />
                         </p:column>
-                        
+
                         <p:column >
                             <h:commandButton value ="delete" action="#{profileBean.deleteCollect(collection)}">
                                 <f:ajax render="collectionTable2"/>
                             </h:commandButton>
                         </p:column>
-                        
+
                         <p:column colspan="2">
 
-                        <f:facet name="header">Edit</f:facet>
+                            <f:facet name="header">Edit</f:facet>
 
-                        <h:commandButton value="Edit" action="#{profileBean.edit(collection)}" rendered="#{not collection.editable}" >
-                            <f:ajax render="form1:collectionTable2" />
-                        </h:commandButton>
-                        <h:commandButton value="Save" action="#{profileBean.updateCollect(collection)}" rendered="#{collection.editable}" >
-                            <f:ajax execute="@form" render="form1:collectionTable2" />
-                        </h:commandButton>
+                            <h:commandButton value="Edit" action="#{profileBean.edit(collection)}" rendered="#{not collection.editable}" >
+                                <f:ajax render="form1:collectionTable2" />
+                            </h:commandButton>
+                            <h:commandButton value="Save" action="#{profileBean.updateCollect(collection)}" rendered="#{collection.editable}" >
+                                <f:ajax execute="@form" render="form1:collectionTable2" />
+                            </h:commandButton>
 
-                    </p:column>
+                        </p:column>
                         <f:facet name="footer">
                             In total there are #{profileBean.collections.size()} collections!
                         </f:facet>
@@ -110,9 +110,17 @@
                                  selectionMode="single" selection="#{profileBean.selectedRecord}" 
                                  rowKey="#{record.title}">
                         <p:ajax event="rowSelect" listener="#{profileBean.onRecordSelect}" update=":form1:form1msgs :albumSearcherById" />
-                        <f:facet name="header">Title</f:facet>
-                        <p:column>                                                                    
+                        <f:facet name="header">Albums in #{profileBean.selectedCollection.collectionName}</f:facet>
+                        <p:column headerText="Title" sortBy="#{record.title}">                                                                    
                             <h:outputText value="#{record.title}" />
+                        </p:column>
+                        <p:column headerText="Artist" sortBy="#{record.artist}">
+                            <f:facet name="header">Artist</f:facet>                                        
+                            <h:outputText value="#{record.artist}" />
+                        </p:column>
+                        <p:column headerText="Released" sortBy="#{record.releaseDate}">
+                            <f:facet name="header">Released</f:facet>                                        
+                            <h:outputText value="#{record.releaseDate}" />
                         </p:column>
                     </p:dataTable>
                 </p:fieldset>
@@ -167,7 +175,7 @@
                                     </p:column>
                                     <p:column headerText="Length" >
                                         <f:facet name="header">Length</f:facet>                                        
-                                        <h:outputText value="#{track.getDuration()}" />
+                                        <h:outputText value="#{profileBean.convertTrackLength(track.getDuration())}" />
                                     </p:column>
                                     <p:column headerText="Disc" >
                                         <f:facet name="header">Disc</f:facet>                                        

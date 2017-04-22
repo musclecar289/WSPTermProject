@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -70,17 +71,17 @@ public class ProfileBean implements Serializable {
         }
     }
 
-//    public void refresh(){
-//        try {
-//            collections = loadCollections();
-//            numberOfCollections = collections.size();
-//            selectedCollection = collections.get(0);
-//            selectedRecord = selectedCollection.getRecords().get(0);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ProfileBean.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//            
-//    }
+    public void refresh(){
+        try {
+            collections = loadCollections();
+            numberOfCollections = collections.size();
+            //selectedCollection = collections.get(0);
+            //selectedRecord = selectedCollection.getRecords().get(0);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProfileBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+    }
     
     public List<Record> loadAlbums(String collection_name) throws SQLException {
 
@@ -161,7 +162,7 @@ public class ProfileBean implements Serializable {
         return list;
     }
 
-   public void deleteCollect(Collection c) throws IOException, SQLException {
+    public void deleteCollect(Collection c) throws IOException, SQLException {
 
         if (ds == null) {
             throw new SQLException("ds is null; Can't get data source");
@@ -191,9 +192,8 @@ public class ProfileBean implements Serializable {
         collections = loadCollections();
     }
 
-
     public void deleteSelectedRecordFromCollection() throws IOException, SQLException {
-        
+
         if (ds == null) {
             throw new SQLException("ds is null; Can't get data source");
         }
@@ -283,11 +283,23 @@ public class ProfileBean implements Serializable {
 
     }
 
+    public String convertTrackLength(int trackInMs) {
+        
+        int minutes = (int) ((trackInMs / (1000 * 60)) % 60);
+        int seconds = (int) (trackInMs / 1000) % 60;
+        //long minutes = TimeUnit.MILLISECONDS.toMinutes(trackInMs) % 60;
+        //long seconds = TimeUnit.MILLISECONDS.toSeconds(trackInMs) % 60;
+        String resultTime = minutes + ":" + seconds;
+        return resultTime;
+
+    }
+
     public void onCollectionSelect(SelectEvent event) {
         Collection collect = (Collection) event.getObject();
         //albumSearchById(record.getId());
         FacesMessage msg = new FacesMessage("Collection Selected", collect.getCollectionName());
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        refresh();
     }
 
     public void onRecordSelect(SelectEvent event) {
@@ -419,26 +431,26 @@ public class ProfileBean implements Serializable {
 //  
 //    
 //    
-public String saveAction() throws SQLException {
-    //get all existing value but set "editable" to false 
-   for (Collection book : loadCollections()){
-     book.setEditable(false);
+    public String saveAction() throws SQLException {
+        //get all existing value but set "editable" to false 
+        for (Collection book : loadCollections()) {
+            book.setEditable(false);
+        }
+
+        return null;
     }
-  
-   return null;
- }
-public String editAction(Collection book) {
-    book.setEditable(true);
-    return null;
-  }
 
+    public String editAction(Collection book) {
+        book.setEditable(true);
+        return null;
+    }
 
-public void exportPdf() {
+    public void exportPdf() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(true);
-        String url = "http://localhost:8080/WSPTermProject/faces/customerFolder/profile.xhtml;jsessionid="+session.getId()+"?pdf=true";
-            
+        String url = "http://localhost:8080/WSPTermProject/faces/customerFolder/profile.xhtml;jsessionid=" + session.getId() + "?pdf=true";
+
         try {
             ITextRenderer renderer = new ITextRenderer();
             renderer.setDocument(new URL(url).toString());
@@ -458,26 +470,26 @@ public void exportPdf() {
 
     }
 
-
 //    
-    public void edit(Collection todo){
-        for (Collection existing : getCollections()){
+    public void edit(Collection todo) {
+        for (Collection existing : getCollections()) {
             existing.setEditable(false);
         }
         todo.setEditable(true);
         oldCollectionName = todo.getCollectionName();
-       selectedCollection= todo;
-   }
+        selectedCollection = todo;
+    }
 //
-    public void cancelEdit(Collection todo){
+
+    public void cancelEdit(Collection todo) {
         todo.setEditable(false);
-      
-   }
-    
-    public void save(Collection todo){
-       collections.set(collections.indexOf(todo), todo);
-       cancelEdit(todo);
-   }
+
+    }
+
+    public void save(Collection todo) {
+        collections.set(collections.indexOf(todo), todo);
+        cancelEdit(todo);
+    }
 //    
 //    
 //    

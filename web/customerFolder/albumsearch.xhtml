@@ -126,7 +126,7 @@
                                     </p:column>
                                     <p:column headerText="Length" >
                                         <f:facet name="header">Length</f:facet>                                        
-                                        <h:outputText value="#{track.getDuration()}" />
+                                        <h:outputText value="#{profileBean.convertTrackLength(track.getDuration())}" />
                                     </p:column>
                                     <p:column headerText="Disc" >
                                         <f:facet name="header">Disc</f:facet>                                        
