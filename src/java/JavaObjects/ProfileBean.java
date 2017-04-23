@@ -65,7 +65,7 @@ public class ProfileBean implements Serializable {
     private String username;
     private String oldCollectionName;
     
-     private Part part;
+    private Part part;
     private List<UserBean> list;
 
     @PostConstruct
@@ -593,6 +593,7 @@ public class ProfileBean implements Serializable {
                 conn.close();
             }
         }
+        
     }
 
     public void validateFile(FacesContext ctx, UIComponent comp, Object value) {

@@ -1,5 +1,6 @@
 package JavaObjects;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.Properties;
 import javax.annotation.PostConstruct;
@@ -15,22 +16,23 @@ import javax.mail.*;
 
 @Named(value = "email")
 @RequestScoped
-public class Email {
+public class Email implements Serializable {
 
     public static void send(String regEmail, int num) {
         System.out.println("Before try");
         
         try{
-            System.out.println("IN TRY ");
+            System.out.println("IN TRY ");           
             
-            
-            String host ="smtp.gmail.com" ;
+            String host ="smtp.gmail.com";
             String user = "Vircoms1@gmail.com";
             String pass = "VircomsOne";
             String to = regEmail;
             String from = "Vircoms1@gmail.com";
-            String subject = "This is confirmation number for your expertprogramming account. Please insert this number to activate your account.";
-            String messageText = "Enter the following code on the website : " + num;
+            String subject = "--Account Verification--";
+            String messageText = "This is confirmation number for your expert programming account. "
+                    + "Please insert this number to activate your account. "
+                    + "Enter the following code on the website: " + num;
             boolean sessionDebug = false;
 
             Properties props = System.getProperties();
@@ -51,7 +53,8 @@ public class Email {
             
             InternetAddress[] address = {new InternetAddress(to)};
             msg.setRecipients(Message.RecipientType.TO, address);
-           // msg.setSubject(subject); msg.setSentDate(new Date());
+            msg.setSubject(subject);
+//            msg.setSentDate(new Date());
             msg.setText(messageText);
 
            Transport transport=mailSession.getTransport("smtp");
@@ -63,11 +66,7 @@ public class Email {
         {
             System.out.println(ex);
         }
-
-    
-
-       System.out.println("End of Send");
-       
+        System.out.println("End of Send");
     }
 
     @PostConstruct

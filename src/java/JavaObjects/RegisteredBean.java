@@ -61,8 +61,8 @@ public class RegisteredBean implements Serializable {
         this.password = password;
     }
 
-    @Pattern(regexp = "[a-zA-Z0-9]+@[gmail]+\\.[com]+", message = "Please enter a gmail email")
-    @Size(min = 10, message = "Adleast 2 Chars before @gmail.com")
+    @Pattern(regexp = "[.a-zA-Z0-9]+@[gmail]+\\.[com]+", message = "Please enter a valid gmail address")
+    @Size(min = 12, message = "At least 2 characters before @gmail.com")
     public String getEmail() {
         return email;
     }
@@ -102,28 +102,27 @@ public class RegisteredBean implements Serializable {
     public static void setRandomNumber(int randomNumber) {
         RegisteredBean.randomNumber = randomNumber;
     }
-    
-    public String sendEmail(){
+
+    public String sendEmail() {
         //System.out.println("Email = "+ getEmail());
-        
-    setRandomNumber((int)(Math.random()* 51234));
-    JavaObjects.Email.send(getEmail(),randomNumber);
-    return "VerifyEmail";    
+        setRandomNumber((int) (Math.random() * 51234));
+        JavaObjects.Email.send(getEmail(), randomNumber);
+        return "VerifyEmail";
     }
-    
-    public String verifyNum() throws IOException, SQLException{
+
+    public String verifyNum() throws IOException, SQLException {
         //System.out.println("username = new username test = " + username);
-        
-        if(getRandomNumber() == getCustEmailNum()){
-        newMessage();
-        //System.out.println("Complete enroll");
-        return "createAccountSucces";        
-        }else{//System.out.println("Wrong code didnt work");
-        return "failedAccount";
+
+        if (getRandomNumber() == getCustEmailNum()) {
+            newMessage();
+            //System.out.println("Complete enroll");
+            return "createAccountSucces";
+        } else {//System.out.println("Wrong code didnt work");
+            return "failedAccount";
         }
-        
-    
+
     }
+
     public void newMessage() throws IOException, SQLException {
         //String hitMessage = null;
         Customer c2 = new Customer();
@@ -168,7 +167,7 @@ public class RegisteredBean implements Serializable {
 
             //into grouptable
             PreparedStatement ps2 = conn.prepareStatement(
-                    "Insert into GROUPTABLE (groupname, username)values(?,?)"
+                    "Insert into GROUPTABLE (groupname, username) values(?,?)"
             );
 
             ps2.setString(1, group);
@@ -178,7 +177,6 @@ public class RegisteredBean implements Serializable {
             ps2.executeUpdate();
 
             conn.commit();
-            conn.close();
 
         } finally {
             conn.close();
@@ -230,7 +228,6 @@ public class RegisteredBean implements Serializable {
 
             //checks if its part of both groups
             if (!group.equals("customergroup, admingroup")) {
-
                 //into grouptable
                 PreparedStatement ps2 = conn.prepareStatement(
                         "Insert into GROUPTABLE (groupname, username)values(?,?)"
@@ -241,13 +238,11 @@ public class RegisteredBean implements Serializable {
 
                 //ps.executeQuery();            
                 ps2.executeUpdate();
-
-                conn.commit();
             } else {
 
                 //into grouptable customer
                 PreparedStatement ps2 = conn.prepareStatement(
-                        "Insert into GROUPTABLE (groupname, username)values(?,?)"
+                        "Insert into GROUPTABLE (groupname, username) values(?,?)"
                 );
 
                 ps2.setString(1, "customergroup");
@@ -256,11 +251,9 @@ public class RegisteredBean implements Serializable {
                 //ps.executeQuery();            
                 ps2.executeUpdate();
 
-                conn.commit();
-
                 //into grouptable admin
                 PreparedStatement ps3 = conn.prepareStatement(
-                        "Insert into GROUPTABLE (groupname, username)values(?,?)"
+                        "Insert into GROUPTABLE (groupname, username) values(?,?)"
                 );
 
                 ps3.setString(1, "admingroup");
@@ -268,12 +261,8 @@ public class RegisteredBean implements Serializable {
 
                 //ps.executeQuery();            
                 ps3.executeUpdate();
-
-                conn.commit();
-
             }
-            conn.close();
-
+            conn.commit();
         } finally {
             conn.close();
         }
@@ -433,11 +422,9 @@ public class RegisteredBean implements Serializable {
             setUsername(player.username);
             setEmail(player.email);
             setGroupname(player.group);
-            
 
             //main if
-            if (!player.group.equals("customergroup, admingroup") && !player.group.equals("admingroup, customergroup")){
-                    
+            if (!player.group.equals("customergroup, admingroup") && !player.group.equals("admingroup, customergroup")) {
 
                 PreparedStatement ps5 = conn.prepareStatement(
                         "select * from grouptable where username = ?");
@@ -493,7 +480,7 @@ public class RegisteredBean implements Serializable {
                     ps2.executeUpdate();
                 }
                 //else of main if
-             } else {
+            } else {
                 System.out.println("in else main if");
                 // group is both
 
@@ -523,31 +510,29 @@ public class RegisteredBean implements Serializable {
 //                System.out.println("in else");
                 } else {
                     System.out.println("in admin cust");
-                    
 
-                        // updates group in group table
-                        PreparedStatement ps2 = conn.prepareStatement(
-                                "UPDATE grouptable set GROUPNAME=? where USERNAME = ?"
-                        );
+                    // updates group in group table
+                    PreparedStatement ps2 = conn.prepareStatement(
+                            "UPDATE grouptable set GROUPNAME=? where USERNAME = ?"
+                    );
 
-                        ps2.setString(1, "admingroup");
-                        ps2.setString(2, player.username);
-                        ps2.executeUpdate();
+                    ps2.setString(1, "admingroup");
+                    ps2.setString(2, player.username);
+                    ps2.executeUpdate();
 
-                        //into grouptable
-                        PreparedStatement ps3 = conn.prepareStatement(
-                                "Insert into grouptable (groupname, username)values(?,?)"
-                        );
+                    //into grouptable
+                    PreparedStatement ps3 = conn.prepareStatement(
+                            "Insert into grouptable (groupname, username)values(?,?)"
+                    );
 
-                        ps3.setString(1, "customergroup");
-                        ps3.setString(2, username);
+                    ps3.setString(1, "customergroup");
+                    ps3.setString(2, username);
 
-                        //ps.executeQuery();            
-                        ps3.executeUpdate();
+                    //ps.executeQuery();            
+                    ps3.executeUpdate();
 
-                        conn.commit();
+                    conn.commit();
 
-                    
                 }
             }
             //updates email in usertable
@@ -559,7 +544,6 @@ public class RegisteredBean implements Serializable {
             ps.setString(2, player.username);
 
             ps.executeUpdate();
-            
 
             player.setEdited(false);
 
@@ -593,18 +577,18 @@ public class RegisteredBean implements Serializable {
                     "delete from collection_items where OWNER = ?"
             );
 
-            ps.setString(1,player.username);
+            ps.setString(1, player.username);
             ps.executeUpdate();
             conn.commit();
-            
+
             PreparedStatement ps2 = conn.prepareStatement(
                     "delete from collection where OWNER = ?"
             );
 
-            ps2.setString(1,player.username);
+            ps2.setString(1, player.username);
             ps2.executeUpdate();
             conn.commit();
-            
+
             PreparedStatement ps3 = conn.prepareStatement(
                     "delete from usertable where USERNAME = ? and EMAIL= ?"
             );
@@ -679,20 +663,20 @@ public class RegisteredBean implements Serializable {
         boolean committed = false;
 
         try {
-            
+
             PreparedStatement ps = conn.prepareStatement(
                     "delete from collection_items where OWNER = ?"
             );
 
-            ps.setString(1,cust);
+            ps.setString(1, cust);
             ps.executeUpdate();
             conn.commit();
-            
+
             PreparedStatement ps2 = conn.prepareStatement(
                     "delete from collection where OWNER = ?"
             );
 
-            ps2.setString(1,cust);
+            ps2.setString(1, cust);
             ps2.executeUpdate();
             conn.commit();
 
@@ -705,12 +689,12 @@ public class RegisteredBean implements Serializable {
             ps3.executeUpdate();
 
             conn.commit();
-            
+
             PreparedStatement ps4 = conn.prepareStatement(
                     "delete from usertable where USERNAME = ?"
             );
 
-            ps4.setString(1, cust);            
+            ps4.setString(1, cust);
             ps4.executeUpdate();
 
             conn.commit();
@@ -718,12 +702,12 @@ public class RegisteredBean implements Serializable {
         } finally {
             conn.close();
         }
-        
+
         customers.remove(customers.contains(cust));
-        
+
         return "/faces/logout.xhtml";
     }
-    
+
     @PostConstruct
     public void init() {
         username = null;

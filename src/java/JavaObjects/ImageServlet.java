@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-@WebServlet(name = "ImageServlet", urlPatterns = {"/imagineServelet"})
-public class imagineServelet extends HttpServlet {
+@WebServlet(name = "imageServlet", urlPatterns = {"/imageServlet"})
+public class ImageServlet extends HttpServlet {
 
     @Resource(name = "jdbc/ds_wsp")
     private DataSource ds;
@@ -37,7 +37,8 @@ public class imagineServelet extends HttpServlet {
         try {
             Connection conn = ds.getConnection();
             PreparedStatement selectQuery = conn.prepareStatement(
-                    "SELECT FILE_CONTENTS FROM USERTABLE WHERE USERNAME='"+user+"'");
+                    "SELECT FILE_CONTENTS FROM USERTABLE WHERE USERNAME='"+user+"';"
+            );
             
 
             ResultSet result = selectQuery.executeQuery();

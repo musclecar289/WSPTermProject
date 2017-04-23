@@ -12,11 +12,10 @@
             <h1 style=" background-color: grey; color: white; text-align: center; padding: 10px">
                 Welcome #{facesContext.externalContext.userPrincipal.name}</h1>
             <br />
-            <f:facet name="header">image</f:facet>
-                <image src="imageServelet?fileid=#{file.id}&amp;inline=true"
-                       height="100" width="100" />
             
-                <h:form enctype="multipart/form-data">
+            <image src="imageServlet?fileid=#{file.id}&amp;inline=true" height="100" width="100" />
+            
+            <h:form enctype="multipart/form-data">
                 <h:inputFile id="file" label="file" value="#{profileBean.part}"
                              validator="#{profileBean.validateFile}" />
                 <h:message for="file" errorStyle="color: red" infoStyle="color: blue"/>
