@@ -267,9 +267,9 @@ public class ProfileBean implements Serializable {
 
         c.setEditable(false);
     }
-//Use for getting tracks. //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Album object has reference to list of tracks//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    //Use for getting tracks.
+    //Album object has reference to list of tracks
     public void albumSearchById(String idToFind) {
         //String albumId = "6fRqzJT070Kp9RWlSXmKcY";
         AlbumRequest request = api.getAlbum(idToFind).build();
@@ -307,6 +307,7 @@ public class ProfileBean implements Serializable {
         albumSearchById(currentRecord.getAlbumID());
         FacesMessage msg = new FacesMessage("Record Selected", currentRecord.getTitle());
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        refresh();
     }
 
     public void addAlbumToCollection(Collection c) throws IOException, SQLException {

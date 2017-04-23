@@ -39,11 +39,7 @@
                     <f:facet name="left">
                         <p:commandButton value="Print Page" action="#{profileBean.exportPdf()}" ajax="false" onclick ="this.form.target = '_blank'" />
                     </f:facet>
-
                 </p:toolbar>
-
-
-
                 <p:fieldset style="margin-top:20px;margin-bottom:20px;width:75%" id="collectionField" >
                     <p:dataTable id="collectionTable2" var="collection" value="#{profileBean.collections}" 
                                  selectionMode="single" selection="#{profileBean.selectedCollection}" 
@@ -53,39 +49,26 @@
                             My Collections
                         </f:facet>
                         <p:column headerText="Collection Name">
-
                             <f:facet name="header">Collection Name</f:facet>           
                             <h:inputText value="#{collection.collectionName}" size="15" rendered="#{collection.editable}"></h:inputText>
-
-
-
-
-                            <h:outputText value="#{collection.collectionName}" rendered="#{not collection.editable}">
-
-                            </h:outputText>
-
+                            <h:outputText value="#{collection.collectionName}" rendered="#{not collection.editable}"></h:outputText>
                         </p:column>
                         <p:column headerText="Number of Records">
                             <h:outputText value="#{collection.numberOfRecords}" />
                         </p:column>
-
                         <p:column >
                             <h:commandButton value ="delete" action="#{profileBean.deleteCollect(collection)}">
                                 <f:ajax render="collectionTable2"/>
                             </h:commandButton>
                         </p:column>
-
-                        <p:column colspan="2">
-
+                        <p:column>
                             <f:facet name="header">Edit</f:facet>
-
                             <h:commandButton value="Edit" action="#{profileBean.edit(collection)}" rendered="#{not collection.editable}" >
                                 <f:ajax render="form1:collectionTable2" />
                             </h:commandButton>
                             <h:commandButton value="Save" action="#{profileBean.updateCollect(collection)}" rendered="#{collection.editable}" >
                                 <f:ajax execute="@form" render="form1:collectionTable2" />
                             </h:commandButton>
-
                         </p:column>
                         <f:facet name="footer">
                             In total there are #{profileBean.collections.size()} collections!
