@@ -85,7 +85,7 @@ public class CollectionsBean implements Serializable {
         return list;
     }
 
-    private List<Collection> loadCollections() throws SQLException {
+    public List<Collection> loadCollections() throws SQLException {
         if (ds == null) {
             throw new SQLException("ds is null; Can't get data source");
         }
@@ -100,7 +100,7 @@ public class CollectionsBean implements Serializable {
 
         try {
             PreparedStatement ps = conn.prepareStatement(
-                    "SELECT collection_name, COUNT(*) FROM collection_items GROUP BY collection_name;"
+                    "SELECT collection_name FROM collection;"
             );
             // retrieve book data from database
             ResultSet result = ps.executeQuery();
@@ -108,66 +108,14 @@ public class CollectionsBean implements Serializable {
             while (result.next()) {
                 Collection c = new Collection();
                 c.setCollectionName(result.getString("collection_name"));
-                c.setNumberOfRecords(result.getInt("COUNT(*)"));
                 c.setRecords(this.loadAlbums(c.getCollectionName()));
+                c.setNumberOfRecords(c.getRecords().size());
                 list.add(c);
             }
         } finally {
             conn.close();
         }
         return list;
-    }
-
-    public void deleteCollect(Collection c) throws IOException, SQLException {
-
-        if (ds == null) {
-            throw new SQLException("ds is null; Can't get data source");
-        }
-
-        Connection conn = ds.getConnection();
-
-        if (conn == null) {
-            throw new SQLException("conn is null; Can't get db connection");
-        }
-
-        PreparedStatement ps = conn.prepareStatement(
-                "DELETE FROM collection WHERE COLLECTION_NAME='" + c.getCollectionName() + "' AND OWNER='john';"
-        );
-        PreparedStatement ps2 = conn.prepareStatement(
-                "DELETE FROM collection_items WHERE COLLECTION_NAME='" + c.getCollectionName() + "' AND OWNER='john';"
-        );
-
-        // retrieve book data from database
-        try {
-            ps2.executeQuery();
-            ps.executeQuery();
-        } finally {
-            conn.close();
-        }
-    }
-
-    public void updateCollect(Collection c) throws IOException, SQLException {
-
-        if (ds == null) {
-            throw new SQLException("ds is null; Can't get data source");
-        }
-
-        Connection conn = ds.getConnection();
-
-        if (conn == null) {
-            throw new SQLException("conn is null; Can't get db connection");
-        }
-
-        PreparedStatement ps = conn.prepareStatement(
-                "UPDATE COLLECTION SET COLLECTION_NAME = ? WHERE OWNER='john';"
-        );
-
-        try {
-            ps.setString(1, c.getCollectionName());
-            ps.executeUpdate();
-        } finally {
-            conn.close();
-        }
     }
 
     public List<Collection> getCollections() {

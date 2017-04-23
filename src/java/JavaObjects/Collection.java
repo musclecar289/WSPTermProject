@@ -17,11 +17,12 @@ public class Collection {
     
     
     public boolean isEditable() {
-		return editable;
-	}
+	return editable;
+    }
+    
     public void setEditable(boolean editable) {
-    this.editable = editable;
-	}
+        this.editable = editable;
+    }
 
     public String getCollectionName() {
         return collectionName;

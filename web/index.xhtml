@@ -45,7 +45,7 @@
                     <h:link value="Sign Up Now!" outcome="/regForm" style="text-decoration:underline;color:blue;" /><br /><br /><br />
                 </center>
 
-                <p:dataTable id="collectionTable" var="collection" value="#{collectionsBean.collections}"
+                <p:dataTable id="collectionTable" var="collection" value="#{collectionsBean.loadCollections()}"
                              selectionMode="single" selection="#{collectionsBean.selectedCollection}" 
                              rowKey="#{collection.collectionName}" >
                     <f:facet name="header">

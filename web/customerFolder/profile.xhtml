@@ -22,7 +22,7 @@
                 <h:commandButton id="upload" action="#{fileBean.uploadFile}"
                                  value="upload file" />
             </h:form>
-            <h:form id="form1">  
+            <h:form id="form1">
                 <p:growl id="form1msgs" showDetail="true" />
                 <p:toolbar>
                     <f:facet name="right">
@@ -40,16 +40,17 @@
                         <p:commandButton value="Print Page" action="#{profileBean.exportPdf()}" ajax="false" onclick ="this.form.target = '_blank'" />
                     </f:facet>
                 </p:toolbar>
-                <p:fieldset style="margin-top:20px;margin-bottom:20px;width:75%" id="collectionField" >
+                <p:fieldset id="collectionField" style="margin-top:20px;margin-bottom:20px;width:75%" >
                     <p:toolbar>
                         <f:facet name="right">
-                            <p:commandButton value="Add New Collection" action="#{profileBean.createCollection()}" update=":form1:form1msgs :collectionRecordsViewer :form1"/>
+                            <p:commandButton value="Add New Collection" actionListener="#{profileBean.createCollection}" 
+                                             update=":form1:form1msgs :form1:collectionTable2 :collectionRecordsViewer :form1" ajax="false"/>
                             
                         </f:facet>
                     </p:toolbar>
-                    <p:dataTable id="collectionTable2" var="collection" value="#{profileBean.collections}" 
+                    <p:dataTable id="collectionTable2" var="collection" value="#{profileBean.loadCollections()}" 
                                  selectionMode="single" selection="#{profileBean.selectedCollection}" 
-                                 rowKey="#{collection.collectionName}" >                        
+                                 rowKey="#{collection.collectionName}" >
                         <p:ajax event="rowSelect" process="collectionTable2" listener="#{profileBean.onCollectionSelect}" update=":form1:form1msgs :collectionRecordsViewer:collectionRecordsList" />
                         <f:facet name="header">
                             My Collections
@@ -62,15 +63,16 @@
                         <p:column headerText="Number of Records">
                             <h:outputText value="#{collection.numberOfRecords}" />
                         </p:column>
-                        <p:column >
-                            <h:commandButton value ="delete" action="#{profileBean.deleteCollect(collection)}">
+                        <p:column>
+                            <f:facet name="header">Delete Collection</f:facet>
+                            <h:commandButton value ="Delete" action="#{profileBean.deleteCollect(collection)}">
                                 <f:ajax render="collectionTable2"/>
                             </h:commandButton>
                         </p:column>
                         <p:column>
-                            <f:facet name="header">Edit</f:facet>
+                            <f:facet name="header">Change Collection Name</f:facet>
                             <h:commandButton value="Edit" action="#{profileBean.edit(collection)}" rendered="#{not collection.editable}" >
-                                <f:ajax render="form1:collectionTable2" />
+                                <f:ajax render="collectionTable2" />
                             </h:commandButton>
                             <h:commandButton value="Save" action="#{profileBean.updateCollect(collection)}" rendered="#{collection.editable}" >
                                 <f:ajax execute="@form" render="form1:collectionTable2" />
@@ -86,21 +88,22 @@
                 <p:fieldset id="collectionRecordsField" style="margin-top:20px;margin-bottom:20px;width:75%"  >
                     <p:toolbar>
                         <f:facet name="right">
-                            <h:link  value="Add New Record" outcome="/customerFolder/albumsearch" />
-                            <span class="ui-separator">
-                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
-                            </span>
-                            <h:link  value="Delete" outcome="/index" />
+                            <h:link value="Add New Record" outcome="/customerFolder/albumsearch" />
+                            <span class="ui-separator"><span class="ui-icon ui-icon-grip-dotted-vertical" /></span>
+                            <p:commandButton id="recordDeleteButton" value="Delete Record"
+                                             update=":form1:form1msgs :collectionRecordsViewer:collectionRecordsList"
+                                             action="#{profileBean.deleteSelectedRecordFromCollection()}"
+                                             disabled="#{profileBean.selectedRecord == null}" />
                         </f:facet>
                     </p:toolbar>
-                    <p:dataTable id="collectionRecordsList" value="#{profileBean.selectedCollection.records}" 
+                    <p:dataTable id="collectionRecordsList" value="#{profileBean.loadAlbums(profileBean.selectedCollection.collectionName)}" 
                                  var="record" resizableColumns="true" rows="10" 
                                  scrollable="true" scrollHeight="400" draggableColumns="true" 
                                  selectionMode="single" selection="#{profileBean.selectedRecord}" 
                                  rowKey="#{record.title}">
-                        <p:ajax event="rowSelect" listener="#{profileBean.onRecordSelect}" update=":form1:form1msgs :albumSearcherById" />
+                        <p:ajax event="rowSelect" listener="#{profileBean.onRecordSelect}" update=":form1:form1msgs :collectionRecordsViewer:recordDeleteButton :albumSearcherById" />
                         <f:facet name="header">Albums in #{profileBean.selectedCollection.collectionName}</f:facet>
-                        <p:column headerText="Title" sortBy="#{record.title}">                                                                    
+                        <p:column headerText="Title" sortBy="#{record.title}">
                             <h:outputText value="#{record.title}" />
                         </p:column>
                         <p:column headerText="Artist" sortBy="#{record.artist}">

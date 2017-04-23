@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -64,8 +65,6 @@ public class ProfileBean implements Serializable {
             username = p.getName();
             collections = loadCollections();
             numberOfCollections = collections.size();
-            //selectedCollection = collections.get(0);
-            //selectedRecord = selectedCollection.getRecords().get(0);
         } catch (SQLException ex) {
             Logger.getLogger(ProfileBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -75,8 +74,6 @@ public class ProfileBean implements Serializable {
         try {
             collections = loadCollections();
             numberOfCollections = collections.size();
-            //selectedCollection = collections.get(0);
-            //selectedRecord = selectedCollection.getRecords().get(0);
         } catch (SQLException ex) {
             Logger.getLogger(ProfileBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -121,11 +118,10 @@ public class ProfileBean implements Serializable {
         } finally {
             conn.close();
         }
-
         return list;
     }
 
-    private List<Collection> loadCollections() throws SQLException {
+    public List<Collection> loadCollections() throws SQLException {
         if (ds == null) {
             throw new SQLException("ds is null; Can't get data source");
         }
@@ -139,21 +135,18 @@ public class ProfileBean implements Serializable {
         List<Collection> list = new ArrayList<>();
 
         try {
-            //Different from collectionsBean line 103
             PreparedStatement ps = conn.prepareStatement(
-                    "SELECT collection_name, COUNT(*) FROM collection_items WHERE OWNER = '" + username + "' GROUP BY collection_name "
+                    "SELECT collection_name FROM collection WHERE OWNER = '" + username + "';"
             );
 
             ResultSet result = ps.executeQuery();
 
             while (result.next()) {
                 Collection c = new Collection();
-                //Different from collectionsBean line 110-111
-                //UserBean s = new UserBean();
                 c.setCollectionName(result.getString("collection_name"));
                 c.setOwnerName(username);
-                c.setNumberOfRecords(result.getInt("COUNT(*)"));
                 c.setRecords(this.loadAlbums(c.getCollectionName()));
+                c.setNumberOfRecords(c.getRecords().size());
                 list.add(c);
             }
         } finally {
@@ -164,8 +157,7 @@ public class ProfileBean implements Serializable {
 
     public void createCollection() throws IOException, SQLException {
         
-        refresh();
-        String newCollectionName = username + "'s Collection #" + (numberOfCollections+1);
+        String newCollectionName = "[New Collection(" + (numberOfCollections+1) + ")]";
         if (ds == null) {
             throw new SQLException("ds is null; Can't get data source");
         }
@@ -177,13 +169,12 @@ public class ProfileBean implements Serializable {
         }
 
         PreparedStatement ps = conn.prepareStatement(
-                "insert into COLLECTION (COLLECTION_NAME, OWNER) "
-                + "values (?,?)"
+                "insert into COLLECTION (COLLECTION_NAME, OWNER) values (?,?);"
         );
 
         
         try {
-            ps.setString(1, newCollectionName );
+            ps.setString(1, newCollectionName);
             ps.setString(2, username);
             
             int result = ps.executeUpdate();
@@ -191,12 +182,14 @@ public class ProfileBean implements Serializable {
             if (result == 1) {
                 FacesMessage msg = new FacesMessage("Collection Added", newCollectionName);
                 FacesContext.getCurrentInstance().addMessage(null, msg);
+            } else {
+                FacesMessage msg = new FacesMessage("Collection Not Added", newCollectionName);
+                FacesContext.getCurrentInstance().addMessage(null, msg);
             }
         } finally {
             conn.close();
-
         }
-        
+        refresh();
     }
 
     public void deleteCollect(Collection c) throws IOException, SQLException {
@@ -212,10 +205,10 @@ public class ProfileBean implements Serializable {
         }
 
         PreparedStatement ps = conn.prepareStatement(
-                "DELETE FROM collection WHERE COLLECTION_NAME='" + c.getCollectionName() + "' AND OWNER='" + username + "'"
+                "DELETE FROM collection WHERE COLLECTION_NAME='" + c.getCollectionName() + "' AND OWNER='" + username + "';"
         );
         PreparedStatement ps2 = conn.prepareStatement(
-                "DELETE FROM collection_items WHERE COLLECTION_NAME='" + c.getCollectionName() + "' AND OWNER='" + username + "'"
+                "DELETE FROM collection_items WHERE COLLECTION_NAME='" + c.getCollectionName() + "' AND OWNER='" + username + "';"
         );
 
         // retrieve book data from database
@@ -225,8 +218,7 @@ public class ProfileBean implements Serializable {
         } finally {
             conn.close();
         }
-
-        collections = loadCollections();
+        refresh();
     }
 
     public void deleteSelectedRecordFromCollection() throws IOException, SQLException {
@@ -250,7 +242,7 @@ public class ProfileBean implements Serializable {
             deleteQuery.setString(2, this.getUsername());
             deleteQuery.setString(3, selectedRecord.getAlbumID());
             int result = deleteQuery.executeUpdate();
-            if (result == 0) {
+            if (result == 1) {
                 FacesMessage msg = new FacesMessage("Record Deleted", this.selectedRecord.getTitle());
                 FacesContext.getCurrentInstance().addMessage(null, msg);
             } else {
@@ -261,7 +253,8 @@ public class ProfileBean implements Serializable {
         } finally {
             conn.close();
         }
-
+        this.selectedRecord = null;
+        refresh();
     }
 
     public void updateCollect(Collection c) throws IOException, SQLException {
@@ -278,16 +271,16 @@ public class ProfileBean implements Serializable {
 
         PreparedStatement ps = conn.prepareStatement(
                 "insert into COLLECTION (COLLECTION_NAME, OWNER) "
-                + "values ('" + selectedCollection.getCollectionName() + "','" + username + "')"
+                + "values ('" + selectedCollection.getCollectionName() + "','" + username + "');"
         );
 
         PreparedStatement ps2 = conn.prepareStatement(
                 "Update COLLECTION_ITEMS set COLLECTION_NAME='" + selectedCollection.getCollectionName() + "'"
-                + " WHERE COLLECTION_NAME='" + oldCollectionName + "' AND OWNER='" + username + "'"
+                + " WHERE COLLECTION_NAME='" + oldCollectionName + "' AND OWNER='" + username + "';"
         );
 
         PreparedStatement ps3 = conn.prepareStatement(
-                "DELETE FROM collection WHERE COLLECTION_NAME='" + oldCollectionName + "' AND OWNER='" + username + "'"
+                "DELETE FROM collection WHERE COLLECTION_NAME='" + oldCollectionName + "' AND OWNER='" + username + "';"
         );
 
         // retrieve book data from database
@@ -296,12 +289,9 @@ public class ProfileBean implements Serializable {
             ps.executeUpdate();
             ps2.executeUpdate();
             ps3.executeUpdate();
-            //ps4.executeUpdate();
         } finally {
             conn.close();
-
         }
-
         c.setEditable(false);
     }
 
@@ -364,7 +354,7 @@ public class ProfileBean implements Serializable {
 //        );
         PreparedStatement insertQuery = conn.prepareStatement(
                 "INSERT INTO ALBUMTABLE(ALBUM_ID, TITLE, ARTIST, RELEASE_DATE) "
-                + "VALUES(?,?,?,?)"
+                + "VALUES(?,?,?,?);"
         );
 
         //insertQuery.setInt(5, numberOfTracks);
@@ -372,7 +362,7 @@ public class ProfileBean implements Serializable {
         //insertQuery.setInt(8, albumCount);
         PreparedStatement insertQuery2 = conn.prepareStatement(
                 "INSERT INTO COLLECTION_ITEMS (ALBUM_ID, COLLECTION_NAME, OWNER) "
-                + "VALUES(?,?,?)"
+                + "VALUES(?,?,?);"
         );
 
         try {
@@ -508,20 +498,18 @@ public class ProfileBean implements Serializable {
 
     }
 
-//    
-    public void edit(Collection todo) {
+    public String edit(Collection todo) {
         for (Collection existing : getCollections()) {
             existing.setEditable(false);
         }
         todo.setEditable(true);
         oldCollectionName = todo.getCollectionName();
         selectedCollection = todo;
+        return null;
     }
-//
 
     public void cancelEdit(Collection todo) {
         todo.setEditable(false);
-
     }
 
     public void save(Collection todo) {
