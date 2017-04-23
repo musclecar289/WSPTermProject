@@ -10,7 +10,7 @@
     <h:body>
         <center>
             <h1 style=" background-color: grey; color: white; text-align: center; padding: 10px">
-                Welcome #{facesContext.externalContext.userPrincipal.name}</h1>
+                #{facesContext.externalContext.userPrincipal.name}'s Collections</h1>
             <br />
 
             <h:form id="form1">  
@@ -21,11 +21,10 @@
                         <span class="ui-separator">
                             <span class="ui-icon ui-icon-grip-dotted-vertical" />
                         </span>
-                        <h:link value="User Login" outcome="/customerFolder/profile" />
+                        <h:link value="Edit Collections/Profile" outcome="/customerFolder/profile" />
                         <span class="ui-separator">
                             <span class="ui-icon ui-icon-grip-dotted-vertical" />
                         </span>
-                        <h:link value="Reset Password" outcome="/resetPassword" />
                     </f:facet>
                     <f:facet name="left">
                         <p:commandButton value="Print Page" action="#{profileBean.exportPdf()}" ajax="false" onclick ="this.form.target = '_blank'" />
@@ -46,14 +45,14 @@
                         <p:column headerText="Collection Name">
 
                             <f:facet name="header">Collection Name</f:facet>           
-                            
+
                             <h:outputText value="#{collection.collectionName}" />
 
                         </p:column>
                         <p:column headerText="Number of Records">
                             <h:outputText value="#{collection.numberOfRecords}" />
                         </p:column>
-                        
+
                         <f:facet name="footer">
                             In total there are #{profileBean.collections.size()} collections!
                         </f:facet>
@@ -62,7 +61,7 @@
             </h:form>
             <h:form id="collectionRecordsViewer">
                 <p:fieldset id="collectionRecordsField" style="margin-top:20px;margin-bottom:20px;width:75%"  >
-                    
+
                     <p:dataTable id="collectionRecordsList" value="#{profileBean.selectedCollection.records}" 
                                  var="record" resizableColumns="true"  
                                  scrollable="true" scrollHeight="400" draggableColumns="true" 

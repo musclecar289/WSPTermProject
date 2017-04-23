@@ -12,9 +12,9 @@
             <h1 style=" background-color: grey; color: white; text-align: center; padding: 10px">
                 Welcome #{facesContext.externalContext.userPrincipal.name}</h1>
             <br />
-            
+
             <image src="imageServlet?fileid=#{file.id}&amp;inline=true" height="100" width="100" />
-            
+
             <h:form enctype="multipart/form-data">
                 <h:inputFile id="file" label="file" value="#{profileBean.part}"
                              validator="#{profileBean.validateFile}" />
@@ -35,6 +35,10 @@
                         <span class="ui-separator">
                             <span class="ui-icon ui-icon-grip-dotted-vertical" />
                         </span>
+                        <h:link value="Simple Collection View" outcome="/collectionview" />
+                        <span class="ui-separator">
+                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                        </span>
                         <h:link value="Reset Password" outcome="/resetPassword" />
                     </f:facet>
                     <f:facet name="left">
@@ -46,12 +50,12 @@
                         <f:facet name="right">
                             <p:commandButton value="Add New Collection" actionListener="#{profileBean.createCollection}" 
                                              update=":form1:form1msgs :form1:collectionTable2 :collectionRecordsViewer :form1" ajax="false"/>
-                            
+
                         </f:facet>
                     </p:toolbar>
                     <p:dataTable id="collectionTable2" var="collection" value="#{profileBean.loadCollections()}" 
-                                selectionMode="single" selection="#{profileBean.selectedCollection}" 
-                                rowKey="#{collection.collectionName}" >
+                                 selectionMode="single" selection="#{profileBean.selectedCollection}" 
+                                 rowKey="#{collection.collectionName}" >
                         <p:ajax event="rowSelect" process="collectionTable2" listener="#{profileBean.onCollectionSelect}" 
                                 update=":form1:form1msgs :collectionRecordsViewer:collectionRecordsList :collectionRecordsViewer:recordAdditionButton" />
                         <f:facet name="header">
@@ -91,9 +95,9 @@
                     <p:toolbar>
                         <f:facet name="right">
                             <p:commandButton id="recordAdditionButton" value="Add New Record"
-                                            action="/customerFolder/albumsearch" 
-                                            update=":form1:form1msgs :collectionRecordsViewer:collectionRecordsList"
-                                            disabled="#{profileBean.selectedCollection == null}" />
+                                             action="/customerFolder/albumsearch" 
+                                             update=":form1:form1msgs :collectionRecordsViewer:collectionRecordsList"
+                                             disabled="#{profileBean.selectedCollection == null}" />
                             <span class="ui-separator"><span class="ui-icon ui-icon-grip-dotted-vertical" /></span>
                             <p:commandButton id="recordDeleteButton" value="Delete Record"
                                              update=":form1:form1msgs :collectionRecordsViewer:collectionRecordsList"
