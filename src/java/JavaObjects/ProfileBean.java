@@ -7,14 +7,17 @@ import com.wrapper.spotify.models.Album;
 import com.wrapper.spotify.models.Page;
 import com.wrapper.spotify.models.SimpleTrack;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.URL;
 import java.security.Principal;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -24,11 +27,16 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 import javax.sql.DataSource;
 import org.primefaces.event.SelectEvent;
 import org.xhtmlrenderer.pdf.ITextRenderer;
@@ -55,6 +63,9 @@ public class ProfileBean implements Serializable {
     private Record selectedRecord;
     private String username;
     private String oldCollectionName;
+    
+     private Part part;
+    private List<UserBean> list;
 
     @PostConstruct
     public void init() {
@@ -528,6 +539,103 @@ public class ProfileBean implements Serializable {
         collections.set(collections.indexOf(todo), todo);
         cancelEdit(todo);
     }
+    
+    private List<UserBean> loadFileList() throws SQLException {
+        
+        List<UserBean> files = new ArrayList<>();
+        Connection conn = ds.getConnection();
+
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery(
+                    "SELECT FILE_ID, FILE_NAME, FILE_TYPE, FILE_SIZE FROM FILESTORAGE"
+            );
+            while (result.next()) {
+                UserBean file = new UserBean();
+                file.setId(result.getLong("FILE_ID"));
+                file.setName(result.getString("FILE_NAME"));
+                file.setType(result.getString("FILE_TYPE"));
+                file.setSize(result.getLong("FILE_SIZE"));
+                files.add(file);
+            }
+        } finally {
+            conn.close();
+        }
+        return files;
+        
+    }
+
+    public void uploadFile() throws IOException, SQLException {
+
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+
+        Connection conn = ds.getConnection();
+
+        InputStream inputStream;
+        inputStream = null;
+        try {
+            inputStream = part.getInputStream();
+            PreparedStatement insertQuery = conn.prepareStatement(
+                    "UPDATE USERTABLE SET FILE_CONTENTS = ? where username ='" + username + "'");
+                    
+            
+            insertQuery.setBinaryStream(1, inputStream);
+
+            int result = insertQuery.executeUpdate();
+            if (result == 1) {
+                facesContext.addMessage("uploadForm:upload",
+                        new FacesMessage(FacesMessage.SEVERITY_INFO,
+                                part.getSubmittedFileName()
+                                + ": uploaded successfuly !!", null));
+            } else {
+                // if not 1, it must be an error.
+                facesContext.addMessage("uploadForm:upload",
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                result + " file uploaded", null));
+            }
+        } catch (IOException e) {
+            facesContext.addMessage("uploadForm:upload",
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "File upload failed !!", null));
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
+
+    public void validateFile(FacesContext ctx, UIComponent comp, Object value) {
+        if (value == null) {
+            throw new ValidatorException(
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Select a file to upload", null));
+        }
+        Part file = (Part) value;
+        long size = file.getSize();
+        if (size <= 0) {
+            throw new ValidatorException(
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "the file is empty", null));
+        }
+        if (size > 1024 * 1024 * 10) { // 10 MB limit
+            throw new ValidatorException(
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            size + "bytes: file too big (limit 10MB)", null));
+        }
+    }
+
+    public Part getPart() {
+        return part;
+    }
+
+    public void setPart(Part part) {
+        this.part = part;
+    }
+
+    
 //    
 //    
 //    
@@ -611,8 +719,61 @@ public class ProfileBean implements Serializable {
 //    public void setPart(Part part) {
 //        this.part = part;
 //    }
-//
-//    
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        int fileID = Integer.parseInt(request.getParameter("fileid"));
+        String user = request.getParameter("username");
+        String inLineParam = request.getParameter("inline");
+        boolean inLine = false;
+        if (inLineParam != null && inLineParam.equals("true")) {
+            inLine = true;
+        }
+
+        try {
+            Connection conn = ds.getConnection();
+            PreparedStatement selectQuery = conn.prepareStatement(
+                    "SELECT * FROM USERTABLE WHERE USERNAME='" + username + "'");
+            
+
+            ResultSet result = selectQuery.executeQuery();
+            if (!result.next()) {
+                System.out.println("***** SELECT query failed for ImageServlet");
+            }
+
+            String fileType = result.getString("FILE_TYPE");
+            String fileName = result.getString("FILE_NAME");
+            long fileSize = result.getLong("FILE_SIZE");
+            Blob fileBlob = result.getBlob("FILE_CONTENTS");
+
+            response.setContentType(fileType);
+            if (inLine) {
+                response.setHeader("Content-Disposition", "inline; filename=\""
+                        + fileName + "\"");
+            } else {
+                response.setHeader("Content-Disposition", "attachment; filename=\""
+                        + fileName + "\"");
+            }
+
+            final int BYTES = 1024;
+            int length = 0;
+            InputStream in = fileBlob.getBinaryStream();
+            OutputStream out = response.getOutputStream();
+            byte[] bbuf = new byte[BYTES];
+
+            while ((in != null) && ((length = in.read(bbuf)) != -1)) {
+                out.write(bbuf, 0, length);
+            }
+
+            out.flush();
+            out.close();
+            conn.close();
+
+        } catch (SQLException e) {
+
+        }
+    }
 //    @Override
 //    protected void doGet(HttpServletRequest request, HttpServletResponse response)
 //            throws ServletException, IOException {
