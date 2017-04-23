@@ -101,8 +101,8 @@
                                              disabled="#{profileBean.selectedRecord == null}" />
                         </f:facet>
                     </p:toolbar>
-                    <p:dataTable id="collectionRecordsList" value="#{profileBean.loadAlbums(profileBean.selectedCollection.collectionName)}" 
-                                 var="record" resizableColumns="true" rows="10" 
+                    <p:dataTable id="collectionRecordsList" value="#{profileBean.selectedCollection.records}" 
+                                 var="record" resizableColumns="true"  
                                  scrollable="true" scrollHeight="400" draggableColumns="true" 
                                  selectionMode="single" selection="#{profileBean.selectedRecord}" 
                                  rowKey="#{record.title}">

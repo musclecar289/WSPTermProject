@@ -20,17 +20,9 @@
             <p:toolbar>
                 <f:facet name="right">
                     <h:link  value="Vircoms" outcome="/index" />
-                    <span class="ui-separator">
-                        <span class="ui-icon ui-icon-grip-dotted-vertical" />
-                    </span>
-                    <!--                    <h:link  value="Album Search" outcome="/albumsearch" />
-                                        <span class="ui-separator">
-                                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
-                                        </span>-->
+                    <span class="ui-separator"><span class="ui-icon ui-icon-grip-dotted-vertical"/></span>                    
                     <h:link value="User Login" outcome="/customerFolder/profile" />
-                    <span class="ui-separator">
-                        <span class="ui-icon ui-icon-grip-dotted-vertical" />
-                    </span>
+                    <span class="ui-separator"><span class="ui-icon ui-icon-grip-dotted-vertical"/></span>                    
                     <h:link value="Reset Password" outcome="/resetPassword" />
                 </f:facet>
             </p:toolbar>
@@ -45,7 +37,7 @@
                     <h:link value="Sign Up Now!" outcome="/regForm" style="text-decoration:underline;color:blue;" /><br /><br /><br />
                 </center>
 
-                <p:dataTable id="collectionTable" var="collection" value="#{collectionsBean.collections}"
+                <p:dataTable id="collectionTable" var="collection" value="#{collectionsBean.loadCollections()}"
                              selectionMode="single" selection="#{collectionsBean.selectedCollection}" 
                              rowKey="#{collection.collectionName}" >
                     <f:facet name="header">
