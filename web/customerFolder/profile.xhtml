@@ -27,7 +27,7 @@
                 <p:growl id="form1msgs" showDetail="true" />
                 <p:toolbar>
                     <f:facet name="right">
-                        <h:link  value="Vircoms" outcome="/index" />
+                        <h:link  value="Vircoms" outcome="/customerFolder/userIndex" />
                         <span class="ui-separator">
                             <span class="ui-icon ui-icon-grip-dotted-vertical" />
                         </span>
@@ -50,9 +50,10 @@
                         </f:facet>
                     </p:toolbar>
                     <p:dataTable id="collectionTable2" var="collection" value="#{profileBean.loadCollections()}" 
-                                 selectionMode="single" selection="#{profileBean.selectedCollection}" 
-                                 rowKey="#{collection.collectionName}" >
-                        <p:ajax event="rowSelect" process="collectionTable2" listener="#{profileBean.onCollectionSelect}" update=":form1:form1msgs :collectionRecordsViewer:collectionRecordsList" />
+                                selectionMode="single" selection="#{profileBean.selectedCollection}" 
+                                rowKey="#{collection.collectionName}" >
+                        <p:ajax event="rowSelect" process="collectionTable2" listener="#{profileBean.onCollectionSelect}" 
+                                update=":form1:form1msgs :collectionRecordsViewer:collectionRecordsList :collectionRecordsViewer:recordAdditionButton" />
                         <f:facet name="header">
                             My Collections
                         </f:facet>
@@ -89,7 +90,10 @@
                 <p:fieldset id="collectionRecordsField" style="margin-top:20px;margin-bottom:20px;width:75%"  >
                     <p:toolbar>
                         <f:facet name="right">
-                            <h:link value="Add New Record" outcome="/customerFolder/albumsearch" />
+                            <p:commandButton id="recordAdditionButton" value="Add New Record"
+                                            action="/customerFolder/albumsearch" 
+                                            update=":form1:form1msgs :collectionRecordsViewer:collectionRecordsList"
+                                            disabled="#{profileBean.selectedCollection == null}" />
                             <span class="ui-separator"><span class="ui-icon ui-icon-grip-dotted-vertical" /></span>
                             <p:commandButton id="recordDeleteButton" value="Delete Record"
                                              update=":form1:form1msgs :collectionRecordsViewer:collectionRecordsList"

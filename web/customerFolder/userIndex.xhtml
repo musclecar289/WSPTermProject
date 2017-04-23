@@ -19,9 +19,9 @@
 
             <p:toolbar>
                 <f:facet name="right">
-                    <h:link  value="Vircoms" outcome="/index" />
+                    <h:link  value="Vircoms" outcome="/customerFolder/userIndex" />
                     <span class="ui-separator"><span class="ui-icon ui-icon-grip-dotted-vertical"/></span>                    
-                    <h:link value="User Login" outcome="/customerFolder/profile" />
+                    <h:link value="My Profile" outcome="/customerFolder/profile" />
                     <span class="ui-separator"><span class="ui-icon ui-icon-grip-dotted-vertical"/></span>                    
                     <h:link value="Reset Password" outcome="/resetPassword" />
                 </f:facet>
@@ -29,19 +29,17 @@
 
             <p:fieldset style="margin-bottom:20px" id="collectionField" >
                 <h3 style=" background-color: white; color: black; text-align: center; padding: 10px"  >
-                    Vircoms offers collectors the flexibility and reliability of database management software with the convenience of a browser.
-                    Since our services are offered in the browser, you can access your musical collection anywhere anytime. 
-                    Right now, only our registered users can create and manage a collection, so you should sign up now for free! Takes mere seconds!
+                    Thank you for your support of Vircoms and being part of an international community of vinyl record collectors and all around music enthusiasts!
+                    Here's the entire collection of collectors' prized collections from the states of the America, to the countries of Europe, and all the way from
+                    music lovers of the South Pole! Please help us improve this totally free software by reporting bugs and spreading the news of Vircoms so many
+                    more people will have the ability to store and manage their vast and diverse musical interests! Thanks and have a good day! 
                 </h3>
-                <center>
-                    <h:link value="Sign Up Now!" outcome="/regForm" style="text-decoration:underline;color:blue;" /><br /><br /><br />
-                </center>
 
                 <p:dataTable id="collectionTable" var="collection" value="#{collectionsBean.loadCollections()}"
                              selectionMode="single" selection="#{collectionsBean.selectedCollection}" 
                              rowKey="#{collection.collectionName}" >
                     <f:facet name="header">
-                        Some Of Our Awesome Collections
+                        Our Awesome Collections
                     </f:facet>
 
                     <p:column headerText="Collection Name">
@@ -97,9 +95,7 @@
             </p:dialog>
             <br />
             <center>
-                <a href="/WSPTermProject/faces/adminFolder/adminhome.xhtml">
-                    <img src="adminLoginLogo.png" width="150" height="150"/>  
-                </a>
+                <img src="pictures/adminLoginLogo.png" width="150" height="150"/>  
             </center>
         </h:form>
     </h:body>

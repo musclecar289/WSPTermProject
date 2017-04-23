@@ -11,14 +11,10 @@
 
         <p:toolbar>
             <f:facet name="right">
-                <h:link  value="Vircoms" outcome="/index" />
-                <span class="ui-separator">
-                    <span class="ui-icon ui-icon-grip-dotted-vertical" />
-                </span>
+                <h:link  value="Vircoms" outcome="/customerFolder/userIndex" />
+                <span class="ui-separator"><span class="ui-icon ui-icon-grip-dotted-vertical" /></span>
                 <h:link value="My Profile" outcome="/customerFolder/profile" />
-                <span class="ui-separator">
-                    <span class="ui-icon ui-icon-grip-dotted-vertical" />
-                </span>
+                <span class="ui-separator"><span class="ui-icon ui-icon-grip-dotted-vertical" /></span>
                 <h:link value="Reset Password" outcome="/resetPassword" />
             </f:facet>
         </p:toolbar>
@@ -33,7 +29,8 @@
                                errorStyle="color: red" infoStyle="color: green" />-->
 
                     <p:commandButton id="albumSearch" value="Search" action="#{albumSearchBean.albumSearch()}" update="albumSearchList"/>
-
+                    <p:commandButton id="addAlbum1" value="Add Album" action="#{albumSearchBean.addAlbumToCollection(profileBean.selectedCollection)}" 
+                                     onclick="#{profileBean.init()}" update=":albumSearch:msgs"/>
                     <!--<h:commandButton id="addAlbum" value="Add Album" action=""/>
                     <h:message for="addAlbum" 
                                errorStyle="color: red" infoStyle="color: green" />-->
