@@ -71,7 +71,7 @@ public class ProfileBean implements Serializable {
         }
     }
 
-    public void refresh(){
+    public void refresh() {
         try {
             collections = loadCollections();
             numberOfCollections = collections.size();
@@ -80,9 +80,9 @@ public class ProfileBean implements Serializable {
         } catch (SQLException ex) {
             Logger.getLogger(ProfileBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
+
     }
-    
+
     public List<Record> loadAlbums(String collection_name) throws SQLException {
 
         if (ds == null) {
@@ -160,6 +160,43 @@ public class ProfileBean implements Serializable {
             conn.close();
         }
         return list;
+    }
+
+    public void createCollection() throws IOException, SQLException {
+        
+        refresh();
+        String newCollectionName = username + "'s Collection #" + (numberOfCollections+1);
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
+
+        Connection conn = ds.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
+
+        PreparedStatement ps = conn.prepareStatement(
+                "insert into COLLECTION (COLLECTION_NAME, OWNER) "
+                + "values (?,?)"
+        );
+
+        
+        try {
+            ps.setString(1, newCollectionName );
+            ps.setString(2, username);
+            
+            int result = ps.executeUpdate();
+            
+            if (result == 1) {
+                FacesMessage msg = new FacesMessage("Collection Added", newCollectionName);
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            }
+        } finally {
+            conn.close();
+
+        }
+        
     }
 
     public void deleteCollect(Collection c) throws IOException, SQLException {
@@ -284,7 +321,7 @@ public class ProfileBean implements Serializable {
     }
 
     public String convertTrackLength(int trackInMs) {
-        
+
         int minutes = (int) ((trackInMs / (1000 * 60)) % 60);
         int seconds = (int) (trackInMs / 1000) % 60;
         //long minutes = TimeUnit.MILLISECONDS.toMinutes(trackInMs) % 60;

@@ -41,6 +41,12 @@
                     </f:facet>
                 </p:toolbar>
                 <p:fieldset style="margin-top:20px;margin-bottom:20px;width:75%" id="collectionField" >
+                    <p:toolbar>
+                        <f:facet name="right">
+                            <p:commandButton value="Add New Collection" action="#{profileBean.createCollection()}" update=":form1:form1msgs :collectionRecordsViewer :form1"/>
+                            
+                        </f:facet>
+                    </p:toolbar>
                     <p:dataTable id="collectionTable2" var="collection" value="#{profileBean.collections}" 
                                  selectionMode="single" selection="#{profileBean.selectedCollection}" 
                                  rowKey="#{collection.collectionName}" >                        
