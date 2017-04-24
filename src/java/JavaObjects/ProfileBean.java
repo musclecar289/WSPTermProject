@@ -40,6 +40,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import javax.sql.DataSource;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 /**
@@ -89,6 +91,64 @@ public class ProfileBean implements Serializable {
             Logger.getLogger(ProfileBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+    public Blob customerIamge(String player) throws SQLException {
+
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
+
+        Connection conn = ds.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }       
+
+        conn.setAutoCommit(false);
+        boolean committed = false;
+        //System.out.println("usernamte = " + player);
+        
+        try {
+            PreparedStatement ps = conn.prepareStatement(
+                    "select FILE_CONTENTS from usertable where USERNAME = ?"
+            );
+
+            ps.setString(1, player);
+            
+            conn.commit();
+
+            ResultSet result = ps.executeQuery();
+
+            while (result.next()) {
+                //(assuming you have a ResultSet named RS)
+            Blob blob = result.getBlob("FILE_CONTENTS");
+            //InputStream binaryStream = blob.getBinaryStream(0, blob.length());
+            
+//            int blobLength = (int) blob.length();  
+//            byte[] blobAsBytes = blob.getBytes(1, blobLength);
+
+            //release the blob and free up memory. (since JDBC 4.0)
+            blob.free();
+            
+            //StreamedContent dbImage;
+ 
+    
+//            InputStream dbStream = result.getBlob("FILE_CONTENTS").getBinaryStream();//Get inputstream of a blob eg javax.sql.Blob.getInputStream() API ;
+//             dbImage = new DefaultStreamedContent(dbStream, "image/jpeg");
+                
+              return blob;  
+            }
+           
+
+                
+
+            conn.close();
+            
+
+        } finally {
+            conn.close();
+        }
+        return null;
     }
 
     public List<Record> loadAlbums(String collection_name) throws SQLException {
