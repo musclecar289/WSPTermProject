@@ -25,15 +25,7 @@
                 <h3>Album Search</h3>
                 <h:panelGrid columns="2">
                     <p:inputText id="albumToFind" value="#{albumSearchBean.title}"/>
-                    <!--<h:message for="albumToFind" 
-                               errorStyle="color: red" infoStyle="color: green" />-->
-
                     <p:commandButton id="albumSearch" value="Search" action="#{albumSearchBean.albumSearch()}" update="albumSearchList"/>
-                    <p:commandButton id="addAlbum1" value="Add Album" action="#{albumSearchBean.addAlbumToCollection(profileBean.selectedCollection)}" 
-                                     onclick="#{profileBean.init()}" update=":albumSearch:msgs"/>
-                    <!--<h:commandButton id="addAlbum" value="Add Album" action=""/>
-                    <h:message for="addAlbum" 
-                               errorStyle="color: red" infoStyle="color: green" />-->
                 </h:panelGrid>
                 <center>
                     <p:dataTable id="albumSearchList" value="#{albumSearchBean.albums}" 
@@ -139,7 +131,6 @@
                     </p:panelGrid>
                 </center>
                 <p:commandButton id="addAlbum" value="Add Album" action="#{albumSearchBean.addAlbumToCollection(profileBean.selectedCollection)}" onclick="#{profileBean.init()}" update=":albumSearch:msgs"/>
-                
             </h:form>
         </p:fieldset>
     </h:body>
