@@ -70,28 +70,24 @@
                         </p:column>
 
                         <p:column>
-                            <p:dataTable var="record" value="#{collectionsBean.selectedCollection.records}">
+                            <p:dataTable var="record" value="#{collectionsBean.selectedCollection.records}" resizableColumns="true"  
+                                         scrollable="true" scrollHeight="400" draggableColumns="true">
                                 <f:facet name="header">
-                                    Records in #{collectionsBean.selectedCollection.collectionName}
+                                    #{collectionsBean.selectedCollection.numberOfRecords} Records in #{collectionsBean.selectedCollection.collectionName}
                                 </f:facet>
-                                <p:column>
-                                    #{record.title}
+                                <p:column headerText="Title" sortBy="#{record.title}">                                                                    
+                                    <h:outputText value="#{record.title}" />
                                 </p:column>
-                                <p:column>
-                                    #{record.artist}
+                                <p:column headerText="Artist" sortBy="#{record.artist}">
+                                    <f:facet name="header">Artist</f:facet>                                        
+                                    <h:outputText value="#{record.artist}" />
                                 </p:column>
-                                <p:column>
-                                    #{record.genre}
-                                </p:column>
-                                <p:column>
-                                    #{record.numberOfTracks}
-                                </p:column>
-                                <p:column>
-                                    #{record.releaseDate}
+                                <p:column headerText="Released" sortBy="#{record.releaseDate}">
+                                    <f:facet name="header">Released</f:facet>                                        
+                                    <h:outputText value="#{record.releaseDate}" />
                                 </p:column>
                             </p:dataTable>
                         </p:column>
-
                     </p:panelGrid>
                 </p:outputPanel>
             </p:dialog>
